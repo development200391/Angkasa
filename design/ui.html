@@ -1,0 +1,1580 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Angkasa · Rancangan Layar Tahap 1</title>
+<style>
+/* Fredoka disematkan sebagai base64 supaya berkas ini tampil sama persis
+   di mesin mana pun, termasuk saat dirender headless tanpa jaringan. */
+@font-face{font-family:"Fredoka";font-weight:400;font-style:normal;font-display:block;
+  src:url(data:font/woff2;base64,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) format("woff2");}
+@font-face{font-family:"Fredoka";font-weight:600;font-style:normal;font-display:block;
+  src:url(data:font/woff2;base64,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) format("woff2");}
+
+:root{
+  --brand:#C07C12; --brandLight:#E9B24C; --space:#0E1730; --space2:#16213C;
+  --bg:#ECEFF5; --surface:#FFFFFF;
+  --ink:#121A2B; --ink2:#535F77; --ink3:#8490A4; --line:#D3DAE5;
+  --ok:#256F5A; --okSoft:#E1F0EB; --wrong:#B23A48; --wrongSoft:#FBE7E9;
+  --lock:#96A0B2;
+  --mula:#4FA3D9; --puluh:#3E9E77; --kali:#E08A2E;
+  --pecah:#8A6BC4; --ukur:#D2624C; --ruang:#4B5DB0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#DFE4EC; padding:44px 40px 60px;
+  font-family:"Fredoka","Trebuchet MS",sans-serif; color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+.canvas{display:flex;flex-wrap:wrap;gap:40px 26px;width:1760px}
+.slot{width:390px}
+.frame{
+  width:390px;height:844px;border-radius:34px;overflow:hidden;position:relative;
+  background:var(--bg);box-shadow:0 18px 44px -22px rgba(10,16,32,.55);
+  display:flex;flex-direction:column;
+}
+.cap{margin-top:12px;font-size:13px;line-height:1.45;color:#46536B}
+.cap b{display:block;font-weight:600;font-size:14px;color:#1B2438;margin-bottom:2px}
+
+/* ---------- bilah status ---------- */
+.status{height:46px;flex:0 0 46px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;font-size:13px;font-weight:600}
+.status .bars{display:flex;gap:3px;align-items:flex-end}
+.status .bars i{display:block;width:3px;background:currentColor;border-radius:1px}
+.status .bars i:nth-child(1){height:4px}.status .bars i:nth-child(2){height:6px}
+.status .bars i:nth-child(3){height:8px}.status .bars i:nth-child(4){height:10px}
+.status .batt{width:22px;height:11px;border:1.6px solid currentColor;border-radius:3px;position:relative;display:inline-block}
+.status .batt::after{content:"";position:absolute;left:1.6px;top:1.6px;bottom:1.6px;width:13px;background:currentColor;border-radius:1px}
+.status .batt::before{content:"";position:absolute;right:-4px;top:3px;width:2px;height:5px;background:currentColor;border-radius:0 1px 1px 0}
+.onDark{color:#DCE4F2}
+.onLight{color:var(--ink2)}
+
+/* ---------- umum ---------- */
+.body{flex:1;overflow:hidden;position:relative}
+.pad{padding:0 24px}
+.h1{font-size:26px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.h2{font-size:20px;font-weight:600;line-height:1.25}
+.sub{font-size:14.5px;color:var(--ink2);line-height:1.5}
+.btn{
+  height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:600;letter-spacing:.01em;
+}
+.btn.primary{
+  background:linear-gradient(180deg,#E6A945 0%,#C98216 44%,#A96A0D 100%);
+  color:#fff;text-shadow:0 1.5px 0 rgba(74,44,3,.45);border-radius:20px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.5),
+    inset 0 -3px 0 rgba(96,58,4,.35),
+    0 7px 0 #7E4E07,
+    0 13px 18px -7px rgba(52,32,2,.55);
+}
+.btn.ghost{color:var(--ink2);font-size:15.5px;font-weight:400;height:44px}
+.btn.outline{border:2px solid var(--line);color:var(--ink2);font-size:16px}
+
+/* ---------- layar gelap (angkasa) ---------- */
+.dark{background:var(--space);color:#EAF0FB}
+.dark .sub{color:#94A3C0}
+.stars{position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 11px 8px,#26314F 1.3px,transparent 1.5px),
+    radial-gradient(circle at 39px 31px,#1E2740 1px,transparent 1.2px);
+  background-size:57px 41px,89px 67px;}
+
+/* ---------- topbar peta ---------- */
+.mapbar{display:flex;align-items:center;justify-content:space-between;padding:6px 22px 14px;position:relative;z-index:2}
+.planetchip{display:flex;align-items:center;gap:9px}
+.planetdot{width:27px;height:27px;border-radius:50%;
+  background:
+    radial-gradient(circle at 31% 25%, rgba(255,255,255,.62) 0%, rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 34% 28%, var(--c) 0%, var(--c) 30%, rgba(0,0,0,.36) 88%, rgba(0,0,0,.55) 100%);
+  box-shadow:0 3px 7px -2px rgba(4,8,20,.8), 0 0 0 3px rgba(255,255,255,.07)}
+.planetchip .t{font-size:12px;color:#8B9AB8;line-height:1.1}
+.planetchip .n{font-size:15px;font-weight:600;line-height:1.2}
+.stats{display:flex;gap:14px;align-items:center;font-size:14px;font-weight:600}
+.stats span{display:flex;align-items:center;gap:5px}
+.zonechip{
+  margin:0 22px 4px;padding:9px 14px;border-radius:14px;background:rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;
+}
+.zonechip .z{font-size:13.5px;font-weight:600}
+.zonechip .p{font-size:12px;color:#8B9AB8}
+
+/* ---------- bottom nav ---------- */
+.nav{
+  flex:0 0 78px;display:flex;align-items:flex-start;padding-top:11px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.nav.light{border-top-color:var(--line);background:var(--surface)}
+.nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+  font-size:11px;color:#6E7C99;text-decoration:none}
+.nav.light a{color:var(--ink3)}
+.nav a.on{color:var(--brandLight)}
+.nav.light a.on{color:var(--brand)}
+
+/* ---------- kuis ---------- */
+.quizbar{display:flex;align-items:center;gap:14px;padding:4px 22px 16px}
+.track{flex:1;height:12px;border-radius:99px;background:#DDE3EC;overflow:hidden}
+.track i{display:block;height:100%;background:var(--brand);border-radius:99px}
+.hearts{display:flex;gap:4px}
+.qcard{
+  margin:0 22px;background:var(--surface);border-radius:22px;padding:22px 20px;
+  box-shadow:0 2px 0 var(--line);
+}
+.qtext{font-size:38px;font-weight:600;text-align:center;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.quizbody{display:flex;flex-direction:column}
+.quizbody .opts{margin-top:auto;padding-bottom:32px}
+.opts{padding:0 22px;display:flex;flex-direction:column;gap:12px}
+.opt{
+  height:64px;border-radius:20px;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F2F5FA 100%);
+  border:1.5px solid #D6DDE8;
+  box-shadow:
+    inset 0 2px 0 #FFFFFF,
+    inset 0 -2px 0 rgba(120,133,158,.14),
+    0 6px 0 #D2D9E5,
+    0 11px 15px -8px rgba(28,40,64,.4);
+  display:flex;align-items:center;justify-content:center;color:var(--ink);
+  font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;
+}
+.opt.ok{
+  border-color:#3E9B7C;color:#1C5B49;
+  background:linear-gradient(180deg,#EFF9F5 0%,#D8EEE6 100%);
+  box-shadow:inset 0 2px 0 #FFFFFF,0 6px 0 #A8CFBF,0 11px 15px -8px rgba(16,64,50,.4);
+}
+.opt.no{
+  border-color:#C95565;color:#8E2C3A;
+  background:linear-gradient(180deg,#FEF2F3 0%,#F7DCE0 100%);
+  box-shadow:inset 0 2px 0 #FFFFFF,0 6px 0 #E5B2BA,0 11px 15px -8px rgba(90,20,30,.38);
+}
+
+/* ---------- sheet ---------- */
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;background:var(--surface);color:var(--ink);
+  border-radius:26px 26px 0 0;padding:12px 24px 28px;
+  box-shadow:0 -14px 40px -18px rgba(10,16,32,.5);
+}
+.grab{width:44px;height:5px;border-radius:99px;background:var(--line);margin:0 auto 18px}
+.scrim{position:absolute;inset:0;background:rgba(8,13,26,.55)}
+
+.krow{display:flex;gap:9px}
+.planet3d{border-radius:50%;
+  background:
+    radial-gradient(circle at 31% 25%, rgba(255,255,255,.6) 0%, rgba(255,255,255,0) 40%),
+    radial-gradient(circle at 34% 28%, var(--c) 0%, var(--c) 30%, rgba(0,0,0,.34) 86%, rgba(0,0,0,.55) 100%);
+  box-shadow:0 4px 9px -3px rgba(4,8,20,.75), inset -2px -3px 7px rgba(0,0,0,.22);}
+.key{
+  flex:1;height:58px;border-radius:17px;border:1.5px solid #D6DDE8;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F1F4FA 100%);
+  box-shadow:inset 0 1.5px 0 #FFFFFF,0 4px 0 #D5DCE7,0 8px 11px -7px rgba(28,40,64,.35);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:600;
+}
+</style>
+</head>
+<body>
+<svg id="defs3d" width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="gDone" cx="33%" cy="27%" r="82%"><stop offset="0" stop-color="#63CCA3"/><stop offset="48%" stop-color="#2E8563"/><stop offset="100%" stop-color="#134A37"/></radialGradient><radialGradient id="gActive" cx="33%" cy="27%" r="82%"><stop offset="0" stop-color="#FFD98A"/><stop offset="48%" stop-color="#E9B24C"/><stop offset="100%" stop-color="#9C5E0B"/></radialGradient><radialGradient id="gLock" cx="33%" cy="27%" r="82%"><stop offset="0" stop-color="#3A4767"/><stop offset="48%" stop-color="#232E4A"/><stop offset="100%" stop-color="#141C31"/></radialGradient><radialGradient id="gGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E9B24C" stop-opacity=".38"/><stop offset="100%" stop-color="#E9B24C" stop-opacity="0"/></radialGradient><symbol id="star3d" viewBox="0 0 100 104"><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="#8A5209" transform="translate(0 2.5)" opacity=".45"/><path d="M50.0 51.0L50.0 4.0L61.5 35.2Z" fill="#F4DAA1"/><path d="M50.0 51.0L61.5 35.2L94.7 36.5Z" fill="#C8A162"/><path d="M50.0 51.0L94.7 36.5L68.5 57.0Z" fill="#C28527"/><path d="M50.0 51.0L68.5 57.0L77.6 89.0Z" fill="#8F570C"/><path d="M50.0 51.0L77.6 89.0L50.0 70.5Z" fill="#8A5209"/><path d="M50.0 51.0L50.0 70.5L22.4 89.0Z" fill="#A76C19"/><path d="M50.0 51.0L22.4 89.0L31.5 57.0Z" fill="#BF8326"/><path d="M50.0 51.0L31.5 57.0L5.3 36.5Z" fill="#E4C589"/><path d="M50.0 51.0L5.3 36.5L38.5 35.2Z" fill="#F3D89F"/><path d="M50.0 51.0L38.5 35.2L50.0 4.0Z" fill="#FDE5AE"/><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="none" stroke="#7A4707" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/></symbol><symbol id="star3dOff" viewBox="0 0 100 104"><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="#18213A" transform="translate(0 2.5)" opacity=".45"/><path d="M50.0 51.0L50.0 4.0L61.5 35.2Z" fill="#3D4C74"/><path d="M50.0 51.0L61.5 35.2L94.7 36.5Z" fill="#2E3A5C"/><path d="M50.0 51.0L94.7 36.5L68.5 57.0Z" fill="#222C49"/><path d="M50.0 51.0L68.5 57.0L77.6 89.0Z" fill="#19223B"/><path d="M50.0 51.0L77.6 89.0L50.0 70.5Z" fill="#18213A"/><path d="M50.0 51.0L50.0 70.5L22.4 89.0Z" fill="#1D2742"/><path d="M50.0 51.0L22.4 89.0L31.5 57.0Z" fill="#212C48"/><path d="M50.0 51.0L31.5 57.0L5.3 36.5Z" fill="#38456B"/><path d="M50.0 51.0L5.3 36.5L38.5 35.2Z" fill="#3D4B74"/><path d="M50.0 51.0L38.5 35.2L50.0 4.0Z" fill="#404F79"/><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="none" stroke="#141C31" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/></symbol><symbol id="star3dOffLight" viewBox="0 0 100 104"><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="#B6BFCE" transform="translate(0 2.5)" opacity=".45"/><path d="M50.0 51.0L50.0 4.0L61.5 35.2Z" fill="#ECEFF5"/><path d="M50.0 51.0L61.5 35.2L94.7 36.5Z" fill="#D5DBE5"/><path d="M50.0 51.0L94.7 36.5L68.5 57.0Z" fill="#C8CFDB"/><path d="M50.0 51.0L68.5 57.0L77.6 89.0Z" fill="#B8C1CF"/><path d="M50.0 51.0L77.6 89.0L50.0 70.5Z" fill="#B6BFCE"/><path d="M50.0 51.0L50.0 70.5L22.4 89.0Z" fill="#BFC7D5"/><path d="M50.0 51.0L22.4 89.0L31.5 57.0Z" fill="#C7CFDB"/><path d="M50.0 51.0L31.5 57.0L5.3 36.5Z" fill="#E3E8EF"/><path d="M50.0 51.0L5.3 36.5L38.5 35.2Z" fill="#EBEFF5"/><path d="M50.0 51.0L38.5 35.2L50.0 4.0Z" fill="#F0F3F8"/><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="none" stroke="#AAB4C4" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/></symbol><symbol id="star3dLock" viewBox="0 0 100 104"><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="#2A3654" transform="translate(0 2.5)" opacity=".45"/><path d="M50.0 51.0L50.0 4.0L61.5 35.2Z" fill="#7C8DB6"/><path d="M50.0 51.0L61.5 35.2L94.7 36.5Z" fill="#5A698D"/><path d="M50.0 51.0L94.7 36.5L68.5 57.0Z" fill="#3E4C70"/><path d="M50.0 51.0L68.5 57.0L77.6 89.0Z" fill="#2C3857"/><path d="M50.0 51.0L77.6 89.0L50.0 70.5Z" fill="#2A3654"/><path d="M50.0 51.0L50.0 70.5L22.4 89.0Z" fill="#344162"/><path d="M50.0 51.0L22.4 89.0L31.5 57.0Z" fill="#3D4B6F"/><path d="M50.0 51.0L31.5 57.0L5.3 36.5Z" fill="#6F80A7"/><path d="M50.0 51.0L5.3 36.5L38.5 35.2Z" fill="#7B8CB5"/><path d="M50.0 51.0L38.5 35.2L50.0 4.0Z" fill="#8395BE"/><path d="M50.0 4.0L61.5 35.2L94.7 36.5L68.5 57.0L77.6 89.0L50.0 70.5L22.4 89.0L31.5 57.0L5.3 36.5L38.5 35.2Z" fill="none" stroke="#1B2440" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/></symbol><radialGradient id="gApple" cx="34%" cy="26%" r="80%"><stop offset="0" stop-color="#F0836A"/><stop offset="52%" stop-color="#D2624C"/><stop offset="100%" stop-color="#8E3728"/></radialGradient></defs></svg>
+<div class="canvas" id="tahap1">
+
+<!-- ============ 01 · Onboarding · pilih planet ============ -->
+<div class="slot">
+<div class="frame dark" id="s1">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2">
+    <div class="pad" style="padding-top:8px">
+      <div style="display:flex;gap:6px;margin-bottom:26px">
+        <span style="flex:1;height:5px;border-radius:99px;background:var(--brandLight)"></span>
+        <span style="flex:1;height:5px;border-radius:99px;background:var(--brandLight)"></span>
+        <span style="flex:1;height:5px;border-radius:99px;background:var(--brandLight)"></span>
+        <span style="flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.16)"></span>
+      </div>
+      <div class="h1">Kelas berapa<br>sekarang?</div>
+      <div class="sub" style="margin-top:9px">Bisa diganti kapan saja lewat Profil.</div>
+    </div>
+
+    <div style="padding:26px 24px 0;display:grid;grid-template-columns:1fr 1fr;gap:13px">
+      <div style="background:rgba(255,255,255,.06);border:2px solid var(--brandLight);border-radius:20px;padding:16px 15px">
+        <div class="planet3d" style="width:42px;height:42px;--c:var(--mula);margin-bottom:11px;box-shadow:0 4px 9px -3px rgba(4,8,20,.75), inset -2px -3px 7px rgba(0,0,0,.22), 0 0 0 5px rgba(79,163,217,.16)"></div>
+        <div style="font-size:15.5px;font-weight:600">Kelas 1</div>
+        <div style="font-size:12.5px;color:#8B9AB8">Planet Mula</div>
+      </div>
+      <div style="background:rgba(255,255,255,.045);border:2px solid transparent;border-radius:20px;padding:16px 15px">
+        <div class="planet3d" style="width:42px;height:42px;--c:var(--puluh);margin-bottom:11px"></div>
+        <div style="font-size:15.5px;font-weight:600">Kelas 2</div>
+        <div style="font-size:12.5px;color:#8B9AB8">Planet Puluh</div>
+      </div>
+      <div style="background:rgba(255,255,255,.045);border-radius:20px;padding:16px 15px">
+        <div class="planet3d" style="width:42px;height:42px;--c:var(--kali);margin-bottom:11px"></div>
+        <div style="font-size:15.5px;font-weight:600">Kelas 3</div>
+        <div style="font-size:12.5px;color:#8B9AB8">Planet Kali</div>
+      </div>
+      <div style="background:rgba(255,255,255,.045);border-radius:20px;padding:16px 15px">
+        <div class="planet3d" style="width:42px;height:42px;--c:var(--pecah);margin-bottom:11px"></div>
+        <div style="font-size:15.5px;font-weight:600">Kelas 4</div>
+        <div style="font-size:12.5px;color:#8B9AB8">Planet Pecah</div>
+      </div>
+      <div style="background:rgba(255,255,255,.045);border-radius:20px;padding:16px 15px">
+        <div class="planet3d" style="width:42px;height:42px;--c:var(--ukur);margin-bottom:11px"></div>
+        <div style="font-size:15.5px;font-weight:600">Kelas 5</div>
+        <div style="font-size:12.5px;color:#8B9AB8">Planet Ukur</div>
+      </div>
+      <div style="background:rgba(255,255,255,.045);border-radius:20px;padding:16px 15px">
+        <div class="planet3d" style="width:42px;height:42px;--c:var(--ruang);margin-bottom:11px"></div>
+        <div style="font-size:15.5px;font-weight:600">Kelas 6</div>
+        <div style="font-size:12.5px;color:#8B9AB8">Planet Ruang</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:24px;right:24px;bottom:22px">
+      <div class="btn primary">Lanjut</div>
+      <div class="btn ghost" style="margin-top:6px">Belum yakin? Coba tes penempatan</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>01 · Pilih planet</b>Kelas dipilih sendiri sejak awal, bukan dikunci berurutan — anak kelas 4 tidak dipaksa mulai dari 2 + 3.</div>
+</div>
+
+<!-- ============ 02 · Peta lintasan ============ -->
+<div class="slot">
+<div class="frame dark" id="s2">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column">
+    <div class="mapbar">
+      <div class="planetchip">
+        <div class="planetdot" style="--c:var(--mula)"></div>
+        <div><div class="t">Kelas 1</div><div class="n">Planet Mula</div></div>
+      </div>
+      <div class="stats">
+        <span style="color:#E9863A">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4-3 5-3 8a3 3 0 0 0 6 0c0-1-.4-2-.4-2 2 1.5 3.4 3.6 3.4 6a6 6 0 0 1-12 0c0-4.5 4-6.5 6-12Z"/></svg>7</span>
+        <span style="color:var(--brandLight)">
+          <svg width="17" height="18" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg>340</span>
+      </div>
+    </div>
+    <div class="zonechip">
+      <div><div class="z">Zona 2 · Penjumlahan sampai 20</div></div>
+      <div class="p">3/6 pos</div>
+    </div>
+
+    <div style="flex:1;position:relative">
+      <svg viewBox="0 0 390 470" style="position:absolute;inset:0;width:100%;height:100%">
+        <path d="M 92 52 Q 196 78 244 130 Q 288 182 268 232 Q 240 292 168 322 Q 96 352 96 402 Q 96 448 200 470" fill="none" stroke="#060B18" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 18" opacity=".55" transform="translate(0 3)"/><path d="M 92 52 Q 196 78 244 130 Q 288 182 268 232 Q 240 292 168 322 Q 96 352 96 402 Q 96 448 200 470" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 18"/><ellipse cx="92" cy="78.9" rx="23.0" ry="6.2" fill="#060B18" opacity=".45"/><circle cx="92" cy="55" r="28" fill="#060B18" opacity=".35"/><circle cx="92" cy="52" r="28" fill="url(#gDone)"/><path d="M 71.8 65.4 A 28 28 0 0 0 112.2 65.4" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity=".16" stroke-linecap="round"/><ellipse cx="83.6" cy="40.2" rx="9.5" ry="6.7" fill="#FFFFFF" opacity=".34" transform="rotate(-28 83.6 40.2)"/><text x="92" y="58.6" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">1</text><use href="#star3d" x="69.5" y="84" width="15" height="15.6"/><use href="#star3d" x="84.5" y="84" width="15" height="15.6"/><use href="#star3d" x="99.5" y="84" width="15" height="15.6"/><ellipse cx="244" cy="156.9" rx="23.0" ry="6.2" fill="#060B18" opacity=".45"/><circle cx="244" cy="133" r="28" fill="#060B18" opacity=".35"/><circle cx="244" cy="130" r="28" fill="url(#gDone)"/><path d="M 223.8 143.4 A 28 28 0 0 0 264.2 143.4" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity=".16" stroke-linecap="round"/><ellipse cx="235.6" cy="118.2" rx="9.5" ry="6.7" fill="#FFFFFF" opacity=".34" transform="rotate(-28 235.6 118.2)"/><text x="244" y="136.7" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">2</text><use href="#star3d" x="229.0" y="162" width="15" height="15.6"/><use href="#star3d" x="244.0" y="162" width="15" height="15.6"/><ellipse cx="268" cy="258.9" rx="23.0" ry="6.2" fill="#060B18" opacity=".45"/><circle cx="268" cy="235" r="28" fill="#060B18" opacity=".35"/><circle cx="268" cy="232" r="28" fill="url(#gDone)"/><path d="M 247.8 245.4 A 28 28 0 0 0 288.2 245.4" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity=".16" stroke-linecap="round"/><ellipse cx="259.6" cy="220.2" rx="9.5" ry="6.7" fill="#FFFFFF" opacity=".34" transform="rotate(-28 259.6 220.2)"/><text x="268" y="238.7" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">3</text><use href="#star3d" x="260.5" y="264" width="15" height="15.6"/><circle cx="168" cy="322" r="58" fill="url(#gGlow)"/><ellipse cx="168" cy="351.8" rx="25.4" ry="6.8" fill="#060B18" opacity=".45"/><circle cx="168" cy="325" r="31" fill="#060B18" opacity=".35"/><circle cx="168" cy="322" r="31" fill="url(#gActive)"/><path d="M 145.7 336.9 A 31 31 0 0 0 190.3 336.9" fill="none" stroke="#FFFFFF" stroke-width="2.8" opacity=".16" stroke-linecap="round"/><ellipse cx="158.7" cy="309.0" rx="10.5" ry="7.4" fill="#FFFFFF" opacity=".34" transform="rotate(-28 158.7 309.0)"/><text x="168" y="329.4" text-anchor="middle" font-family="Fredoka" font-size="21" font-weight="600" fill="#3A2405" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">4</text><rect x="130" y="366" width="76" height="26" rx="13" fill="#8A5209"/><rect x="130" y="364" width="76" height="26" rx="13" fill="#E9B24C"/><text x="168" y="382" text-anchor="middle" font-family="Fredoka" font-size="12.5" font-weight="600" fill="#3A2405">MULAI</text><ellipse cx="96" cy="427.9" rx="22.1" ry="5.9" fill="#060B18" opacity=".45"/><circle cx="96" cy="405" r="27" fill="#060B18" opacity=".35"/><circle cx="96" cy="402" r="27" fill="url(#gLock)"/><path d="M 76.6 415.0 A 27 27 0 0 0 115.4 415.0" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".16" stroke-linecap="round"/><ellipse cx="87.9" cy="390.7" rx="9.2" ry="6.5" fill="#FFFFFF" opacity=".34" transform="rotate(-28 87.9 390.7)"/><rect x="88" y="396" width="16" height="12" rx="2.5" fill="#AEBBD9"/><path d="M 91.5 396 v-4.5 a4.5 4.5 0 0 1 9 0 v4.5" fill="none" stroke="#AEBBD9" stroke-width="2.4"/><circle cx="200" cy="470" r="42" fill="none" stroke="#3A4767" stroke-width="2.4" stroke-dasharray="6 8"/><ellipse cx="200" cy="498.8" rx="24.6" ry="6.6" fill="#060B18" opacity=".45"/><circle cx="200" cy="473" r="30" fill="#060B18" opacity=".35"/><circle cx="200" cy="470" r="30" fill="url(#gLock)"/><path d="M 178.4 484.4 A 30 30 0 0 0 221.6 484.4" fill="none" stroke="#FFFFFF" stroke-width="2.7" opacity=".16" stroke-linecap="round"/><ellipse cx="191.0" cy="457.4" rx="10.2" ry="7.2" fill="#FFFFFF" opacity=".34" transform="rotate(-28 191.0 457.4)"/><use href="#star3dLock" x="184" y="453" width="32" height="33"/></svg>
+    </div>
+  </div>
+  <div class="nav">
+    <a class="on"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7z" opacity=".25"/><path d="M12 2 3 7l9 5 9-5z"/></svg>Jelajah</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>Latihan</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="12" width="5" height="9" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="16" y="9" width="5" height="12" rx="1"/></svg>Peringkat</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>Profil</a>
+  </div>
+</div>
+<div class="cap"><b>02 · Peta lintasan</b>Layar utama. Pos selesai berbintang, pos aktif menyala dengan label MULAI, sisanya digembok tapi tetap terlihat.</div>
+</div>
+
+<!-- ============ 03 · Sheet detail pos ============ -->
+<div class="slot">
+<div class="frame dark" id="s3">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2">
+    <div class="mapbar">
+      <div class="planetchip">
+        <div class="planetdot" style="--c:var(--mula)"></div>
+        <div><div class="t">Kelas 1</div><div class="n">Planet Mula</div></div>
+      </div>
+      <div class="stats"><span style="color:var(--brandLight)">
+        <svg width="17" height="18" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg>340</span></div>
+    </div>
+    <svg viewBox="0 0 390 300" style="position:absolute;top:96px;left:0;width:100%">
+      <path d="M 92 22 Q 196 48 244 100 Q 288 152 268 202 Q 240 262 168 292" fill="none" stroke="#060B18" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 18" opacity=".55" transform="translate(0 3)"/><path d="M 92 22 Q 196 48 244 100 Q 288 152 268 202 Q 240 262 168 292" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 18"/><ellipse cx="92" cy="48.9" rx="23.0" ry="6.2" fill="#060B18" opacity=".45"/><circle cx="92" cy="25" r="28" fill="#060B18" opacity=".35"/><circle cx="92" cy="22" r="28" fill="url(#gDone)"/><path d="M 71.8 35.4 A 28 28 0 0 0 112.2 35.4" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity=".16" stroke-linecap="round"/><ellipse cx="83.6" cy="10.2" rx="9.5" ry="6.7" fill="#FFFFFF" opacity=".34" transform="rotate(-28 83.6 10.2)"/><text x="92" y="28.6" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">1</text><ellipse cx="244" cy="126.9" rx="23.0" ry="6.2" fill="#060B18" opacity=".45"/><circle cx="244" cy="103" r="28" fill="#060B18" opacity=".35"/><circle cx="244" cy="100" r="28" fill="url(#gDone)"/><path d="M 223.8 113.4 A 28 28 0 0 0 264.2 113.4" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity=".16" stroke-linecap="round"/><ellipse cx="235.6" cy="88.2" rx="9.5" ry="6.7" fill="#FFFFFF" opacity=".34" transform="rotate(-28 235.6 88.2)"/><text x="244" y="106.7" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">2</text><ellipse cx="268" cy="228.9" rx="23.0" ry="6.2" fill="#060B18" opacity=".45"/><circle cx="268" cy="205" r="28" fill="#060B18" opacity=".35"/><circle cx="268" cy="202" r="28" fill="url(#gDone)"/><path d="M 247.8 215.4 A 28 28 0 0 0 288.2 215.4" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity=".16" stroke-linecap="round"/><ellipse cx="259.6" cy="190.2" rx="9.5" ry="6.7" fill="#FFFFFF" opacity=".34" transform="rotate(-28 259.6 190.2)"/><text x="268" y="208.7" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1" style="paint-order:stroke" stroke="#0B1120" stroke-width=".9" stroke-opacity=".35">3</text></svg>
+    <div class="scrim"></div>
+
+    <div class="sheet">
+      <div class="grab"></div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:#fff">4</div>
+        <div>
+          <div class="h2">Pos 4</div>
+          <div style="font-size:13.5px;color:var(--ink2)">Zona 2 · Penjumlahan sampai 20</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;margin-bottom:18px"><svg width="34" height="35" viewBox="0 0 100 104"><use href="#star3dOffLight" width="100" height="104"/></svg><svg width="34" height="35" viewBox="0 0 100 104"><use href="#star3dOffLight" width="100" height="104"/></svg><svg width="34" height="35" viewBox="0 0 100 104"><use href="#star3dOffLight" width="100" height="104"/></svg></div>
+      <div style="display:flex;gap:10px;margin-bottom:20px">
+        <div style="flex:1;background:var(--bg);border-radius:14px;padding:12px 14px">
+          <div style="font-size:19px;font-weight:600">10</div>
+          <div style="font-size:12px;color:var(--ink3)">soal</div>
+        </div>
+        <div style="flex:1;background:var(--bg);border-radius:14px;padding:12px 14px">
+          <div style="font-size:19px;font-weight:600">± 3</div>
+          <div style="font-size:12px;color:var(--ink3)">menit</div>
+        </div>
+        <div style="flex:1;background:var(--bg);border-radius:14px;padding:12px 14px">
+          <div style="font-size:19px;font-weight:600">+10</div>
+          <div style="font-size:12px;color:var(--ink3)">XP</div>
+        </div>
+      </div>
+      <div class="btn primary">Mulai</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>03 · Detail pos</b>Yang ditawarkan disebutkan sebelum anak masuk: berapa soal, berapa lama, dan berapa XP-nya.</div>
+</div>
+
+<!-- ============ 04 · Kuis pilihan ganda ============ -->
+<div class="slot">
+<div class="frame" id="s4">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body quizbody">
+    <div class="quizbar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <div class="track"><i style="width:30%"></i></div>
+      <div class="hearts">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C6CEDC" stroke-width="2"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+      </div>
+    </div>
+
+    <div style="padding:0 22px 16px"><div style="font-size:13px;color:var(--ink3);letter-spacing:.06em;font-weight:600">SOAL 3 DARI 10</div></div>
+
+    <div class="qcard">
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:20px">
+        <div style="display:flex;gap:6px">
+          <svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 7c3.5-2 8 0 8 5s-3.5 9-5 9-1.6-.8-3-.8-1.5.8-3 .8-5-4-5-9 4.5-7 8-5Z" fill="url(#gApple)"/><ellipse cx="9.4" cy="10.6" rx="2.1" ry="1.4" fill="#FFFFFF" opacity=".45" transform="rotate(-32 9.4 10.6)"/><path d="M12 7c0-2 .8-3.6 2.6-4.4" stroke="#3E9E77" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 7c3.5-2 8 0 8 5s-3.5 9-5 9-1.6-.8-3-.8-1.5.8-3 .8-5-4-5-9 4.5-7 8-5Z" fill="url(#gApple)"/><ellipse cx="9.4" cy="10.6" rx="2.1" ry="1.4" fill="#FFFFFF" opacity=".45" transform="rotate(-32 9.4 10.6)"/><path d="M12 7c0-2 .8-3.6 2.6-4.4" stroke="#3E9E77" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:28px;font-weight:600;color:var(--ink3)">+</div>
+        <div style="display:flex;gap:6px">
+          <svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 7c3.5-2 8 0 8 5s-3.5 9-5 9-1.6-.8-3-.8-1.5.8-3 .8-5-4-5-9 4.5-7 8-5Z" fill="url(#gApple)"/><ellipse cx="9.4" cy="10.6" rx="2.1" ry="1.4" fill="#FFFFFF" opacity=".45" transform="rotate(-32 9.4 10.6)"/><path d="M12 7c0-2 .8-3.6 2.6-4.4" stroke="#3E9E77" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 7c3.5-2 8 0 8 5s-3.5 9-5 9-1.6-.8-3-.8-1.5.8-3 .8-5-4-5-9 4.5-7 8-5Z" fill="url(#gApple)"/><ellipse cx="9.4" cy="10.6" rx="2.1" ry="1.4" fill="#FFFFFF" opacity=".45" transform="rotate(-32 9.4 10.6)"/><path d="M12 7c0-2 .8-3.6 2.6-4.4" stroke="#3E9E77" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 7c3.5-2 8 0 8 5s-3.5 9-5 9-1.6-.8-3-.8-1.5.8-3 .8-5-4-5-9 4.5-7 8-5Z" fill="url(#gApple)"/><ellipse cx="9.4" cy="10.6" rx="2.1" ry="1.4" fill="#FFFFFF" opacity=".45" transform="rotate(-32 9.4 10.6)"/><path d="M12 7c0-2 .8-3.6 2.6-4.4" stroke="#3E9E77" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+      <div class="qtext">2 + 3 = ?</div>
+    </div>
+
+    <div style="height:26px"></div>
+    <div class="opts">
+      <div class="opt">4</div>
+      <div class="opt">5</div>
+      <div class="opt">6</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>04 · Pilihan ganda bergambar</b>Sumbu S3 pada tingkat termudah: benda nyata dulu. Pengecoh 4 dan 6 diambil dari kesalahan hitung jari, bukan diacak.</div>
+</div>
+
+<!-- ============ 05 · Kuis isian + garis bilangan ============ -->
+<div class="slot">
+<div class="frame" id="s5">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body">
+    <div class="quizbar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <div class="track"><i style="width:60%"></i></div>
+      <div class="hearts">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C6CEDC" stroke-width="2"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+      </div>
+    </div>
+    <div style="padding:0 22px 16px"><div style="font-size:13px;color:var(--ink3);letter-spacing:.06em;font-weight:600">SOAL 6 DARI 10</div></div>
+
+    <div class="qcard">
+      <div class="qtext" style="margin-bottom:18px">7 + 5 = ?</div>
+      <svg viewBox="0 0 306 92" style="width:100%">
+        <line x1="8" y1="70" x2="298" y2="70" stroke="#C6CEDC" stroke-width="2.5" stroke-linecap="round"/>
+        <g font-family="Fredoka" font-size="11" fill="#8490A4" text-anchor="middle">
+          <line x1="8"   y1="64" x2="8"   y2="76" stroke="#C6CEDC" stroke-width="2"/><text x="8"   y="90">0</text>
+          <line x1="50"  y1="64" x2="50"  y2="76" stroke="#C6CEDC" stroke-width="2"/><text x="50"  y="90">3</text>
+          <line x1="106" y1="62" x2="106" y2="78" stroke="#C07C12" stroke-width="2.6"/><text x="106" y="90" fill="#C07C12" font-weight="600">7</text>
+          <line x1="176" y1="64" x2="176" y2="76" stroke="#C6CEDC" stroke-width="2"/><text x="176" y="90">10</text>
+          <line x1="204" y1="62" x2="204" y2="78" stroke="#256F5A" stroke-width="2.6"/><text x="204" y="90" fill="#256F5A" font-weight="600">12</text>
+          <line x1="298" y1="64" x2="298" y2="76" stroke="#C6CEDC" stroke-width="2"/><text x="298" y="90">20</text>
+        </g>
+        <path d="M 106 62 Q 155 12 204 62" fill="none" stroke="#C07C12" stroke-width="2.6" stroke-dasharray="5 6" stroke-linecap="round"/>
+        <path d="M 198 54 l 8 8 l -9 5 z" fill="#C07C12"/>
+        <text x="155" y="26" text-anchor="middle" font-family="Fredoka" font-size="12" font-weight="600" fill="#C07C12">+5</text>
+      </svg>
+    </div>
+
+    <div style="padding:22px 22px 0">
+      <div style="height:70px;border-radius:20px;border:2.5px solid var(--brand);background:linear-gradient(180deg,#F4F6FB 0%,#FFFFFF 62%);box-shadow:inset 0 3px 7px rgba(40,54,82,.13);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:600">12<span style="width:2px;height:32px;background:var(--brand);margin-left:3px"></span></div>
+    </div>
+
+    <div style="padding:16px 22px 0;display:flex;flex-direction:column;gap:9px">
+      <div class="krow"><div class="key">1</div><div class="key">2</div><div class="key">3</div></div>
+      <div class="krow"><div class="key">4</div><div class="key">5</div><div class="key">6</div></div>
+      <div class="krow"><div class="key">7</div><div class="key">8</div><div class="key">9</div></div>
+      <div class="krow">
+        <div class="key" style="background:#E3E8F0;border-color:#D3DAE5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#535F77" stroke-width="2" stroke-linecap="round"><path d="M20 6H9l-5 6 5 6h11z"/><path d="M13 10l4 4M17 10l-4 4"/></svg></div>
+        <div class="key">0</div>
+        <div class="key" style="background:var(--brand);border-color:var(--brand);box-shadow:0 2px 0 #97600C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>05 · Isian dengan garis bilangan</b>Dua pos lebih jauh: bantuan berubah jadi garis bilangan dan jawabannya diketik, bukan dipilih.</div>
+</div>
+
+<!-- ============ 06 · Jawaban salah ============ -->
+<div class="slot">
+<div class="frame" id="s6">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body">
+    <div class="quizbar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <div class="track"><i style="width:80%"></i></div>
+      <div class="hearts">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#B23A48"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C6CEDC" stroke-width="2"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C6CEDC" stroke-width="2"><path d="M12 21s-8-4.9-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 16.1 12 21 12 21z"/></svg>
+      </div>
+    </div>
+    <div style="padding:0 22px 16px"><div style="font-size:13px;color:var(--ink3);letter-spacing:.06em;font-weight:600">SOAL 8 DARI 10</div></div>
+
+    <div class="qcard"><div class="qtext">17 + 5 = ?</div></div>
+    <div style="height:26px"></div>
+    <div class="opts">
+      <div class="opt no">12
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" style="margin-left:12px"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </div>
+      <div class="opt ok">22
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" style="margin-left:12px"><path d="M4 12.5l5.5 5.5L20 7"/></svg>
+      </div>
+      <div class="opt" style="opacity:.45">21</div>
+    </div>
+
+    <div class="sheet" style="background:var(--wrongSoft);box-shadow:none">
+      <div style="display:flex;align-items:flex-start;gap:13px;margin-bottom:16px">
+        <div style="width:40px;height:40px;flex:0 0 40px;border-radius:50%;background:var(--wrong);display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </div>
+        <div>
+          <div style="font-size:18px;font-weight:600;color:var(--wrong);margin-bottom:4px">Belum tepat</div>
+          <div style="font-size:14.5px;color:#7A3540;line-height:1.5">7 + 5 = 12. Tulis <b>2</b> di satuan, lalu <b>simpan 1</b> ke puluhan: 1 + 1 = 2. Jadi <b>22</b>.</div>
+        </div>
+      </div>
+      <div class="btn primary" style="background:var(--wrong);box-shadow:0 4px 0 #8B2A36">Lanjut</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>06 · Jawaban salah</b>Salah tidak cuma ditandai merah — pembahasannya muncul saat itu juga, dan soalnya masuk mode Perbaiki Kesalahan.</div>
+</div>
+
+<!-- ============ 07 · Hasil pos ============ -->
+<div class="slot">
+<div class="frame dark" id="s7">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding-top:34px">
+    <svg width="330" height="120" viewBox="0 0 330 120" style="position:absolute;top:14px;opacity:.85">
+      <g fill="#E9B24C"><rect x="30" y="18" width="7" height="7" rx="1.5" transform="rotate(24 33 21)"/><rect x="286" y="34" width="6" height="6" rx="1.5" transform="rotate(-18 289 37)"/></g>
+      <g fill="#4FA3D9"><rect x="76" y="52" width="6" height="6" rx="1.5" transform="rotate(40 79 55)"/><rect x="248" y="12" width="7" height="7" rx="1.5" transform="rotate(-32 251 15)"/></g>
+      <g fill="#3E9E77"><rect x="128" y="14" width="6" height="6" rx="1.5" transform="rotate(12 131 17)"/><rect x="200" y="58" width="6" height="6" rx="1.5" transform="rotate(-44 203 61)"/></g>
+      <g fill="#D2624C"><rect x="58" y="86" width="6" height="6" rx="1.5" transform="rotate(-20 61 89)"/><rect x="268" y="80" width="6" height="6" rx="1.5" transform="rotate(30 271 83)"/></g>
+    </svg>
+
+    <div style="display:flex;align-items:flex-end;gap:6px;margin:50px 0 26px"><svg width="74" height="77" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg><svg width="100" height="104" viewBox="0 0 100 104" style="margin-bottom:10px"><use href="#star3d" width="100" height="104"/></svg><svg width="74" height="77" viewBox="0 0 100 104"><use href="#star3dOff" width="100" height="104"/></svg></div>
+
+    <div style="font-size:28px;font-weight:600">Pos 4 selesai!</div>
+    <div class="sub" style="margin-top:7px">Dua bintang. Kerjakan lagi untuk dapat tiga.</div>
+
+    <div style="display:flex;gap:10px;margin-top:30px;padding:0 24px;width:100%">
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:16px;padding:15px 0;text-align:center">
+        <div style="font-size:22px;font-weight:600">8/10</div><div style="font-size:12px;color:#8B9AB8;margin-top:2px">benar</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:16px;padding:15px 0;text-align:center">
+        <div style="font-size:22px;font-weight:600;color:var(--brandLight)">+10</div><div style="font-size:12px;color:#8B9AB8;margin-top:2px">XP</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:16px;padding:15px 0;text-align:center">
+        <div style="font-size:22px;font-weight:600">2:14</div><div style="font-size:12px;color:#8B9AB8;margin-top:2px">waktu</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:24px;right:24px;bottom:24px">
+      <div class="btn primary">Lanjut ke Pos 5</div>
+      <div class="btn outline" style="margin-top:11px;border-color:rgba(255,255,255,.18);color:#B8C5DE">Lihat 2 soal yang salah</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>07 · Hasil pos</b>Bintang diberikan dari akurasi, bukan kecepatan. Tombol kedua mengantar langsung ke pembahasan soal yang salah.</div>
+</div>
+
+<!-- ============ 08 · Gerbang Orang Tua ============ -->
+<div class="slot">
+<div class="frame" id="s8">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div style="padding:6px 22px 0">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </div>
+
+    <div style="padding:30px 32px 0;text-align:center">
+      <div style="width:72px;height:72px;border-radius:24px;background:var(--bg);display:flex;align-items:center;justify-content:center;margin:0 auto 22px">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </div>
+      <div class="h2">Halaman untuk orang tua</div>
+      <div class="sub" style="margin-top:9px">Jawab dulu untuk memastikan yang membuka orang dewasa.</div>
+    </div>
+
+    <div style="margin:34px 32px 0;background:var(--surface);border-radius:22px;padding:26px 20px;box-shadow:0 2px 0 var(--line)">
+      <div class="qtext" style="font-size:34px">7 × 8 = ?</div>
+    </div>
+
+    <div class="opts" style="padding:22px 32px 0">
+      <div class="opt" style="height:58px;font-size:23px">54</div>
+      <div class="opt" style="height:58px;font-size:23px">56</div>
+      <div class="opt" style="height:58px;font-size:23px">63</div>
+    </div>
+
+    <div style="position:absolute;left:32px;right:32px;bottom:26px;text-align:center">
+      <div style="font-size:12.5px;color:var(--ink3);line-height:1.55">Gerbang ini muncul sebelum Pengaturan, pembelian,<br>dan setiap tautan yang keluar dari aplikasi.</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>08 · Gerbang Orang Tua</b>Syarat kategori Kids di App Store dan Families Policy di Play. Dipasang sejak Tahap 1 supaya tidak membongkar navigasi nanti.</div>
+</div>
+
+</div>
+
+<style>
+/* ---------- tambahan untuk layar Tahap 2 ---------- */
+.tile{
+  background:linear-gradient(180deg,#FFFFFF 0%,#F3F6FB 100%);
+  border:1.5px solid #DBE2ED;border-radius:20px;padding:15px 17px;
+  box-shadow:inset 0 2px 0 #FFFFFF,0 5px 0 #D8DFEA,0 10px 14px -8px rgba(28,40,64,.3);
+}
+.tile.onDarkBg{
+  background:linear-gradient(180deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.04) 100%);
+  border:1.5px solid rgba(255,255,255,.10);color:#EAF0FB;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.16),0 8px 16px -9px rgba(0,0,0,.8);
+}
+.mode{display:flex;align-items:center;gap:14px}
+.modeicon{
+  width:54px;height:54px;flex:0 0 54px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.45),inset 0 -3px 0 rgba(0,0,0,.18),0 5px 10px -4px rgba(20,30,52,.45);
+}
+.mode .t{font-size:16px;font-weight:600;line-height:1.25}
+.mode .d{font-size:12.5px;color:var(--ink3);line-height:1.4;margin-top:2px}
+.pill{border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.hd{display:flex;align-items:center;gap:13px;padding:4px 22px 18px}
+.hd .bk{flex:0 0 auto}
+.hd .tt{font-size:22px;font-weight:600}
+.day{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;
+  font-size:11px;color:#8B9AB8;
+}
+.daydot{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.daydot.on{
+  background:radial-gradient(circle at 32% 26%,#FFD98A 0%,#E9B24C 48%,#9C5E0B 100%);
+  box-shadow:0 3px 7px -2px rgba(4,8,20,.8),inset -1px -2px 4px rgba(0,0,0,.25);
+}
+.daydot.off{border:2px dashed rgba(255,255,255,.16)}
+.daydot.today{
+  background:radial-gradient(circle at 32% 26%,#FFF0C8 0%,#F5C463 48%,#B0700F 100%);
+  box-shadow:0 0 0 4px rgba(233,178,76,.2),0 3px 8px -2px rgba(4,8,20,.85);
+}
+.medal{width:74px;height:74px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.medal.on{
+  background:
+    radial-gradient(circle at 31% 24%,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 34% 28%,#F3CB7C 0%,#E0A63F 46%,#8E5709 100%);
+  box-shadow:0 6px 12px -4px rgba(20,30,52,.5),inset 0 -3px 6px rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.4);
+}
+.medal.off{
+  background:
+    radial-gradient(circle at 31% 24%,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 34% 28%,#EDF0F5 0%,#CDD5E0 48%,#9AA5B8 100%);
+  box-shadow:0 5px 10px -5px rgba(20,30,52,.35),inset 0 -3px 6px rgba(0,0,0,.12);
+}
+.badgecell{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center}
+.badgecell .bn{font-size:11.5px;line-height:1.3;font-weight:600;color:var(--ink2)}
+.badgecell.locked .bn{color:var(--ink3);font-weight:400}
+.rowline{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line)}
+.rowline:last-child{border-bottom:none}
+</style>
+
+<div class="canvas" id="tahap2">
+
+<!-- ============ 09 · Latihan (hub) ============ -->
+<div class="slot">
+<div class="frame" id="s9">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="pad" style="padding-top:6px;padding-bottom:6px">
+      <div class="h1" style="font-size:24px">Latihan</div>
+      <div class="sub" style="margin-top:5px;font-size:13.5px">Main sepuasnya. Bintang di lintasan tidak berubah.</div>
+    </div>
+
+    <div style="padding:16px 22px 0;display:flex;flex-direction:column;gap:13px">
+      <div class="tile mode">
+        <div class="modeicon" style="background:linear-gradient(180deg,#6FB6E6 0%,#3C87BE 100%)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="t">Latihan Cepat</div>
+          <div class="d">10 soal acak dari zona yang sudah dibuka</div>
+        </div>
+      </div>
+
+      <div class="tile mode" style="border-color:#E6B9BF">
+        <div class="modeicon" style="background:linear-gradient(180deg,#D9707F 0%,#A93044 100%)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 20v-6h6"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="t">Perbaiki Kesalahan</div>
+          <div class="d">Soal yang pernah kamu jawab salah</div>
+        </div>
+        <div class="pill" style="background:#B23A48;color:#fff">12</div>
+      </div>
+
+      <div class="tile mode">
+        <div class="modeicon" style="background:linear-gradient(180deg,#E8B75B 0%,#B77A11 100%)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="t">Tantangan Harian</div>
+          <div class="d">Satu set tiap hari, XP dobel</div>
+        </div>
+        <div class="pill" style="background:#FBEBD0;color:#8A5A0B">XP ×2</div>
+      </div>
+
+      <div class="tile mode">
+        <div class="modeicon" style="background:linear-gradient(180deg,#5FBE9C 0%,#20785E 100%)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="t">Kilat 60 Detik</div>
+          <div class="d">Rekormu 34 soal benar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav light">
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7z" opacity=".25"/><path d="M12 2 3 7l9 5 9-5z"/></svg>Jelajah</a>
+    <a class="on"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg>Latihan</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="12" width="5" height="9" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="16" y="9" width="5" height="12" rx="1"/></svg>Peringkat</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>Profil</a>
+  </div>
+</div>
+<div class="cap"><b>09 · Latihan</b>Empat mode bebas. Angka merah di Perbaiki Kesalahan adalah satu-satunya lencana notifikasi di seluruh aplikasi.</div>
+</div>
+
+<!-- ============ 10 · Perbaiki Kesalahan ============ -->
+<div class="slot">
+<div class="frame" id="s10">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Perbaiki Kesalahan</span>
+    </div>
+    <div style="padding:0 22px 16px">
+      <div class="sub" style="font-size:13.5px">12 soal menunggu, dikelompokkan menurut <b style="color:var(--ink)">jenis kesalahannya</b> — bukan menurut zona.</div>
+    </div>
+
+    <div style="padding:0 22px;display:flex;flex-direction:column;gap:12px">
+      <div class="tile" style="padding:16px 17px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+          <div style="font-size:15.5px;font-weight:600">Lupa menyimpan</div>
+          <div class="pill" style="background:#FBE7E9;color:#8E2C3A">5 soal</div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2);font-family:inherit">17 + 5</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">28 + 6</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">39 + 4</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink3)">+2</span>
+        </div>
+      </div>
+
+      <div class="tile" style="padding:16px 17px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+          <div style="font-size:15.5px;font-weight:600">Salah nilai tempat</div>
+          <div class="pill" style="background:#FBE7E9;color:#8E2C3A">4 soal</div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">30 + 4</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">50 + 7</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink3)">+2</span>
+        </div>
+      </div>
+
+      <div class="tile" style="padding:16px 17px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+          <div style="font-size:15.5px;font-weight:600">Meleset satu</div>
+          <div class="pill" style="background:#FBE7E9;color:#8E2C3A">3 soal</div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">8 + 7</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">6 + 9</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink3)">+1</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:22px">
+      <div style="text-align:center;font-size:12.5px;color:var(--ink3);margin-bottom:12px">Soal keluar dari daftar setelah benar <b style="color:var(--ink2)">dua kali berturut-turut</b>.</div>
+      <div class="btn primary">Mulai perbaiki</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>10 · Perbaiki Kesalahan</b>Layar paling penting di Tahap 2. Semua isinya dibaca dari <code>question_attempts</code> — tidak ada data baru yang perlu dikumpulkan.</div>
+</div>
+
+<!-- ============ 11 · Kilat 60 Detik ============ -->
+<div class="slot">
+<div class="frame dark" id="s11">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center">
+    <div style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:4px 22px 0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B9AB8" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <div style="display:flex;gap:9px">
+        <span class="pill" style="background:rgba(255,255,255,.09);color:#EAF0FB">12 benar</span>
+        <span class="pill" style="background:#E9B24C;color:#3A2405">beruntun ×4</span>
+      </div>
+    </div>
+
+    <svg width="176" height="176" viewBox="0 0 176 176" style="margin:26px 0 8px">
+      <circle cx="88" cy="88" r="74" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="14"/>
+      <circle cx="88" cy="88" r="74" fill="none" stroke="#0B1120" stroke-width="14"
+              stroke-dasharray="465" stroke-dashoffset="170" stroke-linecap="round"
+              transform="rotate(-90 88 88) translate(0 3)" opacity=".5"/>
+      <circle cx="88" cy="88" r="74" fill="none" stroke="url(#gRing)" stroke-width="14"
+              stroke-dasharray="465" stroke-dashoffset="170" stroke-linecap="round"
+              transform="rotate(-90 88 88)"/>
+      <defs>
+        <linearGradient id="gRing" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFD98A"/><stop offset="1" stop-color="#C07C12"/>
+        </linearGradient>
+      </defs>
+      <text x="88" y="94" text-anchor="middle" font-family="Fredoka" font-size="52" font-weight="600" fill="#EAF0FB">38</text>
+      <text x="88" y="118" text-anchor="middle" font-family="Fredoka" font-size="13" fill="#8B9AB8">detik</text>
+    </svg>
+
+    <div style="font-size:44px;font-weight:600;letter-spacing:.02em;margin:14px 0 26px">9 + 6 = ?</div>
+
+    <div style="width:100%;padding:0 22px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="opt" style="height:70px">14</div>
+      <div class="opt" style="height:70px">15</div>
+      <div class="opt" style="height:70px">16</div>
+      <div class="opt" style="height:70px">13</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>11 · Kilat 60 Detik</b>Pilihan disusun dua kolom supaya jempol tidak berpindah jauh. Cincin waktunya ikut memendek, bukan cuma angkanya.</div>
+</div>
+
+<!-- ============ 12 · Tantangan Harian & streak ============ -->
+<div class="slot">
+<div class="frame dark" id="s12">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column">
+    <div class="hd" style="padding-bottom:10px">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8B9AB8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Tantangan Harian</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;padding:14px 0 6px">
+      <svg width="86" height="86" viewBox="0 0 24 24">
+        <defs><radialGradient id="gFlame" cx="38%" cy="30%" r="76%">
+          <stop offset="0" stop-color="#FFD98A"/><stop offset="46%" stop-color="#E9863A"/><stop offset="100%" stop-color="#A83B12"/>
+        </radialGradient></defs>
+        <path d="M12 2c1 4-3 5-3 8a3 3 0 0 0 6 0c0-1-.4-2-.4-2 2 1.5 3.4 3.6 3.4 6a6 6 0 0 1-12 0c0-4.5 4-6.5 6-12Z" fill="url(#gFlame)"/>
+        <path d="M12 12.5c.6 2-1.4 2.6-1.4 4.1a1.5 1.5 0 0 0 3 0c0-.6-.2-1-.2-1 1 .8 1.6 1.8 1.6 3a3 3 0 0 1-6 0c0-2.2 2-3.2 3-6.1Z" fill="#FFE7B0" opacity=".85"/>
+      </svg>
+      <div style="font-size:34px;font-weight:600;margin-top:6px">7 hari</div>
+      <div class="sub" style="font-size:13.5px;margin-top:3px">berturut-turut. Jangan putus hari ini.</div>
+    </div>
+
+    <div style="display:flex;padding:22px 20px 0">
+      <div class="day"><div class="daydot on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3A2405" stroke-width="3.2" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>S</div>
+      <div class="day"><div class="daydot on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3A2405" stroke-width="3.2" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>S</div>
+      <div class="day"><div class="daydot on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3A2405" stroke-width="3.2" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>R</div>
+      <div class="day"><div class="daydot on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3A2405" stroke-width="2.6" stroke-linecap="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg></div>K</div>
+      <div class="day"><div class="daydot on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3A2405" stroke-width="3.2" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>J</div>
+      <div class="day"><div class="daydot on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3A2405" stroke-width="3.2" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>S</div>
+      <div class="day" style="color:#E9B24C"><div class="daydot today"></div>M</div>
+    </div>
+    <div style="text-align:center;font-size:11.5px;color:#8B9AB8;padding:14px 26px 0;line-height:1.5">
+      Kamis kamu absen, tapi <b style="color:#E9B24C">pelindung streak</b> terpakai otomatis. Sisa 0 minggu ini.
+    </div>
+
+    <div style="display:flex;gap:10px;padding:26px 22px 0">
+      <div class="tile onDarkBg" style="flex:1;text-align:center;padding:14px 0">
+        <div style="font-size:21px;font-weight:600">6</div>
+        <div style="font-size:11.5px;color:#8B9AB8;margin-top:2px">hari aktif</div>
+      </div>
+      <div class="tile onDarkBg" style="flex:1;text-align:center;padding:14px 0">
+        <div style="font-size:21px;font-weight:600;color:#E9B24C">210</div>
+        <div style="font-size:11.5px;color:#8B9AB8;margin-top:2px">XP minggu ini</div>
+      </div>
+      <div class="tile onDarkBg" style="flex:1;text-align:center;padding:14px 0">
+        <div style="font-size:21px;font-weight:600">19</div>
+        <div style="font-size:11.5px;color:#8B9AB8;margin-top:2px">pos dikerjakan</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:22px">
+      <div class="tile onDarkBg" style="margin-bottom:14px;display:flex;align-items:center;gap:13px">
+        <div class="modeicon" style="width:46px;height:46px;flex:0 0 46px;border-radius:15px;background:linear-gradient(180deg,#E8B75B 0%,#B77A11 100%)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:600">Set hari ini · 10 soal</div>
+          <div style="font-size:12.5px;color:#8B9AB8;margin-top:2px">Campuran dari Zona 1 dan 2</div>
+        </div>
+        <div class="pill" style="background:#E9B24C;color:#3A2405">XP ×2</div>
+      </div>
+      <div class="btn primary">Mulai tantangan</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>12 · Tantangan Harian</b>Pelindung streak dipakai diam-diam lalu diberitahukan. Anak tidak pernah melihat rentetannya putus karena satu hari sakit.</div>
+</div>
+
+<!-- ============ 13 · Profil ============ -->
+<div class="slot">
+<div class="frame" id="s13">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;gap:15px;padding:8px 22px 0">
+      <div style="width:70px;height:70px;border-radius:24px;display:flex;align-items:center;justify-content:center;
+                  background:radial-gradient(circle at 32% 26%,#2A3A62 0%,#131C33 70%,#0A1122 100%);
+                  box-shadow:0 6px 13px -5px rgba(12,20,40,.6),inset 0 2px 0 rgba(255,255,255,.1)">
+        <svg width="40" height="42" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg>
+      </div>
+      <div>
+        <div style="font-size:22px;font-weight:600">Rafa</div>
+        <div style="display:flex;align-items:center;gap:7px;margin-top:5px">
+          <span class="planet3d" style="width:16px;height:16px;--c:var(--mula);display:inline-block"></span>
+          <span style="font-size:13px;color:var(--ink2)">Kelas 1 · Planet Mula</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;padding:22px 22px 0">
+      <div class="tile" style="flex:1;text-align:center;padding:14px 0">
+        <div style="font-size:22px;font-weight:600;color:#D2702A">7</div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:2px">hari streak</div>
+      </div>
+      <div class="tile" style="flex:1;text-align:center;padding:14px 0">
+        <div style="font-size:22px;font-weight:600;color:var(--brand)">340</div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:2px">XP</div>
+      </div>
+      <div class="tile" style="flex:1;text-align:center;padding:14px 0">
+        <div style="font-size:22px;font-weight:600;color:var(--ok)">21</div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:2px">pos selesai</div>
+      </div>
+    </div>
+
+    <div style="padding:24px 22px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:15.5px;font-weight:600">Lencana</div>
+        <div style="font-size:13px;color:var(--brand);font-weight:600">6 dari 24 →</div>
+      </div>
+      <div style="display:flex;gap:16px">
+        <div class="badgecell"><div class="medal on" style="width:60px;height:60px">
+          <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.4" stroke-linejoin="round"><path d="M12 3l2.9 6 6.6.8-4.9 4.5 1.3 6.4L12 17.5 6.1 20.7l1.3-6.4L2.5 9.8l6.6-.8z"/></svg></div></div>
+        <div class="badgecell"><div class="medal on" style="width:60px;height:60px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.6" stroke-linecap="round"><path d="M12 2c1 4-3 5-3 8a3 3 0 0 0 6 0c0-1-.4-2-.4-2 2 1.5 3.4 3.6 3.4 6a6 6 0 0 1-12 0c0-4.5 4-6.5 6-12Z"/></svg></div></div>
+        <div class="badgecell"><div class="medal on" style="width:60px;height:60px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="3" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div></div>
+        <div class="badgecell"><div class="medal off" style="width:60px;height:60px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8C97A8" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div></div>
+      </div>
+    </div>
+
+    <div style="padding:22px 22px 0">
+      <div class="rowline">
+        <span style="font-size:15px">Pilih planet</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9B3C4" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+      <div class="rowline">
+        <span style="font-size:15px;display:flex;align-items:center;gap:9px">Pengaturan
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A9B3C4" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        </span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9B3C4" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="nav light">
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7z" opacity=".25"/><path d="M12 2 3 7l9 5 9-5z"/></svg>Jelajah</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg>Latihan</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="12" width="5" height="9" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="16" y="9" width="5" height="12" rx="1"/></svg>Peringkat</a>
+    <a class="on"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>Profil</a>
+  </div>
+</div>
+<div class="cap"><b>13 · Profil</b>Gembok kecil di baris Pengaturan menandakan Gerbang Orang Tua ada di baliknya — anak tahu duluan, tidak merasa dijebak.</div>
+</div>
+
+<!-- ============ 14 · Lencana ============ -->
+<div class="slot">
+<div class="frame" id="s14">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Lencana</span>
+    </div>
+    <div style="padding:0 22px 20px">
+      <div style="height:11px;border-radius:99px;background:#DDE3EC;overflow:hidden;box-shadow:inset 0 2px 4px rgba(40,54,82,.15)">
+        <div style="width:25%;height:100%;border-radius:99px;background:linear-gradient(180deg,#E6A945,#B67510)"></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--ink3);margin-top:9px">6 dari 24 terkumpul</div>
+    </div>
+
+    <div style="padding:0 22px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px 10px">
+      <div class="badgecell"><div class="medal on"><svg width="31" height="31" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.4" stroke-linejoin="round"><path d="M12 3l2.9 6 6.6.8-4.9 4.5 1.3 6.4L12 17.5 6.1 20.7l1.3-6.4L2.5 9.8l6.6-.8z"/></svg></div><div class="bn">Pos Pertama</div></div>
+      <div class="badgecell"><div class="medal on"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.6" stroke-linecap="round"><path d="M12 2c1 4-3 5-3 8a3 3 0 0 0 6 0c0-1-.4-2-.4-2 2 1.5 3.4 3.6 3.4 6a6 6 0 0 1-12 0c0-4.5 4-6.5 6-12Z"/></svg></div><div class="bn">Streak 7 Hari</div></div>
+      <div class="badgecell"><div class="medal on"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="3" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div><div class="bn">Tanpa Salah</div></div>
+
+      <div class="badgecell"><div class="medal on"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.6" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="bn">Kilat 30</div></div>
+      <div class="badgecell"><div class="medal on"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.6"><circle cx="12" cy="12" r="8"/><ellipse cx="12" cy="12" rx="11" ry="4" transform="rotate(-24 12 12)"/></svg></div><div class="bn">Zona Tuntas</div></div>
+      <div class="badgecell"><div class="medal on"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.6" stroke-linecap="round"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 20v-6h6"/></svg></div><div class="bn">Perbaiki 10</div></div>
+
+      <div class="badgecell locked"><div class="medal off"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8C97A8" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div class="bn">Streak 30 Hari</div></div>
+      <div class="badgecell locked"><div class="medal off"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8C97A8" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div class="bn">Planet Tuntas</div></div>
+      <div class="badgecell locked"><div class="medal off"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8C97A8" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div class="bn">Kilat 50</div></div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:24px;text-align:center;font-size:12.5px;color:var(--ink3);line-height:1.55">
+      Lencana yang terkunci tetap ditampilkan namanya —<br>itu yang membuat anak tahu ada tujuan berikutnya.
+    </div>
+  </div>
+</div>
+<div class="cap"><b>14 · Lencana</b>Dua puluh empat lencana, dan yang belum didapat tidak disembunyikan. Nama yang terbaca lebih memancing daripada kotak abu tanpa keterangan.</div>
+</div>
+
+<!-- ============ 15 · Lepas landas ============ -->
+<div class="slot">
+<div class="frame dark" id="s15">
+  <div class="stars"></div>
+  <div class="body" style="position:relative;z-index:2;padding:0">
+    <svg viewBox="0 0 390 844" style="position:absolute;inset:0;width:100%;height:100%">
+      <defs>
+        <radialGradient id="gPlanetMula" cx="34%" cy="28%" r="80%">
+          <stop offset="0" stop-color="#8CCBEE"/><stop offset="48%" stop-color="#4FA3D9"/><stop offset="100%" stop-color="#1B4F76"/>
+        </radialGradient>
+        <radialGradient id="gPlanetPuluh" cx="34%" cy="28%" r="80%">
+          <stop offset="0" stop-color="#7FD5B2"/><stop offset="48%" stop-color="#3E9E77"/><stop offset="100%" stop-color="#164B37"/>
+        </radialGradient>
+        <linearGradient id="gApi" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FFE7B0"/><stop offset="45%" stop-color="#E9863A"/><stop offset="100%" stop-color="#A83B12" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="gHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#E9B24C" stop-opacity=".3"/><stop offset="100%" stop-color="#E9B24C" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- planet tujuan, masih jauh -->
+      <circle cx="286" cy="132" r="46" fill="url(#gPlanetPuluh)" opacity=".92"/>
+      <ellipse cx="286" cy="132" rx="70" ry="16" fill="none" stroke="#7FD5B2" stroke-width="3" opacity=".3" transform="rotate(-22 286 132)"/>
+
+      <!-- garis kecepatan -->
+      <g stroke="#E9B24C" stroke-linecap="round" opacity=".5">
+        <path d="M96 700 v58" stroke-width="2.5"/><path d="M262 676 v44" stroke-width="2"/>
+        <path d="M52 604 v34" stroke-width="1.8" opacity=".6"/><path d="M320 620 v40" stroke-width="2" opacity=".7"/>
+        <path d="M164 730 v70" stroke-width="2.8"/><path d="M336 742 v36" stroke-width="1.8" opacity=".55"/>
+      </g>
+
+      <!-- roket -->
+      <circle cx="176" cy="452" r="150" fill="url(#gHalo)"/>
+      <path d="M176 604 C 160 560 160 530 176 508 C 192 530 192 560 176 604 Z" fill="url(#gApi)"/>
+      <g transform="translate(176 452) scale(3.05)">
+        <path fill-rule="evenodd" fill="#E9B24C" d="M 0 -30 C 12 -18 15 -2 13 12 L -13 12 C -15 -2 -12 -18 0 -30 Z M 6.5 -9 A 6.5 6.5 0 1 1 -6.5 -9 A 6.5 6.5 0 1 1 6.5 -9 Z"/>
+        <path d="M -13 4 L -25 18 L -13 15 Z" fill="#F5F7FF"/>
+        <path d="M 13 4 L 25 18 L 13 15 Z" fill="#F5F7FF"/>
+        <path d="M -6 14 Q 0 30 6 14 Z" fill="#F5F7FF"/>
+      </g>
+
+      <!-- planet asal, ditinggalkan -->
+      <circle cx="76" cy="812" r="112" fill="url(#gPlanetMula)" opacity=".55"/>
+    </svg>
+
+    <div style="position:absolute;left:24px;right:24px;top:210px;text-align:center">
+      <div style="font-size:13px;letter-spacing:.14em;color:#E9B24C;font-weight:600">PLANET MULA TUNTAS</div>
+      <div style="font-size:30px;font-weight:600;margin-top:10px;line-height:1.2">Menuju<br>Planet Puluh</div>
+      <div class="sub" style="margin-top:11px;font-size:14px">36 pos, 94 bintang. Sekarang bilangannya<br>sampai seratus.</div>
+    </div>
+
+    <div style="position:absolute;left:24px;right:24px;bottom:26px">
+      <div class="btn primary">Lepas landas</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>15 · Lepas landas</b>Satu-satunya animasi panjang di aplikasi ini, dan cuma muncul enam kali seumur pemakaian. Justru itu yang bikin diingat.</div>
+</div>
+
+<!-- ============ 16 · Pemberitahuan harian ============ -->
+<div class="slot">
+<div class="frame" id="s16" style="background:linear-gradient(170deg,#1B2A4A 0%,#0E1730 46%,#131C33 100%)">
+  <div class="stars" style="opacity:.75"></div>
+  <div class="status onDark" style="position:relative;z-index:2"><span>19:30</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;color:#EAF0FB">
+    <div style="text-align:center;padding-top:44px">
+      <div style="font-size:15px;color:#9DAECB;letter-spacing:.02em">Senin, 31 Agustus</div>
+      <div style="font-size:78px;font-weight:600;line-height:1.05;margin-top:2px;font-variant-numeric:tabular-nums">19:30</div>
+    </div>
+
+    <div style="width:100%;padding:44px 18px 0">
+      <div style="background:rgba(240,244,255,.13);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:15px 16px;
+                  box-shadow:0 10px 24px -12px rgba(0,0,0,.8)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:26px;height:26px;border-radius:8px;background:#0E1730;display:flex;align-items:center;justify-content:center;
+                      box-shadow:0 2px 5px -1px rgba(0,0,0,.6)">
+            <svg width="15" height="15" viewBox="-30 -34 60 68">
+              <path fill-rule="evenodd" fill="#E9B24C" d="M 0 -30 C 12 -18 15 -2 13 12 L -13 12 C -15 -2 -12 -18 0 -30 Z M 6.5 -9 A 6.5 6.5 0 1 1 -6.5 -9 A 6.5 6.5 0 1 1 6.5 -9 Z"/>
+              <path d="M -13 4 L -25 18 L -13 15 Z" fill="#F5F7FF"/><path d="M 13 4 L 25 18 L 13 15 Z" fill="#F5F7FF"/>
+              <path d="M -6 14 Q 0 30 6 14 Z" fill="#F5F7FF"/>
+            </svg>
+          </div>
+          <span style="font-size:12.5px;color:#C3CFE6;letter-spacing:.02em">Angkasa</span>
+          <span style="font-size:12.5px;color:#8496B4;margin-left:auto">sekarang</span>
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-bottom:4px">Streak 7 hari kamu menunggu</div>
+        <div style="font-size:13.5px;color:#BCC9E2;line-height:1.5">Satu pos lagi hari ini, tiga menit saja. Pos 4 di Zona 2 sudah terbuka.</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:26px;right:26px;bottom:30px;text-align:center;font-size:12.5px;color:#8496B4;line-height:1.6">
+      Dikirim satu kali per hari lewat <b style="color:#BCC9E2">notifikasi lokal</b>,<br>
+      pada jam anak biasanya main — bukan jam yang dipatok.<br>
+      Tidak ada peladen, jadi tetap jalan tanpa sinyal.
+    </div>
+  </div>
+</div>
+<div class="cap"><b>16 · Pemberitahuan harian</b>Menyebut angka streak yang nyata, bukan ajakan umum. Jamnya dipelajari dari <code>daily_activity</code>, bukan disetel di kode.</div>
+</div>
+
+</div>
+
+
+<style>
+/* ---------- tambahan untuk layar Tahap 3 ---------- */
+.medal.silver{
+  background:
+    radial-gradient(circle at 31% 24%,rgba(255,255,255,.65) 0%,rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 34% 28%,#F2F5FA 0%,#C4CDDB 48%,#7C8798 100%);
+  box-shadow:0 6px 12px -4px rgba(20,30,52,.5),inset 0 -3px 6px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.5);
+}
+.medal.bronze{
+  background:
+    radial-gradient(circle at 31% 24%,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 34% 28%,#E3A87C 0%,#B9713F 48%,#6E3C1B 100%);
+  box-shadow:0 6px 12px -4px rgba(20,30,52,.5),inset 0 -3px 6px rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.38);
+}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:11px;padding:16px 20px 0;height:246px}
+.pod{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px;flex:1;height:100%}
+.pod .nm{font-size:13px;font-weight:600;line-height:1.2;text-align:center}
+.pod .xp{font-size:12px;color:#8B9AB8}
+.pod .base{
+  width:100%;border-radius:14px 14px 0 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.04) 100%);
+  border:1px solid rgba(255,255,255,.10);border-bottom:none;
+  display:flex;align-items:flex-start;justify-content:center;padding-top:9px;
+  font-size:17px;font-weight:600;color:#8B9AB8;
+}
+.rank{display:flex;align-items:center;gap:13px;padding:11px 14px;border-radius:16px}
+.rank .no{width:22px;text-align:center;font-size:14px;font-weight:600;color:#8B9AB8;font-variant-numeric:tabular-nums}
+.rank .av{width:34px;height:34px;flex:0 0 34px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.rank .nm{flex:1;font-size:14.5px;font-weight:600}
+.rank .xp{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.rank.me{
+  background:linear-gradient(180deg,rgba(233,178,76,.22) 0%,rgba(233,178,76,.10) 100%);
+  border:1.5px solid rgba(233,178,76,.45);
+  box-shadow:0 6px 16px -8px rgba(0,0,0,.8);
+}
+.rank.me .no,.rank.me .xp{color:#E9B24C}
+.sw{width:48px;height:29px;border-radius:99px;position:relative;flex:0 0 48px}
+.sw.on{background:linear-gradient(180deg,#D79A33,#B0700F);box-shadow:inset 0 2px 4px rgba(80,48,4,.4)}
+.sw.off{background:#D5DCE7;box-shadow:inset 0 2px 4px rgba(60,74,100,.2)}
+.sw i{position:absolute;top:3px;width:23px;height:23px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 4px rgba(20,30,52,.35)}
+.sw.on i{right:3px}.sw.off i{left:3px}
+.banner{
+  margin:0 22px 4px;padding:11px 14px;border-radius:16px;display:flex;align-items:center;gap:11px;
+  background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.05) 100%);
+  border:1px solid rgba(255,255,255,.12);position:relative;z-index:3;
+}
+.pick{
+  border-radius:20px;padding:16px 17px;border:2px solid #DBE2ED;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F3F6FB 100%);
+}
+.pick.on{border-color:var(--brand);box-shadow:0 0 0 4px rgba(192,124,18,.12),0 6px 0 #D8DFEA}
+.radio{width:24px;height:24px;border-radius:50%;border:2.5px solid #C6CEDC;flex:0 0 24px;
+  display:flex;align-items:center;justify-content:center}
+.radio.on{border-color:var(--brand)}
+.radio.on::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--brand)}
+.dataline{display:flex;align-items:flex-start;gap:11px;padding:8px 0;font-size:14px;line-height:1.45}
+.dataline .dot{flex:0 0 6px;width:6px;height:6px;border-radius:50%;margin-top:8px}
+</style>
+
+<div class="canvas" id="tahap3">
+
+<!-- ============ 17 · Papan peringkat ============ -->
+<div class="slot">
+<div class="frame dark" id="s17">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 22px 6px">
+      <div>
+        <div style="font-size:22px;font-weight:600">Liga Mingguan</div>
+        <div style="font-size:12.5px;color:#8B9AB8;margin-top:2px">30 pemain sekelasmu</div>
+      </div>
+      <span class="pill" style="background:rgba(255,255,255,.10);color:#EAF0FB">3 hari lagi</span>
+    </div>
+
+    <div class="podium">
+      <div class="pod">
+        <div class="medal silver" style="width:52px;height:52px">
+          <svg width="24" height="25" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg></div>
+        <div class="nm">Bintang<br>Kecil</div><div class="xp">280 XP</div>
+        <div class="base" style="height:58px">2</div>
+      </div>
+      <div class="pod">
+        <div class="medal on" style="width:66px;height:66px">
+          <svg width="30" height="31" viewBox="0 0 24 24" fill="none" stroke="#7A4707" stroke-width="2.4" stroke-linejoin="round"><path d="M12 3l2.9 6 6.6.8-4.9 4.5 1.3 6.4L12 17.5 6.1 20.7l1.3-6.4L2.5 9.8l6.6-.8z"/></svg></div>
+        <div class="nm" style="color:#E9B24C">RoketBiru</div><div class="xp">340 XP</div>
+        <div class="base" style="height:82px;color:#E9B24C">1</div>
+      </div>
+      <div class="pod">
+        <div class="medal bronze" style="width:52px;height:52px">
+          <svg width="24" height="25" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg></div>
+        <div class="nm">Astro<br>Tujuh</div><div class="xp">265 XP</div>
+        <div class="base" style="height:44px">3</div>
+      </div>
+    </div>
+
+    <div style="padding:16px 18px 0;display:flex;flex-direction:column;gap:2px">
+      <div class="rank"><span class="no">4</span>
+        <span class="av" style="background:linear-gradient(180deg,#6FB6E6,#3C87BE)"></span>
+        <span class="nm">PesawatKu</span><span class="xp">248</span></div>
+      <div class="rank"><span class="no">5</span>
+        <span class="av" style="background:linear-gradient(180deg,#5FBE9C,#20785E)"></span>
+        <span class="nm">MeteorLucu</span><span class="xp">233</span></div>
+      <div class="rank"><span class="no">6</span>
+        <span class="av" style="background:linear-gradient(180deg,#B58BE0,#6E4CA8)"></span>
+        <span class="nm">BulanSabit</span><span class="xp">221</span></div>
+    </div>
+
+    <div style="position:absolute;left:18px;right:18px;bottom:16px">
+      <div class="rank me"><span class="no">7</span>
+        <span class="av" style="background:linear-gradient(180deg,#E8B75B,#B77A11)">
+          <svg width="17" height="18" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg></span>
+        <span class="nm">Kamu</span><span class="xp">210</span></div>
+      <div style="text-align:center;font-size:11.5px;color:#8B9AB8;margin-top:11px;line-height:1.5">
+        Ligamu berganti tiap Senin. Tidak ada yang<br>bertahan di posisi terakhir lebih dari seminggu.
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7z" opacity=".25"/><path d="M12 2 3 7l9 5 9-5z"/></svg>Jelajah</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg>Latihan</a>
+    <a class="on"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="12" width="5" height="9" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="16" y="9" width="5" height="12" rx="1"/></svg>Peringkat</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>Profil</a>
+  </div>
+</div>
+<div class="cap"><b>17 · Liga Mingguan</b>Bukan peringkat global. Tiga puluh pemain per liga dan reset tiap Senin — supaya tidak ada anak yang jadi nomor 40.000 seumur hidup.</div>
+</div>
+
+<!-- ============ 18 · Hasil akhir minggu ============ -->
+<div class="slot">
+<div class="frame dark" id="s18">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center">
+    <svg width="330" height="110" viewBox="0 0 330 110" style="position:absolute;top:14px;opacity:.85">
+      <g fill="#E9B24C"><rect x="34" y="20" width="7" height="7" rx="1.5" transform="rotate(24 37 23)"/><rect x="288" y="36" width="6" height="6" rx="1.5" transform="rotate(-18 291 39)"/></g>
+      <g fill="#4FA3D9"><rect x="80" y="54" width="6" height="6" rx="1.5" transform="rotate(40 83 57)"/><rect x="246" y="14" width="7" height="7" rx="1.5" transform="rotate(-32 249 17)"/></g>
+      <g fill="#3E9E77"><rect x="132" y="16" width="6" height="6" rx="1.5" transform="rotate(12 135 19)"/><rect x="204" y="60" width="6" height="6" rx="1.5" transform="rotate(-44 207 63)"/></g>
+    </svg>
+
+    <div class="medal on" style="width:136px;height:136px;margin-top:76px">
+      <div style="font-size:54px;font-weight:600;color:#5A3606;line-height:1">7</div>
+    </div>
+
+    <div style="font-size:26px;font-weight:600;margin-top:24px">Peringkat 7</div>
+    <div class="sub" style="margin-top:7px;text-align:center;font-size:14px">dari 30 pemain di ligamu minggu ini.<br>Naik 4 posisi dari minggu lalu.</div>
+
+    <div style="display:flex;gap:10px;margin-top:28px;padding:0 24px;width:100%">
+      <div class="tile onDarkBg" style="flex:1;text-align:center;padding:15px 0">
+        <div style="font-size:21px;font-weight:600;color:#E9B24C">210</div>
+        <div style="font-size:11.5px;color:#8B9AB8;margin-top:2px">XP minggu ini</div>
+      </div>
+      <div class="tile onDarkBg" style="flex:1;text-align:center;padding:15px 0">
+        <div style="font-size:21px;font-weight:600;color:#4FBE9B">+4</div>
+        <div style="font-size:11.5px;color:#8B9AB8;margin-top:2px">posisi</div>
+      </div>
+      <div class="tile onDarkBg" style="flex:1;text-align:center;padding:15px 0">
+        <div style="font-size:21px;font-weight:600">19</div>
+        <div style="font-size:11.5px;color:#8B9AB8;margin-top:2px">pos selesai</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:24px;right:24px;bottom:24px">
+      <div style="text-align:center;font-size:12.5px;color:#8B9AB8;margin-bottom:14px">Liga baru dimulai Senin pagi.</div>
+      <div class="btn primary">Oke</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>18 · Akhir minggu</b>Yang ditonjolkan pergerakannya, bukan posisinya. "Naik 4" tetap enak dibaca oleh anak di peringkat 25.</div>
+</div>
+
+<!-- ============ 19 · Nama panggilan ============ -->
+<div class="slot">
+<div class="frame" id="s19">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Nama panggilan</span>
+    </div>
+
+    <div style="padding:0 22px">
+      <div class="sub" style="font-size:14px;margin-bottom:20px">Ini nama yang dilihat pemain lain di papan peringkat.</div>
+
+      <div style="height:66px;border-radius:20px;border:2.5px solid var(--brand);
+                  background:linear-gradient(180deg,#F4F6FB 0%,#FFFFFF 62%);
+                  box-shadow:inset 0 3px 7px rgba(40,54,82,.13);
+                  display:flex;align-items:center;padding:0 20px;font-size:22px;font-weight:600;color:var(--ink)">
+        RoketRafa<span style="width:2px;height:26px;background:var(--brand);margin-left:3px"></span>
+        <span style="margin-left:auto;font-size:13px;color:var(--ink3);font-weight:400">9/16</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-top:12px;color:var(--ok);font-size:13.5px;font-weight:600">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg>
+        Nama ini boleh dipakai
+      </div>
+
+      <div style="margin-top:26px;font-size:12.5px;color:var(--ink3);font-weight:600;letter-spacing:.05em">SARAN</div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:11px">
+        <span class="pill" style="background:#F1F4FA;color:var(--ink2);padding:8px 14px;font-size:13.5px">BintangKecil</span>
+        <span class="pill" style="background:#F1F4FA;color:var(--ink2);padding:8px 14px;font-size:13.5px">AstroTujuh</span>
+        <span class="pill" style="background:#F1F4FA;color:var(--ink2);padding:8px 14px;font-size:13.5px">MeteorLucu</span>
+        <span class="pill" style="background:#F1F4FA;color:var(--ink2);padding:8px 14px;font-size:13.5px">PesawatKu</span>
+      </div>
+
+      <div class="tile" style="margin-top:26px;background:#F5F7FB;box-shadow:none;border-color:#E1E7F0">
+        <div style="display:flex;gap:11px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" style="flex:0 0 20px;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1" stroke-linecap="round"/></svg>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.55">
+            Nama asli, nama sekolah, umur, dan nomor telepon <b style="color:var(--ink)">tidak boleh dipakai</b>. Nama diperiksa otomatis sebelum disimpan.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:22px">
+      <div class="btn primary">Pakai nama ini</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>19 · Nama panggilan</b>Satu-satunya teks bebas yang anak bisa ketik di seluruh aplikasi — jadi satu-satunya yang perlu disaring.</div>
+</div>
+
+<!-- ============ 20 · Luring ============ -->
+<div class="slot">
+<div class="frame dark" id="s20">
+  <div class="stars"></div>
+  <div class="status onDark"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 3l18 18M8.5 16.4a5 5 0 0 1 7 0M5 12.9a10 10 0 0 1 4-2.4M19 12.9a10 10 0 0 0-6.5-2.8M12 20h.01"/></svg><span class="batt"></span></span></div>
+  <div class="body" style="position:relative;z-index:2;display:flex;flex-direction:column">
+    <div class="mapbar" style="padding-bottom:10px">
+      <div class="planetchip">
+        <div class="planetdot" style="--c:var(--mula)"></div>
+        <div><div class="t">Kelas 1</div><div class="n">Planet Mula</div></div>
+      </div>
+      <div class="stats"><span style="color:var(--brandLight)">
+        <svg width="17" height="18" viewBox="0 0 100 104"><use href="#star3d" width="100" height="104"/></svg>340</span></div>
+    </div>
+
+    <div class="banner">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#8B9AB8" stroke-width="2.2" stroke-linecap="round" style="flex:0 0 21px"><path d="M3 3l18 18M8.5 16.4a5 5 0 0 1 7 0M5 12.9a10 10 0 0 1 4-2.4M19 12.9a10 10 0 0 0-6.5-2.8M12 20h.01"/></svg>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:600">Tidak ada sinyal</div>
+        <div style="font-size:12px;color:#8B9AB8;margin-top:1px">Semua materi tetap jalan. Progres disimpan di HP.</div>
+      </div>
+      <span class="pill" style="background:rgba(233,178,76,.18);color:#E9B24C">3 antre</span>
+    </div>
+
+    <div style="flex:1;position:relative;margin-top:6px">
+      <svg viewBox="0 0 390 430" style="position:absolute;inset:0;width:100%;height:100%">
+        <path d="M 92 46 Q 196 72 244 122 Q 288 172 268 220 Q 240 278 168 306 Q 96 334 96 382"
+              fill="none" stroke="#060B18" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 18" opacity=".55" transform="translate(0 3)"/>
+        <path d="M 92 46 Q 196 72 244 122 Q 288 172 268 220 Q 240 278 168 306 Q 96 334 96 382"
+              fill="none" stroke="rgba(255,255,255,.16)" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 18"/>
+        <ellipse cx="92" cy="73" rx="23" ry="6" fill="#060B18" opacity=".45"/>
+        <circle cx="92" cy="49" r="28" fill="#060B18" opacity=".35"/><circle cx="92" cy="46" r="28" fill="url(#gDone)"/>
+        <text x="92" y="53" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1">1</text>
+        <ellipse cx="244" cy="149" rx="23" ry="6" fill="#060B18" opacity=".45"/>
+        <circle cx="244" cy="125" r="28" fill="#060B18" opacity=".35"/><circle cx="244" cy="122" r="28" fill="url(#gDone)"/>
+        <text x="244" y="129" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1">2</text>
+        <ellipse cx="268" cy="247" rx="23" ry="6" fill="#060B18" opacity=".45"/>
+        <circle cx="268" cy="223" r="28" fill="#060B18" opacity=".35"/><circle cx="268" cy="220" r="28" fill="url(#gDone)"/>
+        <text x="268" y="227" text-anchor="middle" font-family="Fredoka" font-size="19" font-weight="600" fill="#EAF6F1">3</text>
+        <circle cx="168" cy="306" r="58" fill="url(#gGlow)"/>
+        <ellipse cx="168" cy="336" rx="25" ry="7" fill="#060B18" opacity=".45"/>
+        <circle cx="168" cy="309" r="31" fill="#060B18" opacity=".35"/><circle cx="168" cy="306" r="31" fill="url(#gActive)"/>
+        <text x="168" y="316" text-anchor="middle" font-family="Fredoka" font-size="21" font-weight="600" fill="#3A2405">4</text>
+        <circle cx="96" cy="382" r="27" fill="url(#gLock)"/>
+        <rect x="88" y="376" width="16" height="12" rx="2.5" fill="#AEBBD9"/>
+        <path d="M 91.5 376 v-4.5 a4.5 4.5 0 0 1 9 0 v4.5" fill="none" stroke="#AEBBD9" stroke-width="2.4"/>
+      </svg>
+    </div>
+  </div>
+  <div class="nav">
+    <a class="on"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7z" opacity=".25"/><path d="M12 2 3 7l9 5 9-5z"/></svg>Jelajah</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg>Latihan</a>
+    <a style="opacity:.4"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="12" width="5" height="9" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="16" y="9" width="5" height="12" rx="1"/></svg>Peringkat</a>
+    <a><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>Profil</a>
+  </div>
+</div>
+<div class="cap"><b>20 · Luring</b>Hanya tab Peringkat yang meredup. Sisanya jalan penuh, dan tiga pos yang belum terkirim menunggu di <code>sync_queue</code>.</div>
+</div>
+
+<!-- ============ 21 · Simpan progres ============ -->
+<div class="slot">
+<div class="frame" id="s21">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Simpan progres</span>
+    </div>
+
+    <div style="padding:6px 26px 0;text-align:center">
+      <div style="width:78px;height:78px;border-radius:26px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;
+                  background:radial-gradient(circle at 32% 26%,#2A3A62 0%,#131C33 70%,#0A1122 100%);
+                  box-shadow:0 8px 16px -6px rgba(12,20,40,.55),inset 0 2px 0 rgba(255,255,255,.1)">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E9B24C" stroke-width="2.2" stroke-linecap="round"><path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/></svg>
+      </div>
+      <div class="h2">Pindah ke HP baru nanti?</div>
+      <div class="sub" style="margin-top:10px;font-size:14px">Sekarang progres Rafa cuma ada di HP ini. Kalau HP hilang atau diganti, semuanya ikut hilang.</div>
+    </div>
+
+    <div style="padding:26px 22px 0">
+      <div class="tile" style="padding:15px 17px;background:#F5F7FB;box-shadow:none;border-color:#E1E7F0">
+        <div style="font-size:12.5px;color:var(--ink3);font-weight:600;letter-spacing:.05em;margin-bottom:11px">YANG DISIMPAN KE SERVER</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="pill" style="background:#E3EFEA;color:#1C5B49">Nama panggilan</span>
+          <span class="pill" style="background:#E3EFEA;color:#1C5B49">Avatar</span>
+          <span class="pill" style="background:#E3EFEA;color:#1C5B49">Total XP</span>
+          <span class="pill" style="background:#E3EFEA;color:#1C5B49">Kelas aktif</span>
+          <span class="pill" style="background:#E3EFEA;color:#1C5B49">Streak</span>
+        </div>
+      </div>
+
+      <div class="tile" style="margin-top:13px;padding:15px 17px;background:#FDF6F7;box-shadow:none;border-color:#F0DFE2">
+        <div style="font-size:12.5px;color:var(--ink3);font-weight:600;letter-spacing:.05em;margin-bottom:11px">YANG TIDAK PERNAH DIKIRIM</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="pill" style="background:#FAE7EA;color:#8E2C3A">Nama asli</span>
+          <span class="pill" style="background:#FAE7EA;color:#8E2C3A">Umur</span>
+          <span class="pill" style="background:#FAE7EA;color:#8E2C3A">Lokasi</span>
+          <span class="pill" style="background:#FAE7EA;color:#8E2C3A">Jawaban soal</span>
+          <span class="pill" style="background:#FAE7EA;color:#8E2C3A">ID iklan</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:22px">
+      <div class="btn" style="background:linear-gradient(180deg,#FFFFFF 0%,#F2F5FA 100%);border:1.5px solid #D6DDE8;color:var(--ink);margin-bottom:11px;
+                  box-shadow:inset 0 2px 0 #FFFFFF,0 6px 0 #D2D9E5,0 11px 15px -8px rgba(28,40,64,.4);border-radius:20px">
+        <svg width="21" height="21" viewBox="0 0 24 24" style="margin-right:11px"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.4z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.7-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.8-2.8A10 10 0 0 0 3.1 7.4L6.4 10c.8-2.4 3-4 5.6-4z"/></svg>
+        Masuk dengan Google
+      </div>
+      <div class="btn ghost">Nanti saja</div>
+      <div style="text-align:center;font-size:11.5px;color:var(--ink3);margin-top:6px;line-height:1.5">
+        Akun milik orang tua, bukan anak. Layar ini<br>hanya muncul di balik Gerbang Orang Tua.
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>21 · Simpan progres</b>Login sepenuhnya opsional dan tidak pernah menghalangi belajar. Isinya disebutkan apa adanya sebelum orang tua menekan apa pun.</div>
+</div>
+
+<!-- ============ 22 · Pulihkan progres ============ -->
+<div class="slot">
+<div class="frame" id="s22">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd"><span class="tt">Ada dua progres</span></div>
+    <div style="padding:0 22px 20px">
+      <div class="sub" style="font-size:14px">Akun ini sudah punya data tersimpan, sementara di HP ini juga ada progres. Pilih salah satu.</div>
+    </div>
+
+    <div style="padding:0 22px;display:flex;flex-direction:column;gap:13px">
+      <div class="pick">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+          <span class="radio"></span>
+          <div style="flex:1">
+            <div style="font-size:15.5px;font-weight:600">Di HP ini</div>
+            <div style="font-size:12.5px;color:var(--ink3);margin-top:1px">Terakhir main hari ini</div>
+          </div>
+          <span class="planet3d" style="width:26px;height:26px;--c:var(--mula)"></span>
+        </div>
+        <div style="display:flex;gap:9px">
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">Planet Mula</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">21 pos</span>
+          <span class="pill" style="background:#F1F4FA;color:var(--ink2)">340 XP</span>
+        </div>
+      </div>
+
+      <div class="pick on">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+          <span class="radio on"></span>
+          <div style="flex:1">
+            <div style="font-size:15.5px;font-weight:600">Tersimpan di akun</div>
+            <div style="font-size:12.5px;color:var(--ink3);margin-top:1px">Terakhir main 12 Agustus</div>
+          </div>
+          <span class="planet3d" style="width:26px;height:26px;--c:var(--puluh)"></span>
+        </div>
+        <div style="display:flex;gap:9px">
+          <span class="pill" style="background:#FBEFD3;color:#8A5A0B">Planet Puluh</span>
+          <span class="pill" style="background:#FBEFD3;color:#8A5A0B">47 pos</span>
+          <span class="pill" style="background:#FBEFD3;color:#8A5A0B">890 XP</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:20px 22px 0">
+      <div class="tile" style="padding:14px 16px;background:#FDF3F4;border-color:#F0D3D7;box-shadow:none">
+        <div style="display:flex;gap:11px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B23A48" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px;margin-top:1px"><path d="M12 9v5M12 17.5h.01M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <div style="font-size:13px;color:#8E2C3A;line-height:1.55">
+            Yang tidak dipilih akan <b>hilang permanen</b>. Kalau ragu, tutup dulu layar ini — datanya aman sampai kamu memilih.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:22px">
+      <div class="btn primary">Pakai yang dipilih</div>
+    </div>
+  </div>
+</div>
+<div class="cap"><b>22 · Pulihkan progres</b>Satu-satunya tempat data bisa hilang, jadi peringatannya ditulis lugas dan tidak ada pilihan yang dicentang duluan.</div>
+</div>
+
+<!-- ============ 23 · Akun & data ============ -->
+<div class="slot">
+<div class="frame" id="s23">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Akun &amp; data</span>
+    </div>
+
+    <div style="padding:0 22px">
+      <div class="tile" style="display:flex;align-items:center;gap:13px;margin-bottom:20px">
+        <div style="width:44px;height:44px;flex:0 0 44px;border-radius:15px;display:flex;align-items:center;justify-content:center;
+                    background:linear-gradient(180deg,#5FBE9C 0%,#20785E 100%)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:600">Tersinkron</div>
+          <div style="font-size:12.5px;color:var(--ink3);margin-top:1px">2 menit lalu · tidak ada yang mengantre</div>
+        </div>
+      </div>
+
+      <div style="font-size:12.5px;color:var(--ink3);font-weight:600;letter-spacing:.05em;margin-bottom:2px">AKUN</div>
+      <div class="rowline">
+        <div><div style="font-size:15px">Jenis akun</div>
+          <div style="font-size:12.5px;color:var(--ink3);margin-top:2px">Anonim — dibuat otomatis, tanpa email</div></div>
+      </div>
+      <div class="rowline">
+        <span style="font-size:15px">Masuk dengan Google</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9B3C4" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+
+      <div style="font-size:12.5px;color:var(--ink3);font-weight:600;letter-spacing:.05em;margin:20px 0 2px">DATA</div>
+      <div class="rowline">
+        <div style="flex:1;padding-right:14px"><div style="font-size:15px">Ikut papan peringkat</div>
+          <div style="font-size:12.5px;color:var(--ink3);margin-top:2px">Nama panggilan &amp; XP terlihat pemain lain</div></div>
+        <span class="sw on"><i></i></span>
+      </div>
+      <div class="rowline">
+        <div style="flex:1;padding-right:14px"><div style="font-size:15px">Sinkron lewat data seluler</div>
+          <div style="font-size:12.5px;color:var(--ink3);margin-top:2px">Mati = hanya lewat Wi-Fi</div></div>
+        <span class="sw off"><i></i></span>
+      </div>
+      <div class="rowline">
+        <span style="font-size:15px">Data yang dikirim</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9B3C4" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+      <div class="rowline">
+        <span style="font-size:15px;color:var(--wrong)">Hapus data di server</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9909A" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:24px;text-align:center;font-size:12px;color:var(--ink3);line-height:1.55">
+      Mematikan papan peringkat tidak menghentikan apa pun<br>di dalam aplikasi. Semua materi tetap terbuka.
+    </div>
+  </div>
+</div>
+<div class="cap"><b>23 · Akun &amp; data</b>Papan peringkat bisa dimatikan orang tua tanpa mengurangi satu fitur belajar pun — itu syarat supaya menolaknya terasa aman.</div>
+</div>
+
+<!-- ============ 24 · Data yang dikirim ============ -->
+<div class="slot">
+<div class="frame" id="s24">
+  <div class="status onLight"><span>09:41</span><span style="display:flex;gap:7px;align-items:center"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <div class="hd">
+      <span class="bk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8490A4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+      <span class="tt">Data yang dikirim</span>
+    </div>
+
+    <div style="padding:0 22px">
+      <div class="tile" style="border-color:#CFE5DB;background:linear-gradient(180deg,#FFFFFF 0%,#F2FAF7 100%);box-shadow:0 5px 0 #D5E8E0,0 10px 14px -8px rgba(20,64,50,.25)">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#256F5A" stroke-width="3" stroke-linecap="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg>
+          <span style="font-size:14.5px;font-weight:600;color:#1C5B49">Dikirim ke server</span>
+        </div>
+        <div class="dataline"><span class="dot" style="background:#256F5A"></span><div>Nama panggilan <span style="color:var(--ink3)">— yang diketik sendiri</span></div></div>
+        <div class="dataline"><span class="dot" style="background:#256F5A"></span><div>Nomor avatar</div></div>
+        <div class="dataline"><span class="dot" style="background:#256F5A"></span><div>Total XP dan XP minggu ini</div></div>
+        <div class="dataline"><span class="dot" style="background:#256F5A"></span><div>Kelas yang sedang aktif</div></div>
+        <div class="dataline"><span class="dot" style="background:#256F5A"></span><div>Jumlah hari streak</div></div>
+      </div>
+
+      <div class="tile" style="margin-top:16px;border-color:#EBD6D9;background:linear-gradient(180deg,#FFFFFF 0%,#FDF4F5 100%);box-shadow:0 5px 0 #EFDCDF,0 10px 14px -8px rgba(90,20,30,.2)">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#B23A48" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          <span style="font-size:14.5px;font-weight:600;color:#8E2C3A">Tidak pernah dikirim</span>
+        </div>
+        <div class="dataline"><span class="dot" style="background:#B23A48"></span><div>Nama asli, umur, sekolah</div></div>
+        <div class="dataline"><span class="dot" style="background:#B23A48"></span><div>Lokasi</div></div>
+        <div class="dataline"><span class="dot" style="background:#B23A48"></span><div>Jawaban tiap soal <span style="color:var(--ink3)">— tinggal di HP</span></div></div>
+        <div class="dataline"><span class="dot" style="background:#B23A48"></span><div>ID iklan, IMEI, MAC address</div></div>
+        <div class="dataline"><span class="dot" style="background:#B23A48"></span><div>Kontak, foto, mikrofon</div></div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:22px;right:22px;bottom:22px;text-align:center;font-size:12px;color:var(--ink3);line-height:1.6">
+      Daftar ini sama persis dengan yang dideklarasikan di<br>
+      Play Console dan tertulis di Kebijakan Privasi.
+    </div>
+  </div>
+</div>
+<div class="cap"><b>24 · Data yang dikirim</b>Bukan halaman hukum, tapi dua daftar yang bisa dibaca orang tua dalam sepuluh detik. Isinya harus sama persis dengan deklarasi di Play Console.</div>
+</div>
+
+</div>
+
+</body>
+</html>
