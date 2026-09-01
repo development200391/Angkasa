@@ -45,12 +45,21 @@ LAYAR = [
     ("s22", "22-pulihkan-progres"),
     ("s23", "23-akun-dan-data"),
     ("s24", "24-data-yang-dikirim"),
+    ("s25", "25-peta-galaksi"),
+    ("s26", "26-buka-semua-planet"),
+    ("s27", "27-soal-cerita"),
+    ("s28", "28-soal-geometri"),
+    ("s29", "29-soal-statistik"),
+    ("s30", "30-dashboard-orang-tua"),
+    ("s31", "31-jenis-kesalahan"),
+    ("s32", "32-pembelian-berhasil"),
 ]
 
 # satu gambar gabungan per tahap
 GABUNGAN = [("tahap1", "00-semua-layar"),
              ("tahap2", "00-semua-layar-tahap2"),
-             ("tahap3", "00-semua-layar-tahap3")]
+             ("tahap3", "00-semua-layar-tahap3"),
+             ("tahap4", "00-semua-layar-tahap4")]
 
 
 def main() -> None:

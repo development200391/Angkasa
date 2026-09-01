@@ -768,6 +768,28 @@ Semua yang di atas bersifat tambahan. Kalau Firebase mati, aplikasinya harus tet
 - [ ] `in_app_purchase` — buka empat planet sekali bayar
 - [ ] Rilis iOS
 
+<p align="center">
+  <img src="docs/screenshots/00-semua-layar-tahap4.png" width="920" alt="Delapan layar Tahap 4">
+</p>
+
+| | | | |
+|:--:|:--:|:--:|:--:|
+| <img src="docs/screenshots/25-peta-galaksi.png" width="200"> | <img src="docs/screenshots/26-buka-semua-planet.png" width="200"> | <img src="docs/screenshots/27-soal-cerita.png" width="200"> | <img src="docs/screenshots/28-soal-geometri.png" width="200"> |
+| **25 · Galaksi**<br>Planet terkunci tetap menampilkan materinya — bukan kotak tertutup. | **26 · Paywall**<br>Beli sekali, bukan langganan. Harga dan masa berlakunya disebut lugas. | **27 · Soal cerita**<br>Pengecohnya tetap bernama: Rp 3.500 kalau cuma satu pensil yang dikurangi. | **28 · Geometri**<br>Petak bantu bisa dihitung kalau rumusnya lupa. Pengecoh 13 = dijumlah, 26 = keliling. |
+| <img src="docs/screenshots/29-soal-statistik.png" width="200"> | <img src="docs/screenshots/30-dashboard-orang-tua.png" width="200"> | <img src="docs/screenshots/31-jenis-kesalahan.png" width="200"> | <img src="docs/screenshots/32-pembelian-berhasil.png" width="200"> |
+| **29 · Statistik**<br>Diagram batang satu warna; nilainya tetap ditulis karena membacanya memang bagian dari soal. | **30 · Dashboard orang tua**<br>Menit belajar apa adanya, tanpa target harian. | **31 · Jenis kesalahan**<br>Panjang batang yang membawa angka; status selalu berpasangan dengan ikon dan tulisan. | **32 · Pembelian berhasil**<br>Cara memulihkan pembelian ditulis di sini, bukan disembunyikan di FAQ. |
+
+Tahap ini melipatgandakan isinya sekaligus membuka permukaan berbayar yang pertama. Empat planet baru menambah **172 pos**, sehingga totalnya pas 250 — angka yang sejak awal dipakai di bagian [Hierarki konten](#hierarki).
+
+Tiga hal yang berubah secara mendasar, bukan sekadar bertambah:
+
+- **Generator soal berhenti mencukupi.** Soal cerita, geometri, dan statistik tidak bisa dibangkitkan dari `DifficultyConfig` — ketiganya butuh konteks, gambar, dan angka yang dipilih tangan. Di sinilah `static_questions` dan berkas JSON di `data/local/database/seed/content/` akhirnya terpakai penuh. Perbandingannya tetap seperti rencana awal: sekitar 80% dibangkitkan, 20% ditulis.
+- **`question_attempts` akhirnya membayar dirinya sendiri.** Tabel yang sudah dicatat sejak soal pertama di Tahap 1 baru di sini berubah jadi produk: dashboard orang tua yang menyebut *"lupa menyimpan, 12 kali"* alih-alih *"nilai 84"*. Dan datanya tidak ke mana-mana — perhitungannya di HP, dan layar 31 menyebutkan itu apa adanya.
+- **Planet terkunci tetap terbuka isinya.** Orang tua bisa melihat materi kelas 3 sampai 6 sebelum membayar. Menjual kotak tertutup memang menaikkan konversi sesaat, tapi menghasilkan refund dan ulasan bintang satu yang jauh lebih mahal.
+
+> **Aturan diagram di aplikasi ini.** Semua batang memakai **satu warna** — panjangnya yang membawa angka, bukan warnanya. Status penguasaan (Dikuasai / Cukup / Perlu latihan) selalu tampil sebagai ikon + tulisan + warna sekaligus, tidak pernah warna saja, supaya tetap terbaca oleh orang tua yang buta warna. Tiga warna status itu (`#149B66`, `#B5761A`, `#B23A48`) sudah dicek terhadap pemisahan CVD, lantai kroma, dan kontras terhadap permukaan — jangan diganti tanpa mengeceknya ulang.
+
+
 **Batas yang perlu diketahui.** Apple Developer Program berbiaya $99 per tahun dan review kategori Kids lebih ketat daripada Android. Menunda iOS ke tahap terakhir bukan soal teknis — kodenya toh sudah lintas platform sejak baris pertama — melainkan supaya biaya itu keluar setelah ada bukti orang memakainya.
 
 ---
