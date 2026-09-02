@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <sub><b>APLIKASI</b> · rancangan, belum dikoding</sub><br>
+  <sub><b>APLIKASI</b> · Tahap 1 selesai, jalan penuh tanpa jaringan</sub><br>
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white" alt="Flutter">
   <img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white" alt="Dart">
   <img src="https://img.shields.io/badge/Riverpod-3.x-1F6FEB" alt="Riverpod">
@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-tahap%201%20belum%20mulai-8490A4" alt="Status">
+  <img src="https://img.shields.io/badge/status-tahap%201%20selesai-256F5A" alt="Status">
   <img src="https://img.shields.io/badge/MVP-78%20pos%20%C2%B7%202%20planet-C07C12" alt="MVP">
   <img src="https://img.shields.io/badge/license-MIT-535F77" alt="License">
 </p>
@@ -391,6 +391,8 @@ angkasa/
 │   ├── ui.html                   # sumber rancangan layar, font tersemat
 │   ├── make3d.py                 # bangkitkan geometri bintang & gradien bola
 │   └── shoot.py                  # render ui.html jadi PNG
+├── tool/
+│   └── buat_konten.py            # bangkitkan seed 78 pos, satu sumbu per pos
 ├── assets/
 │   ├── fonts/                    # Fredoka dibundel, tanpa unduhan
 │   ├── audio/                    # benar, salah, naik level, lepas landas
@@ -401,6 +403,7 @@ angkasa/
 │   ├── app.dart                  # MaterialApp.router + ProviderScope
 │   ├── core/
 │   │   ├── constants/            # app_colors, app_text_styles, app_assets
+│   │   │                         # app_config (--dart-define)
 │   │   ├── theme/                # ThemeData terang dan gelap
 │   │   ├── router/               # go_router + ShellRoute empat tab
 │   │   ├── services/             # audio, haptic, analytics, konektivitas, notifikasi
@@ -675,15 +678,15 @@ python design/shoot.py                           # render ulang tangkapan layar 
 
 ## Roadmap
 
-### Tahap 1 · MVP luring — **belum mulai**
-- [ ] Siapkan proyek, tema terang dan gelap, rute empat tab
-- [ ] Sistem desain: warna, tipografi, `LevelNode`, `StarRating`, `PrimaryButton`
-- [ ] Skema SQLite dan seed konten Planet Mula dan Planet Puluh
-- [ ] `DifficultyConfig`, generator soal, dan pembangun pengecoh
-- [ ] Peta lintasan dengan `CustomPainter` dan latar bintang
-- [ ] Layar kuis: pilihan ganda, isian, hati, timer
-- [ ] Layar hasil: bintang, XP, pembahasan jawaban salah
-- [ ] Onboarding, tes penempatan, Gerbang Orang Tua, Pengaturan
+### Tahap 1 · MVP luring — **selesai**
+- [x] Siapkan proyek, tema terang dan gelap, rute empat tab
+- [x] Sistem desain: warna, tipografi, `LevelNode`, `StarRating`, `PrimaryButton`
+- [x] Skema SQLite dan seed konten Planet Mula dan Planet Puluh
+- [x] `DifficultyConfig`, generator soal, dan pembangun pengecoh
+- [x] Peta lintasan dengan `CustomPainter` dan latar bintang
+- [x] Layar kuis: pilihan ganda, isian, hati, timer
+- [x] Layar hasil: bintang, XP, pembahasan jawaban salah
+- [x] Onboarding, tes penempatan, Gerbang Orang Tua, Pengaturan
 
 <p align="center">
   <img src="docs/screenshots/00-semua-layar.png" width="920" alt="Delapan layar Tahap 1">
