@@ -35,6 +35,19 @@ abstract class QuizResult with _$QuizResult {
     @Default([]) List<AnsweredQuestion> answers,
     @Default([]) List<String> unlockedLevelIds,
     @Default(false) bool unlockedNextChapter,
+
+    /// Planet yang baru terbuka — pemicu layar Lepas Landas.
+    String? unlockedGradeId,
+
+    /// Keadaan streak sesudah sesi ini.
+    @Default(0) int streak,
+    @Default(false) bool streakBertambah,
+
+    /// Pelindung mingguan terpakai untuk menambal hari yang terlewat.
+    @Default(false) bool pelindungTerpakai,
+
+    /// Kode lencana yang baru saja didapat.
+    @Default([]) List<String> lencanaBaru,
   }) = _QuizResult;
 
   const QuizResult._();

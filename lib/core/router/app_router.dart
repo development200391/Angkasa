@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../data/repositories/practice_repository.dart';
+import '../../domain/models/enums.dart';
 import '../../domain/models/quiz_result.dart';
 import '../../features/home/screens/jelajah_screen.dart';
+import '../../features/home/screens/lepas_landas_screen.dart';
 import '../../features/leaderboard/screens/peringkat_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../../features/onboarding/screens/pilih_planet_screen.dart';
 import '../../features/parent_gate/screens/parent_gate_screen.dart';
+import '../../features/practice/screens/hasil_latihan_screen.dart';
+import '../../features/practice/screens/kilat_screen.dart';
 import '../../features/practice/screens/latihan_screen.dart';
+import '../../features/practice/screens/perbaiki_screen.dart';
+import '../../features/practice/screens/sesi_latihan_screen.dart';
+import '../../features/practice/screens/tantangan_screen.dart';
+import '../../features/profile/screens/lencana_screen.dart';
 import '../../features/profile/screens/pengaturan_screen.dart';
 import '../../features/profile/screens/profil_screen.dart';
 import '../../features/quiz/screens/quiz_screen.dart';
@@ -35,7 +44,21 @@ abstract final class Rute {
   static const gerbangOrtu = '/gerbang-orang-tua';
   static const pengaturan = '/pengaturan';
 
+  // ---- Tahap 2
+  static const sesiLatihan = '/latihan/sesi/:mode';
+  static const hasilLatihan = '/latihan/hasil';
+  static const perbaiki = '/latihan/perbaiki';
+  static const tantangan = '/latihan/tantangan';
+  static const kilat = '/latihan/kilat';
+  static const lencana = '/lencana';
+  static const lepasLandas = '/lepas-landas/:gradeId';
+
   static String kuisUntuk(String levelId) => '/kuis/$levelId';
+
+  static String sesiLatihanUntuk(PracticeMode mode) =>
+      '/latihan/sesi/${mode.name}';
+
+  static String lepasLandasKe(String gradeId) => '/lepas-landas/$gradeId';
 }
 
 final _navigatorKey = GlobalKey<NavigatorState>();
@@ -120,6 +143,50 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Rute.pengaturan,
         parentNavigatorKey: _navigatorKey,
         builder: (_, _) => const PengaturanScreen(),
+      ),
+
+      // ---- Tahap 2
+      GoRoute(
+        path: Rute.sesiLatihan,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, state) => SesiLatihanScreen(
+          mode: PracticeMode.values.firstWhere(
+            (m) => m.name == state.pathParameters['mode'],
+            orElse: () => PracticeMode.latihanCepat,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: Rute.hasilLatihan,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, state) =>
+            HasilLatihanScreen(hasil: state.extra! as PracticeOutcome),
+      ),
+      GoRoute(
+        path: Rute.perbaiki,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const PerbaikiScreen(),
+      ),
+      GoRoute(
+        path: Rute.tantangan,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const TantanganScreen(),
+      ),
+      GoRoute(
+        path: Rute.kilat,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const KilatScreen(),
+      ),
+      GoRoute(
+        path: Rute.lencana,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const LencanaScreen(),
+      ),
+      GoRoute(
+        path: Rute.lepasLandas,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, state) =>
+            LepasLandasScreen(gradeId: state.pathParameters['gradeId']!),
       ),
     ],
   );

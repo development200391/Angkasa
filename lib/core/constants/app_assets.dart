@@ -17,6 +17,17 @@ abstract final class AppAssets {
   /// Benda untuk bantuan visual sumbu S3 tingkat termudah.
   static const apel = '$_img/apel.svg';
 
+  static const _audio = 'assets/audio';
+
+  /// Efek suara, dibangkitkan `tool/buat_suara.py` — bukan berkas
+  /// unduhan, jadi tidak ada lisensi pihak ketiga yang perlu diurus.
+  static const suaraBenar = '$_audio/benar.wav';
+  static const suaraSalah = '$_audio/salah.wav';
+  static const suaraNaikLevel = '$_audio/naik_level.wav';
+  static const suaraBintang = '$_audio/bintang.wav';
+  static const suaraLepasLandas = '$_audio/lepas_landas.wav';
+  static const suaraTik = '$_audio/tik.wav';
+
   static const seedDir = 'lib/data/local/database/seed/content';
   static const seedFiles = <String>[
     '$seedDir/planet_mula.json',

@@ -57,6 +57,22 @@ abstract final class StarCalculator {
   static const xpPos = 10;
   static const xpGerbang = 30;
 
+  /// XP mode latihan bebas.
+  ///
+  /// Sengaja lebih kecil daripada XP lintasan: latihan itu pemanasan dan
+  /// perbaikan, bukan jalan pintas menaikkan angka. Satu-satunya yang
+  /// besar adalah Tantangan Harian, dan itu memang alasannya ada —
+  /// sekali sehari, XP dobel.
+  static int xpLatihan(PracticeMode mode, int benar) => switch (mode) {
+    PracticeMode.latihanCepat => benar ~/ 2,
+    PracticeMode.perbaikiKesalahan => benar ~/ 2,
+    PracticeMode.kilat60 => benar ~/ 3,
+    PracticeMode.tantanganHarian => xpTantangan,
+  };
+
+  /// 10 XP dasar, dikali dua.
+  static const xpTantangan = 20;
+
   /// Kalimat di layar hasil. Nadanya berbeda untuk tiap jumlah bintang:
   /// yang belum lulus tidak boleh terdengar seperti hukuman.
   static String pesan(int stars) => switch (stars) {

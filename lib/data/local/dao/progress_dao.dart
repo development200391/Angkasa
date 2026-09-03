@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
+import '../../../domain/models/daily_activity.dart';
 import '../../../domain/models/level_progress.dart';
 
 /// Tulis-baca progres pos, dan catatan aktivitas harian.
@@ -122,6 +123,69 @@ class ProgressDao {
       [xp, posSelesai, detik, kunci],
     );
   }
+
+  /// Rentang hari, dipakai deretan titik minggu ini dan statistik
+  /// mingguan di layar Tantangan Harian.
+  Future<List<DailyActivity>> harian({
+    required DateTime dari,
+    required DateTime sampai,
+  }) async {
+    final rows = await _db.query(
+      'daily_activity',
+      where: 'date >= ? AND date <= ?',
+      whereArgs: [_tanggal(dari), _tanggal(sampai)],
+      orderBy: 'date',
+    );
+    return rows.map(_hari).toList();
+  }
+
+  Future<DailyActivity?> hari(DateTime tanggal) async {
+    final rows = await _db.query(
+      'daily_activity',
+      where: 'date = ?',
+      whereArgs: [_tanggal(tanggal)],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : _hari(rows.first);
+  }
+
+  /// Tantangan Harian cuma boleh sekali sehari — penandanya di sini,
+  /// bukan di preferensi yang bisa hilang waktu aplikasi dipasang ulang.
+  Future<void> tandaiTantangan(DateTime tanggal) async {
+    final kunci = _tanggal(tanggal);
+    await _db.insert('daily_activity', {
+      'date': kunci,
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
+    await _db.update(
+      'daily_activity',
+      {'challenge_done': 1},
+      where: 'date = ?',
+      whereArgs: [kunci],
+    );
+  }
+
+  Future<int> jumlahTantangan() async {
+    final r = await _db.rawQuery(
+      'SELECT COUNT(*) AS n FROM daily_activity WHERE challenge_done = 1',
+    );
+    return Sqflite.firstIntValue(r) ?? 0;
+  }
+
+  Future<int> jumlahHariAktif() async {
+    final r = await _db.rawQuery(
+      'SELECT COUNT(*) AS n FROM daily_activity '
+      'WHERE xp_earned > 0 OR levels_completed > 0 OR seconds_played > 0',
+    );
+    return Sqflite.firstIntValue(r) ?? 0;
+  }
+
+  static DailyActivity _hari(Map<String, Object?> r) => DailyActivity(
+    date: DateTime.parse(r['date']! as String),
+    xpEarned: r['xp_earned'] as int? ?? 0,
+    levelsCompleted: r['levels_completed'] as int? ?? 0,
+    secondsPlayed: r['seconds_played'] as int? ?? 0,
+    challengeDone: (r['challenge_done'] as int? ?? 0) == 1,
+  );
 
   static String _tanggal(DateTime d) =>
       '${d.year.toString().padLeft(4, '0')}-'

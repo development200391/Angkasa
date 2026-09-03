@@ -22,6 +22,19 @@ class ProfileRepository {
     return _dao.simpan(p.copyWith(soundOn: nyala));
   }
 
+  Future<UserProfile> setPemberitahuan(bool nyala) async {
+    final p = await _dao.ambil();
+    return _dao.simpan(p.copyWith(notifOn: nyala));
+  }
+
+  /// Menyimpan jam yang dipelajari dari kebiasaan main, supaya
+  /// pengingatnya tidak berpindah-pindah tiap kali dihitung ulang.
+  Future<UserProfile> setJamPengingat(int jam) async {
+    final p = await _dao.ambil();
+    if (p.notifHour == jam) return p;
+    return _dao.simpan(p.copyWith(notifHour: jam));
+  }
+
   Future<UserProfile> selesaikanOnboarding({
     required String nama,
     required String avatarId,

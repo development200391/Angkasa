@@ -18,7 +18,25 @@ abstract class UserProfile with _$UserProfile {
     @Default(0) int totalXp,
     @Default(0) int streakCount,
     DateTime? streakLastDate,
+
+    /// Streak terpanjang yang pernah dicapai. Disimpan terpisah supaya
+    /// lencana streak tidak hilang waktu rentetannya putus.
+    @Default(0) int streakBest,
+
+    /// Kapan pelindung streak mingguan terakhir terpakai.
+    DateTime? streakShieldLastUsed,
+
+    /// Rekor Kilat 60 Detik.
+    @Default(0) int blitzBest,
     @Default(true) bool soundOn,
+
+    /// Pemberitahuan harian. Bisa dimatikan di Pengaturan, di balik
+    /// Gerbang Orang Tua.
+    @Default(true) bool notifOn,
+
+    /// Jam pemberitahuan, dipelajari dari `daily_activity`. `null`
+    /// berarti belum cukup data dan dipakai jam bawaan.
+    int? notifHour,
     String? firebaseUid,
   }) = _UserProfile;
 
@@ -28,4 +46,6 @@ abstract class UserProfile with _$UserProfile {
       _$UserProfileFromJson(json);
 
   bool get sudahOnboarding => nickname.isNotEmpty && activeGradeId != null;
+
+  String get namaTampil => nickname.isEmpty ? 'Penjelajah' : nickname;
 }

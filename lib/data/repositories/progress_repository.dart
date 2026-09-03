@@ -1,4 +1,5 @@
 import '../../domain/engine/star_calculator.dart';
+import '../../domain/engine/streak_rules.dart';
 import '../../domain/engine/unlock_rules.dart';
 import '../../domain/models/level.dart';
 import '../../domain/models/level_progress.dart';
@@ -9,6 +10,7 @@ import '../local/dao/attempt_dao.dart';
 import '../local/dao/level_dao.dart';
 import '../local/dao/profile_dao.dart';
 import '../local/dao/progress_dao.dart';
+import 'badge_repository.dart';
 
 /// Semua yang berhubungan dengan **kemajuan anak**: bintang, XP, dan
 /// pos apa saja yang terbuka.
@@ -21,15 +23,18 @@ class ProgressRepository {
     required ProgressDao progressDao,
     required ProfileDao profileDao,
     required AttemptDao attemptDao,
+    required BadgeRepository badgeRepository,
   }) : _level = levelDao,
        _progress = progressDao,
        _profile = profileDao,
-       _attempt = attemptDao;
+       _attempt = attemptDao,
+       _badge = badgeRepository;
 
   final LevelDao _level;
   final ProgressDao _progress;
   final ProfileDao _profile;
   final AttemptDao _attempt;
+  final BadgeRepository _badge;
 
   /// Seluruh isi satu planet beserta progresnya — sekali baca untuk
   /// seluruh layar Jelajah.
@@ -100,23 +105,84 @@ class ProgressRepository {
       stars: hasil.stars,
       sudahPernahLulus: sudahPernahLulus,
     );
-    if (xp > 0) await _profile.tambahXp(xp);
 
-    await _progress.catatHarian(
-      tanggal: sekarang,
+    final streak = await catatAktivitas(
       xp: xp,
       posSelesai: hasil.isPassed && !sudahPernahLulus ? 1 : 0,
       detik: hasil.durationSeconds,
+      hitungStreak: hasil.isPassed,
+      waktu: sekarang,
     );
 
     final terbuka = await _terapkanUnlock(level: level, hasil: hasil);
+    final lencana = await _badge.nilaiUlang(waktu: sekarang);
 
     return hasil.copyWith(
       xpEarned: xp,
       isNewBest: hasil.stars > (sebelum?.stars ?? 0),
       unlockedLevelIds: terbuka.levelIds,
       unlockedNextChapter: terbuka.chapterIds.isNotEmpty,
+      unlockedGradeId: terbuka.gradeIds.isEmpty ? null : terbuka.gradeIds.first,
+      streak: streak.streak,
+      streakBertambah: streak.hariBaru,
+      pelindungTerpakai: streak.pelindungTerpakai,
+      lencanaBaru: [for (final b in lencana) b.code],
     );
+  }
+
+  /// Satu pintu untuk semua aktivitas — pos maupun latihan bebas.
+  ///
+  /// XP, catatan harian, dan streak selalu bergerak bersama. Kalau tiga
+  /// hal ini ditulis di tiga tempat berbeda, cepat atau lambat ada satu
+  /// jalur yang lupa menaikkan streak dan anak kehilangan rentetannya
+  /// tanpa sebab yang bisa dijelaskan.
+  Future<StreakOutcome> catatAktivitas({
+    required int xp,
+    int posSelesai = 0,
+    int detik = 0,
+    bool hitungStreak = true,
+    DateTime? waktu,
+  }) async {
+    final sekarang = waktu ?? DateTime.now();
+    if (xp > 0) await _profile.tambahXp(xp);
+
+    await _progress.catatHarian(
+      tanggal: sekarang,
+      xp: xp,
+      posSelesai: posSelesai,
+      detik: detik,
+    );
+
+    final profil = await _profile.ambil();
+    if (!hitungStreak) {
+      return StreakOutcome(
+        streak: profil.streakCount,
+        pelindungTerpakai: false,
+        putus: false,
+        hariBaru: false,
+      );
+    }
+
+    final hasil = StreakRules.perbarui(
+      streakSekarang: profil.streakCount,
+      terakhirAktif: profil.streakLastDate,
+      pelindungTerakhir: profil.streakShieldLastUsed,
+      hariIni: sekarang,
+    );
+
+    await _profile.simpan(
+      profil.copyWith(
+        streakCount: hasil.streak,
+        streakLastDate: StreakRules.tanggalSaja(sekarang),
+        streakBest: hasil.streak > profil.streakBest
+            ? hasil.streak
+            : profil.streakBest,
+        streakShieldLastUsed: hasil.pelindungTerpakai
+            ? StreakRules.tanggalSaja(sekarang)
+            : profil.streakShieldLastUsed,
+      ),
+    );
+    return hasil;
   }
 
   Future<UnlockOutcome> _terapkanUnlock({
@@ -210,6 +276,7 @@ class ProgressRepository {
   Future<void> resetProgres() async {
     await _progress.hapusSemua();
     await _attempt.hapusSemua();
+    await _badge.hapusSemua();
     for (final g in await _level.semuaGrade()) {
       final zona = await _level.chapters(g.id);
       if (zona.isEmpty) continue;

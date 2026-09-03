@@ -15,6 +15,8 @@ import '../../../domain/models/quiz_result.dart';
 import '../../../shared/widgets/primary_button.dart';
 import '../../../shared/widgets/star_rating.dart';
 import '../../home/widgets/starfield.dart';
+import '../../practice/widgets/api_streak.dart';
+import '../../profile/widgets/badge_medal.dart';
 
 /// Layar hasil pos.
 ///
@@ -37,6 +39,16 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     super.initState();
     _confetti = ConfettiController(duration: const Duration(seconds: 2));
     if (widget.hasil.isPassed) _confetti.play();
+
+    // Suara menyusul confetti: bunyi naik level dulu, dentingnya
+    // menyusul kalau bintangnya penuh.
+    final audio = ref.read(audioServiceProvider);
+    if (widget.hasil.isPassed) {
+      audio.naikLevel();
+      if (widget.hasil.stars == 3) {
+        Future.delayed(const Duration(milliseconds: 620), audio.bintang);
+      }
+    }
   }
 
   @override
@@ -135,13 +147,31 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       const SizedBox(height: 18),
                       const _KabarZona(),
                     ],
+                    if (h.streakBertambah && h.streak > 0) ...[
+                      const SizedBox(height: 14),
+                      _KabarStreak(
+                        streak: h.streak,
+                        pelindung: h.pelindungTerpakai,
+                      ),
+                    ],
+                    if (h.lencanaBaru.isNotEmpty) ...[
+                      const SizedBox(height: 18),
+                      _LencanaBaru(kode: h.lencanaBaru),
+                    ],
                     const Spacer(),
                     PrimaryButton(
-                      label: labelBerikutnya != null
+                      label: h.unlockedGradeId != null
+                          ? 'Lepas landas'
+                          : labelBerikutnya != null
                           ? 'Lanjut ke $labelBerikutnya'
                           : (h.isPassed ? 'Kembali ke peta' : 'Coba lagi'),
                       onPressed: () {
-                        if (berikutnya != null) {
+                        final planetBaru = h.unlockedGradeId;
+                        if (planetBaru != null) {
+                          context.pushReplacement(
+                            Rute.lepasLandasKe(planetBaru),
+                          );
+                        } else if (berikutnya != null) {
                           context.pushReplacement(Rute.kuisUntuk(berikutnya));
                         } else if (h.isPassed) {
                           _kePeta();
@@ -291,6 +321,85 @@ class _KabarZona extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Streak bertambah hari ini. Kalau pelindungnya terpakai, itu
+/// disebutkan **sesudahnya** — anak tidak pernah diminta memilih antara
+/// kehilangan rentetan atau memakai sesuatu.
+class _KabarStreak extends StatelessWidget {
+  const _KabarStreak({required this.streak, required this.pelindung});
+
+  final int streak;
+  final bool pelindung;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.flame.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        children: [
+          const ApiStreak(size: 26),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              pelindung
+                  ? 'Streak $streak hari — satu hari terlewat ditambal '
+                        'pelindung mingguan.'
+                  : 'Streak $streak hari. Sampai jumpa besok!',
+              style: AppTextStyles.body.copyWith(
+                fontSize: 13.5,
+                color: AppColors.brandLight,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LencanaBaru extends StatelessWidget {
+  const _LencanaBaru({required this.kode});
+
+  final List<String> kode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          kode.length == 1 ? 'Lencana baru' : '${kode.length} lencana baru',
+          style: AppTextStyles.caption.copyWith(
+            color: AppColors.brandLight,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 16,
+          runSpacing: 12,
+          alignment: WrapAlignment.center,
+          children: [
+            for (var i = 0; i < kode.length; i++)
+              BadgeCell(code: kode[i], didapat: true, size: 58)
+                  .animate()
+                  .scale(
+                    begin: const Offset(0.4, 0.4),
+                    end: const Offset(1, 1),
+                    duration: 380.ms,
+                    delay: (160 * i).ms,
+                    curve: Curves.elasticOut,
+                  )
+                  .fadeIn(duration: 200.ms, delay: (160 * i).ms),
+          ],
+        ),
+      ],
     );
   }
 }

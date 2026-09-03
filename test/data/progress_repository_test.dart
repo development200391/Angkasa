@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:angkasa/data/local/dao/attempt_dao.dart';
+import 'package:angkasa/data/local/dao/badge_dao.dart';
 import 'package:angkasa/data/local/dao/level_dao.dart';
 import 'package:angkasa/data/local/dao/profile_dao.dart';
 import 'package:angkasa/data/local/dao/progress_dao.dart';
 import 'package:angkasa/data/local/database/app_database.dart';
 import 'package:angkasa/data/local/database/seed/seed_runner.dart';
+import 'package:angkasa/data/repositories/badge_repository.dart';
+import 'package:angkasa/data/repositories/profile_repository.dart';
 import 'package:angkasa/data/repositories/progress_repository.dart';
 import 'package:angkasa/domain/models/enums.dart';
 import 'package:angkasa/domain/models/question.dart';
@@ -25,6 +28,7 @@ void main() {
   late LevelDao levelDao;
   late ProgressDao progressDao;
   late AttemptDao attemptDao;
+  late BadgeRepository badgeRepo;
 
   setUpAll(() {
     sqfliteFfiInit();
@@ -38,11 +42,19 @@ void main() {
     levelDao = LevelDao(db);
     progressDao = ProgressDao(db);
     attemptDao = AttemptDao(db);
+    badgeRepo = BadgeRepository(
+      badgeDao: BadgeDao(db),
+      levelDao: levelDao,
+      progressDao: progressDao,
+      profileDao: ProfileDao(db),
+      attemptDao: attemptDao,
+    );
     repo = ProgressRepository(
       levelDao: levelDao,
       progressDao: progressDao,
       profileDao: ProfileDao(db),
       attemptDao: attemptDao,
+      badgeRepository: badgeRepo,
     );
   });
 
@@ -226,7 +238,10 @@ void main() {
     );
 
     expect(await attemptDao.jumlahSalah(), 1);
-    expect(await attemptDao.tandaSalah(), contains('17+5=?'));
+    expect(
+      (await attemptDao.menunggu()).map((s) => s.signature),
+      contains('17+5=?'),
+    );
     expect(await attemptDao.ringkasanKesalahan(), {
       MistakeKind.lupaMenyimpan: 1,
     });
@@ -245,6 +260,22 @@ void main() {
     expect(peta.levelDari('l-1-1-1')!.isLocked, isFalse);
     expect(peta.levelDari('l-1-1-2')!.isLocked, isTrue);
     expect(await attemptDao.jumlahSalah(), 0);
+  });
+
+  test('ganti planet tidak menghapus progres planet lama', () async {
+    final pos1 = (await levelDao.level('l-1-1-1'))!;
+    await repo.simpanSesi(
+      level: pos1,
+      hasil: hasil(levelId: pos1.id, benar: 10),
+    );
+
+    final profil = ProfileRepository(ProfileDao(db));
+    await profil.gantiPlanet('grade-2');
+    expect((await profil.ambil()).activeGradeId, 'grade-2');
+
+    // Bintang di planet lama menunggu di sana, tidak ikut pindah.
+    expect((await repo.peta('grade-1')).totalStars, 3);
+    expect((await repo.peta('grade-2')).totalStars, 0);
   });
 
   test('tes penempatan menandai zona sebelumnya selesai', () async {

@@ -2,6 +2,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 import 'migrations/migration_v1.dart';
+import 'migrations/migration_v2.dart';
 import 'seed/seed_runner.dart';
 
 /// Satu-satunya pintu ke SQLite.
@@ -12,7 +13,7 @@ import 'seed/seed_runner.dart';
 class AppDatabase {
   AppDatabase({this.namaBerkas = 'angkasa.db', this.seedRunner});
 
-  static const versiSkema = 1;
+  static const versiSkema = 2;
 
   final String namaBerkas;
   final SeedRunner? seedRunner;
@@ -28,7 +29,9 @@ class AppDatabase {
       version: versiSkema,
       onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
       onCreate: (db, versi) async {
-        await _jalankan(db, migrationV1);
+        for (var v = 1; v <= versi; v++) {
+          await _jalankan(db, migrasiUntuk(v));
+        }
         await (seedRunner ?? SeedRunner()).jalankan(db);
       },
       onUpgrade: (db, dari, ke) async {
@@ -47,7 +50,9 @@ class AppDatabase {
       inMemoryDatabasePath,
       version: versiSkema,
       onCreate: (db, versi) async {
-        await _jalankan(db, migrationV1);
+        for (var v = 1; v <= versi; v++) {
+          await _jalankan(db, migrasiUntuk(v));
+        }
         if (seed != null) await seed.jalankan(db);
       },
     );
@@ -56,6 +61,7 @@ class AppDatabase {
 
   static List<String> migrasiUntuk(int versi) => switch (versi) {
     1 => migrationV1,
+    2 => migrationV2,
     _ => const [],
   };
 

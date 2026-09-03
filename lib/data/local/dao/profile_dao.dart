@@ -34,7 +34,12 @@ class ProfileDao {
       'total_xp': p.totalXp,
       'streak_count': p.streakCount,
       'streak_last_date': p.streakLastDate?.toIso8601String(),
+      'streak_best': p.streakBest,
+      'streak_shield_last_used': p.streakShieldLastUsed?.toIso8601String(),
+      'blitz_best': p.blitzBest,
       'sound_on': p.soundOn ? 1 : 0,
+      'notif_on': p.notifOn ? 1 : 0,
+      'notif_hour': p.notifHour,
       'firebase_uid': p.firebaseUid,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
     return p;
@@ -50,6 +55,9 @@ class ProfileDao {
     return simpan(p.copyWith(activeGradeId: gradeId));
   }
 
+  static DateTime? _waktu(Object? v) =>
+      v is String ? DateTime.tryParse(v) : null;
+
   static UserProfile _dari(Map<String, Object?> r) => UserProfile(
     id: r['id']! as int,
     nickname: r['nickname'] as String? ?? '',
@@ -57,10 +65,13 @@ class ProfileDao {
     activeGradeId: r['active_grade_id'] as String?,
     totalXp: r['total_xp'] as int? ?? 0,
     streakCount: r['streak_count'] as int? ?? 0,
-    streakLastDate: r['streak_last_date'] is String
-        ? DateTime.tryParse(r['streak_last_date']! as String)
-        : null,
+    streakLastDate: _waktu(r['streak_last_date']),
+    streakBest: r['streak_best'] as int? ?? 0,
+    streakShieldLastUsed: _waktu(r['streak_shield_last_used']),
+    blitzBest: r['blitz_best'] as int? ?? 0,
     soundOn: (r['sound_on'] as int? ?? 1) == 1,
+    notifOn: (r['notif_on'] as int? ?? 1) == 1,
+    notifHour: r['notif_hour'] as int?,
     firebaseUid: r['firebase_uid'] as String?,
   );
 }

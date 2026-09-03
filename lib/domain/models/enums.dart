@@ -60,3 +60,23 @@ enum MistakeKind {
     MistakeKind.lainnya => 'Salah hitung',
   };
 }
+
+/// Empat mode latihan bebas. Tidak satu pun mengubah bintang di
+/// lintasan — itu janji yang membuat anak berani mencoba di sini.
+enum PracticeMode {
+  latihanCepat,
+  perbaikiKesalahan,
+  tantanganHarian,
+  kilat60;
+
+  String get judul => switch (this) {
+    PracticeMode.latihanCepat => 'Latihan Cepat',
+    PracticeMode.perbaikiKesalahan => 'Perbaiki Kesalahan',
+    PracticeMode.tantanganHarian => 'Tantangan Harian',
+    PracticeMode.kilat60 => 'Kilat 60 Detik',
+  };
+
+  /// Dipakai sebagai `level_id` di `question_attempts`. Berawalan
+  /// `latihan:` supaya tidak pernah bentrok dengan id pos sungguhan.
+  String get catatanId => 'latihan:$name';
+}

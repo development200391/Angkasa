@@ -6,10 +6,12 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/router/app_router.dart';
 import '../../../data/providers.dart';
+import '../../../domain/engine/badge_rules.dart';
 import '../../../domain/models/level_view.dart';
 import '../../../shared/widgets/loading_view.dart';
 import '../../../shared/widgets/star_rating.dart';
 import '../../onboarding/widgets/avatar_grid.dart';
+import '../widgets/badge_medal.dart';
 
 /// Tab Profil: avatar, statistik, pilih planet, dan pintu ke Pengaturan
 /// lewat Gerbang Orang Tua.
@@ -68,14 +70,15 @@ class ProfilScreen extends ConsumerWidget {
                 Row(
                   children: [
                     _Statistik(
-                      nilai: '${p.totalXp}',
-                      label: 'XP',
-                      warna: AppColors.brand,
+                      nilai: '${p.streakCount}',
+                      label: 'hari streak',
+                      warna: AppColors.flame,
                     ),
                     const SizedBox(width: 10),
                     _Statistik(
-                      nilai: '${peta?.totalStars ?? 0}',
-                      label: 'bintang',
+                      nilai: '${p.totalXp}',
+                      label: 'XP',
+                      warna: AppColors.brand,
                     ),
                     const SizedBox(width: 10),
                     _Statistik(
@@ -84,6 +87,8 @@ class ProfilScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 24),
+                const _RingkasanLencana(),
                 const SizedBox(height: 24),
                 _Baris(
                   ikon: Icons.public_rounded,
@@ -94,8 +99,8 @@ class ProfilScreen extends ConsumerWidget {
                 _Baris(
                   ikon: Icons.emoji_events_outlined,
                   judul: 'Lencana',
-                  keterangan: 'Datang di Tahap 2',
-                  aktif: false,
+                  keterangan: 'Koleksi ${BadgeRules.total} lencana',
+                  onTap: () => context.push(Rute.lencana),
                 ),
                 _Baris(
                   ikon: Icons.settings_outlined,
@@ -159,7 +164,6 @@ class _Baris extends StatelessWidget {
     required this.keterangan,
     this.onTap,
     this.gembok = false,
-    this.aktif = true,
   });
 
   final IconData ikon;
@@ -167,12 +171,11 @@ class _Baris extends StatelessWidget {
   final String keterangan;
   final VoidCallback? onTap;
   final bool gembok;
-  final bool aktif;
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: aktif ? 1 : 0.55,
+      opacity: onTap == null ? 0.55 : 1,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Material(
@@ -261,6 +264,63 @@ class _RingkasanZona extends StatelessWidget {
               ],
             ),
           ),
+      ],
+    );
+  }
+}
+
+/// Empat lencana teratas di Profil, sebagai pintu ke koleksinya.
+class _RingkasanLencana extends ConsumerWidget {
+  const _RingkasanLencana();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final didapat = ref.watch(badgesProvider).value ?? const [];
+    final punya = {for (final b in didapat) b.code};
+
+    // Yang sudah didapat lebih dulu, lalu yang paling dekat tercapai.
+    final tampil = [
+      ...BadgeRules.katalog.where((b) => punya.contains(b.code)),
+      ...BadgeRules.katalog.where((b) => !punya.contains(b.code)),
+    ].take(4).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'Lencana',
+              style: AppTextStyles.title.copyWith(fontSize: 15.5),
+            ),
+            const Spacer(),
+            InkWell(
+              onTap: () => context.push(Rute.lencana),
+              child: Text(
+                '${punya.length} dari ${BadgeRules.total} →',
+                style: AppTextStyles.caption.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.brand,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            for (final b in tampil) ...[
+              BadgeCell(
+                code: b.code,
+                didapat: punya.contains(b.code),
+                size: 60,
+                tampilkanNama: false,
+              ),
+              const SizedBox(width: 16),
+            ],
+          ],
+        ),
       ],
     );
   }

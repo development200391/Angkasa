@@ -44,7 +44,24 @@ class PengaturanScreen extends ConsumerWidget {
                       ref.read(profileProvider.notifier).setSuara(v),
                   title: Text('Suara', style: AppTextStyles.title),
                   subtitle: Text(
-                    'Efek suara benar dan salah. Berlaku mulai Tahap 2.',
+                    'Efek suara benar, salah, dan naik level.',
+                    style: AppTextStyles.caption,
+                  ),
+                  activeThumbColor: AppColors.brand,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                const Divider(indent: 16, endIndent: 16),
+                SwitchListTile.adaptive(
+                  value: p.notifOn,
+                  onChanged: (v) => _setPemberitahuan(context, ref, v),
+                  title: Text('Pengingat harian', style: AppTextStyles.title),
+                  subtitle: Text(
+                    p.notifHour == null
+                        ? 'Satu pemberitahuan lokal per hari. Jamnya '
+                              'menyesuaikan kebiasaan main.'
+                        : 'Satu pemberitahuan lokal per hari, sekitar pukul '
+                              '${p.notifHour}.00 — dipelajari dari kebiasaan '
+                              'main.',
                     style: AppTextStyles.caption,
                   ),
                   activeThumbColor: AppColors.brand,
@@ -108,7 +125,7 @@ class PengaturanScreen extends ConsumerWidget {
             const SizedBox(height: 26),
             Center(
               child: Text(
-                'Angkasa · Tahap 1 · luring penuh',
+                'Angkasa · Tahap 2 · luring penuh',
                 style: AppTextStyles.caption,
               ),
             ),
@@ -116,6 +133,35 @@ class PengaturanScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Izin pemberitahuan baru diminta saat setelannya benar-benar
+  /// dinyalakan — bukan saat aplikasi pertama dibuka.
+  Future<void> _setPemberitahuan(
+    BuildContext context,
+    WidgetRef ref,
+    bool nyala,
+  ) async {
+    final layanan = ref.read(notificationServiceProvider);
+    if (nyala) {
+      final izin = await layanan.mintaIzin();
+      if (!izin) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Pemberitahuan ditolak di setelan HP. Nyalakan dari sana '
+                'kalau berubah pikiran.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+    }
+    await ref.read(profileRepositoryProvider).setPemberitahuan(nyala);
+    await ref.read(profileProvider.notifier).muatUlang();
+    await ref.read(pengingatHarianProvider.future);
   }
 
   Future<void> _konfirmasiReset(BuildContext context, WidgetRef ref) async {

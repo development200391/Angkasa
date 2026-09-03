@@ -78,6 +78,13 @@ class QuizController extends AsyncNotifier<QuizState> {
     final benar = soal.isCorrect(jawaban);
     final waktuMs = DateTime.now().difference(_mulaiSoal).inMilliseconds;
 
+    final audio = ref.read(audioServiceProvider);
+    if (benar) {
+      audio.benar();
+    } else {
+      audio.salah();
+    }
+
     state = AsyncData(
       s.copyWith(
         answers: [

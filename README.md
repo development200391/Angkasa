@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <sub><b>APLIKASI</b> · Tahap 1 selesai, jalan penuh tanpa jaringan</sub><br>
+  <sub><b>APLIKASI</b> · Tahap 1–2 selesai, jalan penuh tanpa jaringan</sub><br>
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white" alt="Flutter">
   <img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white" alt="Dart">
   <img src="https://img.shields.io/badge/Riverpod-3.x-1F6FEB" alt="Riverpod">
@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-tahap%201%20selesai-256F5A" alt="Status">
+  <img src="https://img.shields.io/badge/status-tahap%202%20selesai-256F5A" alt="Status">
   <img src="https://img.shields.io/badge/MVP-78%20pos%20%C2%B7%202%20planet-C07C12" alt="MVP">
   <img src="https://img.shields.io/badge/license-MIT-535F77" alt="License">
 </p>
@@ -392,7 +392,8 @@ angkasa/
 │   ├── make3d.py                 # bangkitkan geometri bintang & gradien bola
 │   └── shoot.py                  # render ui.html jadi PNG
 ├── tool/
-│   └── buat_konten.py            # bangkitkan seed 78 pos, satu sumbu per pos
+│   ├── buat_konten.py            # bangkitkan seed 78 pos, satu sumbu per pos
+│   └── buat_suara.py             # bangkitkan enam efek suara jadi WAV
 ├── assets/
 │   ├── fonts/                    # Fredoka dibundel, tanpa unduhan
 │   ├── audio/                    # benar, salah, naik level, lepas landas
@@ -417,9 +418,11 @@ angkasa/
 │   │   │   │   └── seed/
 │   │   │   │       ├── seed_runner.dart
 │   │   │   │       └── content/           # planet_mula.json, planet_puluh.json
-│   │   │   └── dao/              # level_dao, progress_dao, profile_dao, attempt_dao
+│   │   │   └── dao/              # level_dao, progress_dao, profile_dao,
+│   │   │                         # attempt_dao, badge_dao
 │   │   ├── remote/               # firebase_auth, firestore_sync, remote_config
-│   │   └── repositories/         # content, progress, profile, leaderboard
+│   │   └── repositories/         # content, progress, practice, badge,
+│   │                             # profile, leaderboard
 │   ├── domain/
 │   │   ├── models/               # grade, chapter, level, question, level_progress
 │   │   │                         # user_profile, quiz_result   (freezed)
@@ -428,6 +431,8 @@ angkasa/
 │   │       ├── question_generator.dart   # pembangkit soal hitung
 │   │       ├── distractor_builder.dart   # pengecoh dari kesalahan umum
 │   │       ├── star_calculator.dart
+│   │       ├── streak_rules.dart         # streak + pelindung mingguan
+│   │       ├── badge_rules.dart          # katalog 24 lencana
 │   │       └── unlock_rules.dart         # empat aturan di bagian Sistem Level
 │   ├── features/
 │   │   ├── splash/
@@ -709,13 +714,13 @@ Sumber rancangannya ada di [`design/ui.html`](design/ui.html) — buka langsung 
 
 Target akhir tahap ini: **78 pos di dua planet, jalan penuh tanpa jaringan** — dan langsung dirilis ke Play Store. Tidak ada satu pun baris kode Firebase di tahap ini, dan itu disengaja: rilis lebih awal berarti tahu lebih awal apakah orang mau memakainya.
 
-### Tahap 2 · Retensi — **belum mulai**
-- [ ] Streak dan pelindung streak mingguan
-- [ ] Lencana dan layar koleksinya
-- [ ] Mode Perbaiki Kesalahan dari `question_attempts`
-- [ ] Tantangan Harian dan Kilat 60 Detik
-- [ ] Pemberitahuan lokal harian
-- [ ] Efek suara dan animasi lepas landas
+### Tahap 2 · Retensi — **selesai**
+- [x] Streak dan pelindung streak mingguan
+- [x] Lencana dan layar koleksinya
+- [x] Mode Perbaiki Kesalahan dari `question_attempts`
+- [x] Tantangan Harian dan Kilat 60 Detik
+- [x] Pemberitahuan lokal harian
+- [x] Efek suara dan animasi lepas landas
 
 <p align="center">
   <img src="docs/screenshots/00-semua-layar-tahap2.png" width="920" alt="Delapan layar Tahap 2">
@@ -734,6 +739,8 @@ Layar **10** yang paling layak dikerjakan lebih dulu di antara delapan ini. Buka
 
 
 Untuk aplikasi anak, suara dan animasi bukan pemolesan akhir — itu fitur inti. Aplikasi anak yang diam terasa rusak, sekalipun semua logikanya benar.
+
+> **Yang dikerjakan di luar delapan layar itu.** Tiga keputusan kecil menentukan bentuk Tahap 2 lebih dari layarnya sendiri. **Pertama, soal tidak disimpan.** Mode Perbaiki Kesalahan merakit ulang soalnya dari `question_signature` — `17+5=?` jadi soal lengkap beserta pengecoh bernama dan pembahasannya lewat `QuestionGenerator.dariSignature`, jadi tidak ada satu baris soal pun yang perlu ikut disimpan sejak Tahap 1. **Kedua, lencana tidak punya penghitung.** Kedua puluh empat lencananya dinilai ulang dari nol tiap sesi, dibaca dari `level_progress`, `question_attempts`, dan `daily_activity`; memperbaiki syarat sebuah lencana tidak pernah butuh migrasi. **Ketiga, suaranya dibangkitkan, bukan diunduh** — [`tool/buat_suara.py`](tool/buat_suara.py) menulis enam berkas WAV pendek dari gelombang sinus, jadi tidak ada lisensi pihak ketiga yang perlu diurus dan totalnya di bawah 150 KB.
 
 ### Tahap 3 · Daring ringan — **belum mulai**
 - [ ] Firebase Auth anonim

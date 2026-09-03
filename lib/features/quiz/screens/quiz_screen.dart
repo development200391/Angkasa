@@ -10,11 +10,10 @@ import '../../../shared/widgets/loading_view.dart';
 import '../providers/quiz_controller.dart';
 import '../providers/quiz_state.dart';
 import '../widgets/answer_feedback.dart';
-import '../widgets/benda_row.dart';
 import '../widgets/heart_bar.dart';
-import '../widgets/number_line.dart';
 import '../widgets/q_input.dart';
 import '../widgets/q_multiple_choice.dart';
+import '../widgets/quiz_card.dart';
 
 /// Layar kuis: sepuluh soal, lima hati, dan tidak ada apa pun lain di
 /// layar yang bisa ditekan. Setiap elemen tambahan di sini adalah satu
@@ -90,7 +89,7 @@ class _Isi extends ConsumerWidget {
                 ],
               ),
             ),
-            _KartuSoal(state: state),
+            KartuSoal(soal: soal),
             const Spacer(),
             if (soal.format == QuestionFormat.pilihanGanda)
               // Waktu sheet pembahasan naik, opsinya ikut naik. Jawaban
@@ -238,45 +237,6 @@ class _Waktu extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _KartuSoal extends StatelessWidget {
-  const _KartuSoal({required this.state});
-
-  final QuizState state;
-
-  @override
-  Widget build(BuildContext context) {
-    final soal = state.soal;
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 22),
-      padding: const EdgeInsets.fromLTRB(20, 22, 20, 22),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: const [
-          BoxShadow(color: AppColors.line, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Column(
-        children: [
-          if (soal.visualAid == VisualAid.benda) ...[
-            BendaRow(soal: soal),
-            const SizedBox(height: 20),
-          ],
-          Text(
-            soal.prompt,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.question,
-          ),
-          if (soal.visualAid == VisualAid.garisBilangan) ...[
-            const SizedBox(height: 18),
-            NumberLine(soal: soal),
-          ],
-        ],
-      ),
     );
   }
 }

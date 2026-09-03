@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'data/providers.dart';
 
 /// Akar aplikasi.
 ///
@@ -14,6 +15,11 @@ class AngkasaApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Menjadwalkan ulang pengingat harian tiap aplikasi dibuka: isinya
+    // menyebut streak dan pos yang menunggu, jadi harus ikut berubah
+    // waktu keduanya berubah.
+    ref.watch(pengingatHarianProvider);
+
     return MaterialApp.router(
       title: 'Angkasa',
       debugShowCheckedModeBanner: false,

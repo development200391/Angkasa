@@ -1,110 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/router/app_router.dart';
+import '../../../data/providers.dart';
+import '../../../domain/models/enums.dart';
+import '../widgets/mode_tile.dart';
 
 /// Tab Latihan.
 ///
-/// Keempat modenya datang di Tahap 2 — semuanya berdiri di atas data
-/// yang **sudah** dikumpulkan Tahap 1 (`question_attempts` dan
-/// `daily_activity`), jadi yang kurang cuma layarnya. Daftarnya
-/// ditampilkan sekarang supaya jelas apa yang sedang dibangun, bukan
-/// diganti dengan tab kosong.
-class LatihanScreen extends StatelessWidget {
+/// Empat mode bebas yang tidak mengubah progres lintasan. Angka merah di
+/// Perbaiki Kesalahan adalah **satu-satunya lencana notifikasi** di
+/// seluruh aplikasi — kalau ada di mana-mana, tidak ada yang berarti.
+class LatihanScreen extends ConsumerWidget {
   const LatihanScreen({super.key});
 
-  static const _mode =
-      <({IconData ikon, Color warna, String judul, String isi})>[
-        (
-          ikon: Icons.bolt_rounded,
-          warna: AppColors.brand,
-          judul: 'Latihan Cepat',
-          isi: '10 soal acak dari semua zona yang sudah dibuka',
-        ),
-        (
-          ikon: Icons.build_rounded,
-          warna: AppColors.wrong,
-          judul: 'Perbaiki Kesalahan',
-          isi: 'Soal yang pernah dijawab salah, diulang sampai benar dua kali',
-        ),
-        (
-          ikon: Icons.today_rounded,
-          warna: AppColors.puluh,
-          judul: 'Tantangan Harian',
-          isi: 'Satu set 10 soal per hari, XP dobel',
-        ),
-        (
-          ikon: Icons.timer_rounded,
-          warna: AppColors.pecah,
-          judul: 'Kilat 60 Detik',
-          isi: 'Hitung sebanyak mungkin dalam 60 detik',
-        ),
-      ];
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ringkasan = ref.watch(practiceSummaryProvider).value;
+    final menunggu = ringkasan?.menunggu ?? 0;
+    final rekor = ringkasan?.rekorKilat ?? 0;
+    final tantanganSelesai = ringkasan?.tantanganSelesai ?? false;
+
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(22, 18, 22, 24),
-          children: [
-            Text('Latihan', style: AppTextStyles.h1),
-            const SizedBox(height: 8),
-            Text(
-              'Empat mode bebas yang tidak mengubah progres lintasan. '
-              'Datang di Tahap 2.',
-              style: AppTextStyles.sub,
-            ),
-            const SizedBox(height: 22),
-            for (final m in _mode)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Opacity(
-                  opacity: 0.6,
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(color: AppColors.line, offset: Offset(0, 2)),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 54,
-                          height: 54,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: m.warna.withValues(alpha: 0.14),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: Icon(m.ikon, color: m.warna, size: 26),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(m.judul, style: AppTextStyles.title),
-                              const SizedBox(height: 2),
-                              Text(m.isi, style: AppTextStyles.caption),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.lock_rounded,
-                          size: 18,
-                          color: AppColors.ink3,
-                        ),
-                      ],
-                    ),
-                  ),
+        child: RefreshIndicator(
+          onRefresh: () async => ref.invalidate(practiceSummaryProvider),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(22, 12, 22, 24),
+            children: [
+              Text('Latihan', style: AppTextStyles.h1.copyWith(fontSize: 24)),
+              const SizedBox(height: 5),
+              Text(
+                'Main sepuasnya. Bintang di lintasan tidak berubah.',
+                style: AppTextStyles.sub.copyWith(fontSize: 13.5),
+              ),
+              const SizedBox(height: 20),
+
+              ModeTile(
+                ikon: Icons.bolt_rounded,
+                gradien: const [Color(0xFF6FB6E6), Color(0xFF3C87BE)],
+                judul: 'Latihan Cepat',
+                isi: '10 soal acak dari zona yang sudah dibuka',
+                onTap: () => context.push(
+                  Rute.sesiLatihanUntuk(PracticeMode.latihanCepat),
                 ),
               ),
-          ],
+              const SizedBox(height: 13),
+
+              ModeTile(
+                ikon: Icons.refresh_rounded,
+                gradien: const [Color(0xFFD9707F), Color(0xFFA93044)],
+                judul: 'Perbaiki Kesalahan',
+                isi: menunggu == 0
+                    ? 'Belum ada soal yang perlu diulang'
+                    : 'Soal yang pernah kamu jawab salah',
+                pil: menunggu == 0 ? null : '$menunggu',
+                warnaPil: AppColors.wrong,
+                warnaTeksPil: Colors.white,
+                garis: menunggu == 0 ? null : const Color(0xFFE6B9BF),
+                onTap: menunggu == 0 ? null : () => context.push(Rute.perbaiki),
+              ),
+              const SizedBox(height: 13),
+
+              ModeTile(
+                ikon: Icons.calendar_month_rounded,
+                gradien: const [Color(0xFFE8B75B), Color(0xFFB77A11)],
+                judul: 'Tantangan Harian',
+                isi: tantanganSelesai
+                    ? 'Sudah selesai hari ini. Sampai besok!'
+                    : 'Satu set tiap hari, XP dobel',
+                pil: tantanganSelesai ? 'selesai' : 'XP ×2',
+                warnaPil: tantanganSelesai
+                    ? AppColors.okSoft
+                    : const Color(0xFFFBEBD0),
+                warnaTeksPil: tantanganSelesai
+                    ? AppColors.ok
+                    : const Color(0xFF8A5A0B),
+                onTap: () => context.push(Rute.tantangan),
+              ),
+              const SizedBox(height: 13),
+
+              ModeTile(
+                ikon: Icons.timer_rounded,
+                gradien: const [Color(0xFF5FBE9C), Color(0xFF20785E)],
+                judul: 'Kilat 60 Detik',
+                isi: rekor == 0
+                    ? 'Hitung sebanyak mungkin dalam 60 detik'
+                    : 'Rekormu $rekor soal benar',
+                onTap: () => context.push(Rute.kilat),
+              ),
+            ],
+          ),
         ),
       ),
     );

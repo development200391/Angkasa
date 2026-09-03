@@ -69,6 +69,128 @@ class QuestionGenerator {
     return hasil;
   }
 
+  /// Membangun ulang satu soal dari tanda tangannya, mis. `17+5=?`.
+  ///
+  /// Inilah yang membuat mode Perbaiki Kesalahan nyaris gratis: yang
+  /// dicatat `question_attempts` cuma tanda tangannya, dan soalnya —
+  /// lengkap dengan pengecoh bernama dan pembahasannya — dirakit lagi di
+  /// sini. Tidak ada satu pun soal yang perlu disimpan.
+  ///
+  /// Mengembalikan `null` kalau tanda tangannya tidak dikenali; catatan
+  /// lama dari versi yang berbeda tidak boleh membuat layar gagal muat.
+  Question? dariSignature(
+    String signature, {
+    QuestionFormat format = QuestionFormat.pilihanGanda,
+    int optionCount = 4,
+    VisualAid visualAid = VisualAid.tidakAda,
+    int? timeLimitSeconds,
+  }) {
+    final m = RegExp(r'^(\?|\d+)([+−×÷?])(\?|\d+)=(\?|\d+)$')
+        .firstMatch(signature.replaceAll(' ', ''));
+    if (m == null) return null;
+
+    final kiri = m.group(1)!;
+    final tanda = m.group(2)!;
+    final kanan = m.group(3)!;
+    final hasil = m.group(4)!;
+
+    final unknown = tanda == '?'
+        ? UnknownPosition.operator
+        : kiri == '?'
+        ? UnknownPosition.operanKiri
+        : kanan == '?'
+        ? UnknownPosition.operanKanan
+        : UnknownPosition.hasil;
+
+    Operation? operation;
+    for (final o in Operation.values) {
+      if (o.lambang == tanda) operation = o;
+    }
+
+    int? l = int.tryParse(kiri);
+    int? r = int.tryParse(kanan);
+    int? res = int.tryParse(hasil);
+
+    if (unknown == UnknownPosition.operator) {
+      if (l == null || r == null || res == null) return null;
+      for (final o in Operation.values) {
+        if (_hitung(o, l, r) == res) operation = o;
+      }
+      if (operation == null) return null;
+    } else {
+      if (operation == null) return null;
+      switch (unknown) {
+        case UnknownPosition.hasil:
+          if (l == null || r == null) return null;
+          res = _hitung(operation, l, r);
+        case UnknownPosition.operanKiri:
+          if (r == null || res == null) return null;
+          l = switch (operation) {
+            Operation.tambah => res - r,
+            Operation.kurang => res + r,
+            Operation.kali => r == 0 ? null : res ~/ r,
+            Operation.bagi => res * r,
+          };
+        case UnknownPosition.operanKanan:
+          if (l == null || res == null) return null;
+          r = switch (operation) {
+            Operation.tambah => res - l,
+            Operation.kurang => l - res,
+            Operation.kali => l == 0 ? null : res ~/ l,
+            Operation.bagi => res == 0 ? null : l ~/ res,
+          };
+        case UnknownPosition.operator:
+          break;
+      }
+    }
+    if (l == null || r == null || res == null) return null;
+
+    final bentuk = unknown == UnknownPosition.operator
+        ? QuestionFormat.pilihanGanda
+        : format;
+    final answerValue = switch (unknown) {
+      UnknownPosition.hasil => res,
+      UnknownPosition.operanKiri => l,
+      UnknownPosition.operanKanan => r,
+      UnknownPosition.operator => 0,
+    };
+
+    return Question(
+      signature: _signature(operation, l, r, res, unknown),
+      format: bentuk,
+      prompt: _prompt(operation, l, r, res, unknown),
+      answer: unknown == UnknownPosition.operator
+          ? operation.lambang
+          : answerValue.toString(),
+      options: bentuk == QuestionFormat.pilihanGanda
+          ? _distractors.build(
+              operation: operation,
+              left: l,
+              right: r,
+              result: res,
+              unknown: unknown,
+              answerValue: answerValue,
+              optionCount: optionCount,
+            )
+          : const <AnswerOption>[],
+      operation: operation,
+      left: l,
+      right: r,
+      result: res,
+      unknown: unknown,
+      visualAid: visualAid,
+      explanation: _pembahasan(operation, l, r, res, unknown),
+      timeLimitSeconds: timeLimitSeconds,
+    );
+  }
+
+  static int _hitung(Operation op, int l, int r) => switch (op) {
+    Operation.tambah => l + r,
+    Operation.kurang => l - r,
+    Operation.kali => l * r,
+    Operation.bagi => r == 0 ? -1 : l ~/ r,
+  };
+
   Question single(DifficultyConfig config) {
     final operation =
         config.operations[_random.nextInt(config.operations.length)];
