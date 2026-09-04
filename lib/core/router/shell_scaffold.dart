@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/home/widgets/spanduk_luring.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_text_styles.dart';
 
 /// Empat tab di bilah bawah. Lebih dari empat terlalu ramai untuk jempol
 /// anak, dan tab kelima selalu jadi tempat pembuangan fitur.
-class ShellScaffold extends StatelessWidget {
+class ShellScaffold extends ConsumerWidget {
   const ShellScaffold({required this.shell, super.key});
 
   final StatefulNavigationShell shell;
@@ -23,8 +25,13 @@ class ShellScaffold extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final gelap = _gelap.contains(shell.currentIndex);
+
+    // Waktu sinyal hilang, **hanya** tab Peringkat yang meredup. Tiga
+    // tab lainnya tetap penuh warna, dan itu yang memberi tahu orang tua
+    // bahwa yang berhenti cuma satu fitur — bukan aplikasinya.
+    final peringkatRedup = ref.watch(peringkatRedupProvider);
 
     return Scaffold(
       backgroundColor: gelap ? AppColors.space : AppColors.bg,
@@ -51,6 +58,7 @@ class ShellScaffold extends StatelessWidget {
                       label: _tab[i].label,
                       aktif: shell.currentIndex == i,
                       gelap: gelap,
+                      redup: i == 2 && peringkatRedup,
                       onTap: () => shell.goBranch(
                         i,
                         initialLocation: i == shell.currentIndex,
@@ -73,6 +81,7 @@ class _Tab extends StatelessWidget {
     required this.aktif,
     required this.gelap,
     required this.onTap,
+    this.redup = false,
   });
 
   final IconData ikon;
@@ -80,6 +89,11 @@ class _Tab extends StatelessWidget {
   final bool aktif;
   final bool gelap;
   final VoidCallback onTap;
+
+  /// Diredupkan, tapi **tetap bisa ditekan**. Tab yang mati sama sekali
+  /// membuat anak menyangka fiturnya hilang; yang meredup lalu
+  /// menjelaskan dirinya sendiri di dalam jauh lebih jujur.
+  final bool redup;
 
   @override
   Widget build(BuildContext context) {
@@ -90,24 +104,27 @@ class _Tab extends StatelessWidget {
     return Semantics(
       selected: aktif,
       button: true,
-      child: InkResponse(
-        onTap: onTap,
-        radius: 44,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(ikon, size: 23, color: warna),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: AppTextStyles.family,
-                fontSize: 11,
-                color: warna,
-                fontWeight: aktif ? FontWeight.w600 : FontWeight.w400,
+      child: Opacity(
+        opacity: redup ? 0.4 : 1,
+        child: InkResponse(
+          onTap: onTap,
+          radius: 44,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(ikon, size: 23, color: warna),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: AppTextStyles.family,
+                  fontSize: 11,
+                  color: warna,
+                  fontWeight: aktif ? FontWeight.w600 : FontWeight.w400,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

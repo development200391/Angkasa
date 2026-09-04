@@ -1,0 +1,61 @@
+{
+  "parameters": {
+    "ambang_tiga_bintang": {
+      "defaultValue": { "value": "1.0" },
+      "valueType": "NUMBER",
+      "description": "Pecahan jawaban benar untuk 3 bintang. Digeser ke bawah kalau terlalu banyak anak berhenti di pos yang sama."
+    },
+    "ambang_dua_bintang": {
+      "defaultValue": { "value": "0.8" },
+      "valueType": "NUMBER",
+      "description": "Pecahan jawaban benar untuk 2 bintang."
+    },
+    "ambang_satu_bintang": {
+      "defaultValue": { "value": "0.6" },
+      "valueType": "NUMBER",
+      "description": "Pecahan jawaban benar untuk 1 bintang, sekaligus batas lulus sebuah pos."
+    },
+    "xp_pos": {
+      "defaultValue": { "value": "10" },
+      "valueType": "NUMBER",
+      "description": "XP untuk menyelesaikan satu pos biasa."
+    },
+    "xp_gerbang": {
+      "defaultValue": { "value": "30" },
+      "valueType": "NUMBER",
+      "description": "XP untuk pos gerbang di akhir bab."
+    },
+    "bonus_tiga_bintang": {
+      "defaultValue": { "value": "5" },
+      "valueType": "NUMBER",
+      "description": "Tambahan XP kalau posnya diselesaikan dengan 3 bintang."
+    },
+    "xp_mengulang": {
+      "defaultValue": { "value": "2" },
+      "valueType": "NUMBER",
+      "description": "XP untuk mengulang pos yang sudah selesai. Sengaja kecil, tapi bukan nol."
+    },
+    "xp_tantangan": {
+      "defaultValue": { "value": "20" },
+      "valueType": "NUMBER",
+      "description": "XP untuk menuntaskan tantangan harian."
+    },
+    "hati_per_sesi": {
+      "defaultValue": { "value": "5" },
+      "valueType": "NUMBER",
+      "description": "Jumlah hati tiap sesi kuis."
+    },
+    "ukuran_liga": {
+      "defaultValue": { "value": "30" },
+      "valueType": "NUMBER",
+      "description": "Berapa anak dalam satu liga mingguan. Kecil supaya peringkat 7 dari 30 terasa mungkin dikejar."
+    },
+    "papan_peringkat_aktif": {
+      "defaultValue": { "value": "true" },
+      "valueType": "BOOLEAN",
+      "description": "Sakelar mati darurat papan peringkat, milik pengembang. Setelan orang tua di layar Akun & data terpisah, dan keduanya harus menyala."
+    }
+  },
+  "parameterGroups": {},
+  "conditions": []
+}

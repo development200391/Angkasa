@@ -1,0 +1,97 @@
+rules_version = '2';
+
+// Aturan keamanan Firestore untuk Angkasa.
+//
+// Prinsipnya satu: **anak hanya boleh menulis barisnya sendiri, dan
+// hanya field yang memang ada di layar Data yang dikirim.** Daftar
+// `hasOnly` di bawah bukan formalitas — itulah yang membuat janji di
+// layar tersebut bisa ditegakkan, bukan sekadar diucapkan. Kalau suatu
+// hari ada field baru yang disinkronkan, berkas ini ikut berubah di
+// komit yang sama.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function masuk() {
+      return request.auth != null;
+    }
+
+    function saya(uid) {
+      return masuk() && request.auth.uid == uid;
+    }
+
+    // Profil dan cadangan progres: benar-benar milik sendiri. Tidak ada
+    // seorang pun, termasuk anak lain di liga yang sama, yang bisa
+    // membacanya.
+    //
+    // `hasOnly` di sini menegakkan janji layar **Data yang dikirim**:
+    // delapan field, dan tidak lebih. Tanpanya, aplikasi yang diubah
+    // orang lain — atau versi kita sendiri yang suatu hari khilaf —
+    // bisa menyimpan nomor telepon atau nama sekolah di baris anak, dan
+    // server menerimanya tanpa satu pun keluhan. Daftar ini harus sama
+    // persis dengan `ProfilDaring.fieldnya`.
+    //
+    // `delete` dipisah karena `request.resource` tidak ada waktu
+    // menghapus; menggabungkannya ke `write` membuat tombol "Hapus data
+    // di server" selalu gagal.
+    match /users/{uid} {
+      allow read, delete: if saya(uid);
+      allow create, update: if saya(uid)
+        && request.resource.data.keys().hasOnly([
+             'nickname', 'avatarId', 'gradeLevel', 'totalXp',
+             'streakCount', 'weeklyXp', 'lastSyncAt', 'platform']);
+
+      match /cadangan/{dokumen} {
+        allow read, delete: if saya(uid);
+        allow create, update: if saya(uid)
+          && request.resource.data.keys().hasOnly(
+               ['levels', 'badges', 'updatedAt']);
+      }
+    }
+
+    match /leaderboard_weekly/{weekId} {
+      // Penghitung pembagian liga. Boleh dinaikkan siapa saja yang
+      // masuk, karena itulah cara anak mendaftarkan dirinya sendiri
+      // tanpa satu baris pun kode server.
+      //
+      // **Batasnya jujur disebut di sini:** karena tidak ada kode
+      // server, aplikasi yang dibongkar bisa menulis angka apa pun ke
+      // penghitung ini. Yang bisa dirusaknya cuma pembagian liga —
+      // sebagian anak masuk liga yang lebih sepi atau lebih ramai
+      // dari seharusnya. Ia **tidak** bisa mengubah XP anak lain, dan
+      // tidak bisa membaca satu pun data pribadi; itu dijaga aturan di
+      // atas. Memperbaikinya butuh Cloud Functions, dan itu Tahap 4.
+      //
+      // Tidak ada `delete`: penghitung ini milik bersama seluruh anak
+      // di minggu itu, dan tidak ada satu pun yang boleh menghapusnya.
+      allow read: if masuk();
+      allow create, update: if masuk()
+        && request.resource.data.keys().hasOnly(['ligaTerakhir', 'jumlah', 'ukuran'])
+        && request.resource.data.ligaTerakhir is int
+        && request.resource.data.ligaTerakhir > 0
+        && request.resource.data.jumlah is int
+        && request.resource.data.jumlah >= 0;
+
+      match /entries/{uid} {
+        // Papan peringkat memang untuk dibaca bersama — itu seluruh
+        // gunanya. Yang ada di sini cuma nama panggilan dan XP.
+        allow read: if masuk();
+
+        allow create, update: if saya(uid)
+          && request.resource.data.keys().hasOnly(
+               ['nickname', 'avatarId', 'xp', 'league', 'updatedAt'])
+          && request.resource.data.nickname is string
+          && request.resource.data.nickname.size() >= 3
+          && request.resource.data.nickname.size() <= 16
+          && request.resource.data.avatarId is string
+          && request.resource.data.avatarId.size() <= 20
+          && request.resource.data.xp is int
+          && request.resource.data.xp >= 0
+          && request.resource.data.league is int
+          && request.resource.data.league > 0;
+
+        // Dipakai tombol "Hapus data di server".
+        allow delete: if saya(uid);
+      }
+    }
+  }
+}

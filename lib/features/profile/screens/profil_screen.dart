@@ -91,6 +91,14 @@ class ProfilScreen extends ConsumerWidget {
                 const _RingkasanLencana(),
                 const SizedBox(height: 24),
                 _Baris(
+                  ikon: Icons.badge_outlined,
+                  judul: 'Nama panggilan',
+                  keterangan: p.nickname.isEmpty
+                      ? 'Belum dipilih'
+                      : 'Terlihat pemain lain di papan peringkat',
+                  onTap: () => context.push(Rute.namaPanggilan),
+                ),
+                _Baris(
                   ikon: Icons.public_rounded,
                   judul: 'Pilih planet',
                   keterangan: 'Ganti kelas kapan saja',

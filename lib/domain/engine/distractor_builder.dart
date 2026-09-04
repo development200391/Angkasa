@@ -5,21 +5,28 @@ import '../models/question.dart';
 
 /// Membangun pengecoh pilihan ganda.
 ///
-/// **Opsi salah tidak boleh diacak.** Tiap pengecoh meniru satu kesalahan
-/// yang benar-benar sering dilakukan anak, dan tiap kesalahan itu punya
-/// nama ([MistakeKind]). Efek sampingnya yang paling berharga: karena
-/// pengecohnya bernama, `question_attempts` berubah dari catatan nilai
-/// jadi data diagnosa — "sering lupa menyimpan", bukan "nilai 60".
+/// **Nilai pengecohnya tidak diacak — posisinya diacak.** Dua hal yang
+/// berbeda, dan keduanya penting.
+///
+/// Nilainya: tiap pengecoh meniru satu kesalahan yang benar-benar sering
+/// dilakukan anak, dan tiap kesalahan itu punya nama ([MistakeKind]).
+/// Efek sampingnya yang paling berharga: karena pengecohnya bernama,
+/// `question_attempts` berubah dari catatan nilai jadi data diagnosa —
+/// "sering lupa menyimpan", bukan "nilai 60".
+///
+/// Posisinya: sampai Tahap 2 opsinya diurutkan menaik supaya angkanya
+/// enak dibaca. Itu keliru, dan baru ketahuan saat menjalankan aplikasi
+/// di emulator: pengecoh yang paling sering terpakai adalah "meleset
+/// satu" ke dua arah, jadi urutan menaik menaruh jawaban benar **selalu
+/// di tengah**. Sepuluh soal berturut-turut bisa dijawab 10/10 tanpa
+/// berhitung sama sekali, cuma dengan menekan tombol tengah — dan bintang
+/// tiga yang didapat begitu tidak mengukur apa pun.
 class DistractorBuilder {
   DistractorBuilder({Random? random}) : _random = random ?? Random();
 
   final Random _random;
 
-  /// Daftar opsi lengkap (benar + pengecoh), sudah diurutkan menaik.
-  ///
-  /// Urut menaik, bukan acak: posisi jawaban benar jadi tidak bisa
-  /// ditebak dari kebiasaan, dan anak membaca angka dalam urutan yang
-  /// wajar.
+  /// Daftar opsi lengkap (benar + pengecoh), posisinya diacak.
   List<AnswerOption> build({
     required Operation operation,
     required int left,
@@ -61,12 +68,11 @@ class DistractorBuilder {
     tambah(answerValue - 10, MistakeKind.salahNilaiTempat);
 
     final dipilih = kandidat.entries.take(optionCount - 1).toList();
-    final opsi = <AnswerOption>[
+    return <AnswerOption>[
       AnswerOption(label: '$answerValue', isCorrect: true),
       for (final e in dipilih)
         AnswerOption(label: '${e.key}', mistake: e.value),
-    ]..sort((a, b) => int.parse(a.label).compareTo(int.parse(b.label)));
-    return opsi;
+    ]..shuffle(_random);
   }
 
   /// Kesalahan yang punya nama, urut dari yang paling sering terjadi.
@@ -152,7 +158,7 @@ class DistractorBuilder {
       AnswerOption(label: benar.lambang, isCorrect: true),
       for (final o in lain.take(optionCount - 1))
         AnswerOption(label: o.lambang, mistake: MistakeKind.operasiTerbalik),
-    ]..sort((a, b) => a.label.compareTo(b.label));
+    ]..shuffle(_random);
   }
 
   /// Menyimpan hanya berlaku kalau ada kolom puluhan yang bisa dinaiki.

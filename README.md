@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <sub><b>APLIKASI</b> · Tahap 1–2 selesai, jalan penuh tanpa jaringan</sub><br>
+  <sub><b>APLIKASI</b> · Tahap 1–3 selesai, jalan penuh tanpa jaringan</sub><br>
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white" alt="Flutter">
   <img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white" alt="Dart">
   <img src="https://img.shields.io/badge/Riverpod-3.x-1F6FEB" alt="Riverpod">
@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <sub><b>DARING</b> · <a href="#tahap-3--daring-ringan">Tahap 3</a>, seringan mungkin</sub><br>
+  <sub><b>DARING</b> · <a href="#tahap-3--daring-ringan">Tahap 3</a> selesai — tambahan, tidak pernah syarat</sub><br>
   <img src="https://img.shields.io/badge/Firebase%20Auth-anonim-FFCA28?logo=firebase&logoColor=black" alt="Firebase Auth">
   <img src="https://img.shields.io/badge/Cloud%20Firestore-FFCA28?logo=firebase&logoColor=black" alt="Firestore">
   <img src="https://img.shields.io/badge/Remote%20Config-FFCA28?logo=firebase&logoColor=black" alt="Remote Config">
@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-tahap%202%20selesai-256F5A" alt="Status">
+  <img src="https://img.shields.io/badge/status-tahap%203%20selesai-256F5A" alt="Status">
   <img src="https://img.shields.io/badge/MVP-78%20pos%20%C2%B7%202%20planet-C07C12" alt="MVP">
   <img src="https://img.shields.io/badge/license-MIT-535F77" alt="License">
 </p>
@@ -372,6 +372,8 @@ Presentation  ──▶  Domain  ──▶  Data
 
 **Luring dulu, daring belakangan.** SQLite adalah sumber kebenaran; Firestore hanya cermin untuk papan peringkat dan pemulihan di HP baru. Tahap 1 sampai 2 berjalan tanpa satu baris pun kode Firebase, dan itu disengaja — supaya aplikasi bisa dirilis ke Play Store sebelum ada urusan akun, biaya, dan kebijakan data anak.
 
+> **Satu berkas yang boleh mengimpor Firebase.** Seluruh kode daring berhenti di balik satu antarmuka, `RemoteGateway`, dengan dua implementasi: `FirebaseGateway` dan `GatewayLuring`. Yang kedua bukan tiruan untuk uji — itulah yang benar-benar dipakai `flutter run` tanpa argumen apa pun, dan yang dipakai seluruh berkas uji. Aturan ini yang membuat janji *"kalau Firebase mati, aplikasinya jalan persis seperti Tahap 2"* bisa **diperiksa**, bukan sekadar diucapkan: tidak ada satu pun layar, repositori, atau uji yang mengimpor `firebase_*`.
+
 > **Catatan generator.** Soal hitung dibangkitkan saat berjalan dari sebuah `DifficultyConfig`, bukan disimpan satu per satu. Yang ada di basis data adalah konfigurasinya. Tanpa keputusan ini, mengisi 250 pos berarti menulis 2.500 soal dengan tangan — dan proyeknya berhenti di situ.
 
 > **Catatan lapisan.** Dua aturan menjaga folder tetap rapi: fitur tidak pernah mengimpor fitur lain (lewat `shared/` atau `domain/`), dan widget tidak pernah menyentuh DAO (selalu lewat repository). Keduanya diperiksa manual sekarang; kalau proyeknya tumbuh, `import_lint` bisa menegakkannya otomatis.
@@ -394,6 +396,10 @@ angkasa/
 ├── tool/
 │   ├── buat_konten.py            # bangkitkan seed 78 pos, satu sumbu per pos
 │   └── buat_suara.py             # bangkitkan enam efek suara jadi WAV
+├── firebase.json                 # aturan, indeks, dan port emulator
+├── firestore.rules               # anak hanya boleh menulis barisnya sendiri
+├── firestore.indexes.json        # indeks (league, xp) untuk papan peringkat
+├── env.contoh.json               # salin jadi env.json; env.json tidak masuk git
 ├── assets/
 │   ├── fonts/                    # Fredoka dibundel, tanpa unduhan
 │   ├── audio/                    # benar, salah, naik level, lepas landas
@@ -407,7 +413,7 @@ angkasa/
 │   │   │                         # app_config (--dart-define)
 │   │   ├── theme/                # ThemeData terang dan gelap
 │   │   ├── router/               # go_router + ShellRoute empat tab
-│   │   ├── services/             # audio, haptic, analytics, konektivitas, notifikasi
+│   │   ├── services/             # audio, konektivitas, notifikasi
 │   │   ├── utils/                # Result, format tanggal, ekstensi
 │   │   └── error/                # failure dan penerjemahnya jadi kalimat
 │   ├── data/
@@ -433,6 +439,9 @@ angkasa/
 │   │       ├── star_calculator.dart
 │   │       ├── streak_rules.dart         # streak + pelindung mingguan
 │   │       ├── badge_rules.dart          # katalog 24 lencana
+│   │       ├── liga_rules.dart           # minggu ISO, liga 30, pergerakan
+│   │       ├── nickname_filter.dart      # penyaring nama panggilan
+│   │       ├── aturan_nilai.dart         # nilai yang bisa disetel Remote Config
 │   │       └── unlock_rules.dart         # empat aturan di bagian Sistem Level
 │   ├── features/
 │   │   ├── splash/
@@ -450,7 +459,9 @@ angkasa/
 │   │   │   │                     # heart_bar, number_line, answer_feedback
 │   │   │   └── providers/quiz_controller.dart
 │   │   ├── practice/             # empat mode latihan bebas
-│   │   ├── leaderboard/
+│   │   ├── leaderboard/          # liga mingguan, hasil akhir minggu
+│   │   ├── account/              # nama panggilan, simpan & pulihkan progres,
+│   │   │                         # akun & data, data yang dikirim
 │   │   ├── profile/
 │   │   └── parent_gate/
 │   └── shared/
@@ -541,13 +552,24 @@ Opsi salah **tidak boleh diacak**. Bangkitkan dari kesalahan yang benar-benar se
 ### Firestore — seminimal mungkin
 
 ```
-users/{uid}
+users/{uid}                              ← delapan field, tidak lebih
   nickname, avatarId, gradeLevel, totalXp,
   streakCount, weeklyXp, lastSyncAt, platform
 
+users/{uid}/cadangan/progres             ← hanya untuk pindah HP
+  levels: { "l-1-1-1": "3,10", ... }     ← id pos → "bintang,skor"
+  badges: [ ... ], updatedAt
+
+leaderboard_weekly/{weekId}              ← penghitung pembagian liga
+  ligaTerakhir, jumlah, ukuran
+
 leaderboard_weekly/{weekId}/entries/{uid}
-  nickname, avatarId, xp, updatedAt
+  nickname, avatarId, xp, league, updatedAt
 ```
+
+`weekId` memakai penomoran ISO 8601 (`2026-W36`), dan itu bukan gaya-gayaan: minggu di pergantian tahun jadi tidak pernah terbelah jadi dua liga. 29 Desember 2025 dan 1 Januari 2026 sama-sama menghasilkan `2026-W01`.
+
+**Pembagian liganya tanpa satu baris pun kode server.** Dokumen `{weekId}` cuma memegang dua angka — liga terakhir yang dibuka dan berapa isinya — dan tiap anak mendaftarkan dirinya sendiri lewat satu transaksi, sekali seminggu. Cloud Function untuk pekerjaan sebesar ini berarti sesuatu yang harus di-deploy, dipantau, dan dibayar.
 
 **`question_attempts` tidak pernah disinkronkan.** Volumenya ribuan baris per anak, tidak berguna sama sekali secara daring, dan langsung membengkakkan tagihan Firestore.
 
@@ -557,6 +579,10 @@ leaderboard_weekly/{weekId}/entries/{uid}
 | Menulis | Saat pos selesai (ditahan 30 detik) dan saat aplikasi masuk latar belakang. Bukan tiap soal |
 | Luring | Perubahan masuk `sync_queue`, dikirim saat koneksi kembali |
 | Konflik | SQLite selalu menang. Firestore tidak pernah menimpa data lokal kecuali saat pemulihan di HP baru |
+
+Antreannya menggabungkan dirinya sendiri lewat indeks unik `(entity, entity_key)`: menulis profil dua ratus kali selama seminggu tanpa sinyal tetap menyisakan **satu** baris, yang isinya keadaan terakhir — karena keadaan terakhirlah satu-satunya yang benar.
+
+Aturan keamanannya ada di [`firestore.rules`](firestore.rules), dan daftar `hasOnly` di dalamnya bukan formalitas: **itulah yang membuat janji di layar Data yang dikirim bisa ditegakkan, bukan cuma diucapkan.** Menyelundupkan satu field tambahan ke baris papan peringkat sendiri pun ditolak server.
 
 ---
 
@@ -604,7 +630,7 @@ Titik pembelian sengaja ditaruh persis di sini: anak sudah menyelesaikan dua pla
 - Dart 3.x
 - Android Studio atau VS Code dengan ekstensi Flutter
 - Perangkat atau emulator Android; Xcode kalau menyasar iOS
-- Akun Firebase — **baru dibutuhkan di Tahap 3**, tidak perlu untuk mulai
+- Akun Firebase — hanya untuk merilis bagian daring; mengembangkannya cukup dengan Firebase Emulator Suite
 
 ### Pemasangan
 
@@ -619,18 +645,63 @@ dart run build_runner build
 
 ### Konfigurasi lingkungan
 
-Salin `.env.example` jadi `.env` di akar proyek:
+Bawaannya luring penuh: `flutter run` tanpa argumen apa pun tidak menyentuh jaringan sama sekali, dan itulah cara tercepat mencoba aplikasinya.
 
-```env
-# true = jalan sepenuhnya luring, tanpa Firebase sama sekali
-OFFLINE_ONLY=true
+Untuk menyalakan bagian daring, salin `env.contoh.json` jadi `env.json` lalu isi dari konsol Firebase:
 
-# baru diisi mulai Tahap 3
-FIREBASE_PROJECT_ID=
-ENABLE_LEADERBOARD=false
+```bash
+flutter run --dart-define-from-file=env.json           # proyek Firebase sungguhan
+flutter run --dart-define-from-file=env.emulator.json  # emulator lokal
 ```
 
-Nilai yang sama bisa diberikan lewat `--dart-define` saat build, dan `--dart-define` selalu menang atas `.env`. Jangan pernah menaruh `.env` ke dalam git.
+`--dart-define-from-file` bawaan Flutter, jadi tidak ada paket pembaca `.env` yang perlu dipasang — dan yang lebih penting, tidak ada berkas setelan yang ikut jadi aset di dalam APK. Dua-duanya tidak masuk git.
+
+### Mengembangkan tanpa proyek Firebase
+
+Seluruh bagian daring bisa dijalankan dan diuji di komputer sendiri, tanpa membuat proyek Firebase dan tanpa satu rupiah pun biaya:
+
+```bash
+firebase emulators:start --only auth,firestore --project demo-angkasa
+flutter run --dart-define-from-file=env.emulator.json
+```
+
+Dua pengaman, dan sengaja bertumpuk. `FIREBASE_EMULATOR_HOST` berisi `10.0.2.2` (alamat komputer dilihat dari emulator Android): begitu terisi, aplikasinya tidak pernah menghubungi server sungguhan. Dan awalan `demo-` pada id proyek membuat Firebase CLI **menolak** menyentuh proyek nyata mana pun — jadi salah ketik satu perintah pun tidak bisa mengirim data uji ke basis data yang dipakai anak sungguhan.
+
+> **Emulator Firebase berbicara HTTP polos, dan Android memblokirnya sejak API 28.** Izinnya ada di `android/app/src/{debug,profile}/res/xml/network_security_config.xml` — hanya untuk `10.0.2.2` dan `localhost`, dan tidak pernah ikut ke build rilis. Tanpa berkas itu `signInAnonymously()` menggantung tanpa satu pun pesan galat, yang membuatnya sangat lama tidak ketahuan.
+
+### Menyiapkan proyek Firebase sungguhan
+
+Hampir semuanya lewat CLI, dan sengaja: langkah yang bisa diulang tanpa mengklik apa pun adalah langkah yang tidak akan salah diingat enam bulan lagi.
+
+```bash
+firebase projects:create angkasa-sd --display-name "Angkasa"
+firebase apps:create ANDROID "Angkasa Android" --package-name com.angkasa.angkasa
+firebase apps:android:sha:create <appId> <SHA-1>
+firebase deploy --only firestore,remoteconfig
+firebase apps:sdkconfig ANDROID <appId>          # kelima nilai untuk env.json
+```
+
+SHA-1 kunci debug diambil dari:
+
+```bash
+keytool -list -v -alias androiddebugkey -storepass android   -keystore ~/.android/debug.keystore | grep SHA1
+```
+
+Dua hal yang **tidak** ada perintahnya dan harus lewat konsol: menyalakan provider `Anonymous` dan `Google` di Authentication, dan memilih lokasi Firestore. Yang kedua punya jebakan: `firebase deploy --only firestore` membuat sendiri database yang belum ada, diam-diam, di `nam5` (Amerika Serikat) — dan **lokasi Firestore permanen**. Untuk pengguna Indonesia, buat dulu databasenya sebelum deploy pertama:
+
+```bash
+firebase firestore:databases:create "(default)" --location asia-southeast2
+```
+
+Sesudah tiap `deploy`, periksa aturannya di server:
+
+```bash
+python tool/periksa_aturan.py
+```
+
+Ia masuk sebagai dua anak anonim lewat **API key publik saja** — yang sama persis dengan yang ikut masuk ke tiap APK — lalu mencoba 19 hal yang seharusnya boleh dan seharusnya ditolak, dan menghapus jejaknya sendiri. Alasannya ada di berkas itu: aturan keamanan adalah satu-satunya bagian sistem ini yang **tidak ikut dikompilasi**. Salah ketik di dalamnya tidak membuat satu pun uji merah dan tidak membuat aplikasinya gagal jalan; kegagalannya diam, dan bentuknya adalah data anak yang bisa dibaca orang lain.
+
+> **`GOOGLE_SERVER_CLIENT_ID` adalah *Web* client ID, bukan yang bertuliskan "android".** Ada tiga OAuth client di `google-services.json` dan yang benar `client_type: 3`. Android meminta client id milik server justru karena yang dibutuhkan Firebase adalah `idToken` yang bisa diverifikasi, bukan token untuk aplikasinya sendiri. Salah pilih membuat `authenticate()` berhasil tapi `idToken`-nya `null` — dan pesan galatnya tidak menyebut client id sama sekali. Nilainya baru ada setelah provider Google dinyalakan di konsol.
 
 ### Menjalankan
 
@@ -677,6 +748,11 @@ flutter build apk --release                      # rilis Android
 flutter build appbundle --release                # untuk Play Store
 flutter build ipa --release                      # rilis iOS
 python design/shoot.py                           # render ulang tangkapan layar rancangan
+
+firebase emulators:start --only auth,firestore --project demo-angkasa
+firebase deploy --only firestore                  # aturan keamanan dan indeks
+firebase deploy --only remoteconfig               # ambang bintang dan XP
+python tool/periksa_aturan.py                    # uji aturan yang aktif di server
 ```
 
 ---
@@ -742,12 +818,13 @@ Untuk aplikasi anak, suara dan animasi bukan pemolesan akhir — itu fitur inti.
 
 > **Yang dikerjakan di luar delapan layar itu.** Tiga keputusan kecil menentukan bentuk Tahap 2 lebih dari layarnya sendiri. **Pertama, soal tidak disimpan.** Mode Perbaiki Kesalahan merakit ulang soalnya dari `question_signature` — `17+5=?` jadi soal lengkap beserta pengecoh bernama dan pembahasannya lewat `QuestionGenerator.dariSignature`, jadi tidak ada satu baris soal pun yang perlu ikut disimpan sejak Tahap 1. **Kedua, lencana tidak punya penghitung.** Kedua puluh empat lencananya dinilai ulang dari nol tiap sesi, dibaca dari `level_progress`, `question_attempts`, dan `daily_activity`; memperbaiki syarat sebuah lencana tidak pernah butuh migrasi. **Ketiga, suaranya dibangkitkan, bukan diunduh** — [`tool/buat_suara.py`](tool/buat_suara.py) menulis enam berkas WAV pendek dari gelombang sinus, jadi tidak ada lisensi pihak ketiga yang perlu diurus dan totalnya di bawah 150 KB.
 
-### Tahap 3 · Daring ringan — **belum mulai**
-- [ ] Firebase Auth anonim
-- [ ] `sync_queue` dan sinkron ke Firestore
-- [ ] Papan peringkat XP mingguan
-- [ ] Remote Config untuk ambang bintang dan besaran XP
-- [ ] Crashlytics
+### Tahap 3 · Daring ringan — **selesai**
+- [x] Firebase Auth anonim
+- [x] `sync_queue` dan sinkron ke Firestore
+- [x] Papan peringkat XP mingguan
+- [x] Remote Config untuk ambang bintang dan besaran XP
+- [x] Crashlytics
+- [x] Menautkan akun Google, untuk memindahkan progres ke HP baru
 
 <p align="center">
   <img src="docs/screenshots/00-semua-layar-tahap3.png" width="920" alt="Delapan layar Tahap 3">
@@ -770,6 +847,10 @@ Tiga keputusan yang menentukan bentuk layar-layar ini:
 
 
 Semua yang di atas bersifat tambahan. Kalau Firebase mati, aplikasinya harus tetap jalan persis seperti Tahap 2 — itu syarat yang tidak bisa ditawar untuk aplikasi yang dipakai anak di rumah tanpa sinyal.
+
+> **Yang dikerjakan di luar delapan layar itu.** Tiga hal menentukan bentuk Tahap 3 lebih dari layarnya sendiri. **Pertama, satu berkas yang boleh mengimpor Firebase.** Seluruh kode daring berhenti di balik `RemoteGateway`, dan implementasi keduanya — `GatewayLuring` — bukan tiruan untuk uji: itulah yang benar-benar dipakai `flutter run` tanpa argumen apa pun, dan yang dipakai seluruh berkas uji. Janji "kalau Firebase mati, aplikasinya jalan seperti Tahap 2" jadi bisa **diperiksa**, bukan cuma diucapkan. **Kedua, antrean yang menggabungkan dirinya sendiri.** Indeks unik `(entity, entity_key)` di `sync_queue` membuat seminggu penuh tanpa sinyal tetap berujung pada tiga baris kiriman, bukan ratusan. **Ketiga, angka yang bisa digeser dari jauh.** Ambang bintang dan besaran XP pindah dari konstanta ke [`aturan_nilai.dart`](lib/domain/engine/aturan_nilai.dart), lengkap dengan penyaring: nilai di luar rentang masuk akal dibuang, dan ambang yang terbalik mengembalikan **ketiganya** ke bawaan sekaligus — satu salah ketik di konsol tidak boleh bisa membuat semua anak kehilangan bintangnya.
+
+> **Dua bug lama yang baru ketahuan waktu Tahap 3 dijalankan di emulator.** Yang pertama serius: opsi pilihan ganda diurutkan menaik sejak Tahap 1, dan karena pengecoh yang paling sering terpakai adalah "meleset satu" ke dua arah, **jawaban benarnya selalu di tengah**. Sepuluh soal berturut-turut bisa dijawab 10/10 tanpa berhitung sama sekali. Posisinya sekarang diacak; nilai pengecohnya tetap tidak diacak, karena justru itu yang membuat `question_attempts` jadi data diagnosa. Yang kedua lebih kecil tapi sama membingungkannya: layar Peringkat menyebut "Tidak ada sinyal" untuk anak yang sinyalnya baik-baik saja tapi belum main minggu itu — menyalahkan jaringan untuk sesuatu yang bukan salahnya adalah cara tercepat membuat orang berhenti percaya pada pesan di layar.
 
 ### Tahap 4 · Skala dan monetisasi — **belum mulai**
 - [ ] Planet Kali, Pecah, Ukur, dan Ruang (kelas 3–6)

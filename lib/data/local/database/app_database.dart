@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'migrations/migration_v1.dart';
 import 'migrations/migration_v2.dart';
+import 'migrations/migration_v3.dart';
 import 'seed/seed_runner.dart';
 
 /// Satu-satunya pintu ke SQLite.
@@ -13,7 +14,7 @@ import 'seed/seed_runner.dart';
 class AppDatabase {
   AppDatabase({this.namaBerkas = 'angkasa.db', this.seedRunner});
 
-  static const versiSkema = 2;
+  static const versiSkema = 3;
 
   final String namaBerkas;
   final SeedRunner? seedRunner;
@@ -62,6 +63,7 @@ class AppDatabase {
   static List<String> migrasiUntuk(int versi) => switch (versi) {
     1 => migrationV1,
     2 => migrationV2,
+    3 => migrationV3,
     _ => const [],
   };
 

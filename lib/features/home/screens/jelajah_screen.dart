@@ -15,6 +15,7 @@ import '../providers/home_providers.dart';
 import '../widgets/level_node.dart';
 import '../widgets/level_sheet.dart';
 import '../widgets/path_painter.dart';
+import '../widgets/spanduk_luring.dart';
 import '../widgets/starfield.dart';
 import '../widgets/zona_sheet.dart';
 
@@ -62,6 +63,7 @@ class JelajahScreen extends ConsumerWidget {
                       streak: profil?.streakCount ?? 0,
                       onPlanet: () => context.push(Rute.pilihPlanet),
                     ),
+                    const SpandukLuring(),
                     if (zona != null)
                       _ChipZona(
                         judul: zona.chapter.label,

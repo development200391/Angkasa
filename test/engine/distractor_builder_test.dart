@@ -50,15 +50,55 @@ void main() {
     }
   });
 
-  test('opsi urut menaik, bukan diacak', () {
-    final l = label(
-      Operation.tambah,
-      7,
-      5,
-      12,
-      jumlah: 4,
-    ).map(int.parse).toList();
-    expect(l, [...l]..sort());
+  test('posisi jawaban benar tidak bisa ditebak dari kebiasaan', () {
+    // Bug yang baru ketahuan waktu aplikasinya benar-benar dijalankan:
+    // waktu opsinya diurutkan menaik, pengecoh "meleset satu" ke dua
+    // arah menaruh jawaban benar **selalu di tengah** — dan sepuluh soal
+    // berturut-turut bisa dijawab 10/10 tanpa berhitung sama sekali.
+    final builder = DistractorBuilder(random: Random(11));
+    final posisi = <int>{};
+    for (var n = 2; n < 40; n++) {
+      final opsi = builder.build(
+        operation: Operation.tambah,
+        left: n,
+        right: 1,
+        result: n + 1,
+        unknown: UnknownPosition.hasil,
+        answerValue: n + 1,
+        optionCount: 3,
+      );
+      posisi.add(opsi.indexWhere((o) => o.isCorrect));
+    }
+    expect(
+      posisi.length,
+      greaterThan(1),
+      reason: 'tidak selalu di posisi yang sama',
+    );
+    expect(posisi, containsAll([0, 1, 2]));
+  });
+
+  test('jawaban benar tersebar merata, bukan cuma sesekali bergeser', () {
+    final builder = DistractorBuilder(random: Random(5));
+    final hitung = <int, int>{0: 0, 1: 0, 2: 0};
+    for (var n = 0; n < 300; n++) {
+      final opsi = builder.build(
+        operation: Operation.tambah,
+        left: 3 + (n % 15),
+        right: 4,
+        result: 7 + (n % 15),
+        unknown: UnknownPosition.hasil,
+        answerValue: 7 + (n % 15),
+        optionCount: 3,
+      );
+      hitung[opsi.indexWhere((o) => o.isCorrect)] =
+          hitung[opsi.indexWhere((o) => o.isCorrect)]! + 1;
+    }
+    // Menekan satu tombol terus-menerus tidak boleh lebih baik daripada
+    // menebak — jadi tidak satu pun posisi boleh mendekati mayoritas.
+    for (final e in hitung.entries) {
+      expect(e.value, greaterThan(60), reason: 'posisi ${e.key}');
+      expect(e.value, lessThan(160), reason: 'posisi ${e.key}');
+    }
   });
 
   test('7 + 5 memancing meleset satu: 11 dan 13 ikut jadi pilihan', () {

@@ -97,6 +97,35 @@ class ProgressDao {
     await batch.commit(noResult: true);
   }
 
+  /// Menulis ulang seluruh progres dari cadangan.
+  ///
+  /// Menghapus dulu, baru menulis — karena memulihkan berarti "jadikan
+  /// HP ini sama dengan yang tersimpan", bukan "gabungkan keduanya".
+  /// Menggabungkan terdengar lebih aman, tapi menghasilkan keadaan yang
+  /// tidak pernah benar-benar ada di HP mana pun.
+  Future<void> pulihkan(Map<String, String> cadangan) async {
+    await _db.delete('level_progress');
+    if (cadangan.isEmpty) return;
+
+    final sekarang = DateTime.now().toIso8601String();
+    final batch = _db.batch();
+    for (final e in cadangan.entries) {
+      final bagian = e.value.split(',');
+      final bintang = int.tryParse(bagian.first) ?? 0;
+      final skor = bagian.length > 1 ? int.tryParse(bagian[1]) ?? 0 : 0;
+      batch.insert('level_progress', {
+        'level_id': e.key,
+        'stars': bintang,
+        'best_score': skor,
+        'attempts': 0,
+        'first_completed_at': bintang > 0 ? sekarang : null,
+        'last_played_at': bintang > 0 ? sekarang : null,
+        'is_unlocked': 1,
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    await batch.commit(noResult: true);
+  }
+
   Future<void> hapusSemua() => _db.delete('level_progress');
 
   // ------------------------------------------------------ harian

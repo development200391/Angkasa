@@ -24,6 +24,7 @@ class ProgressRepository {
     required ProfileDao profileDao,
     required AttemptDao attemptDao,
     required BadgeRepository badgeRepository,
+    this.setelahAktivitas,
   }) : _level = levelDao,
        _progress = progressDao,
        _profile = profileDao,
@@ -35,6 +36,15 @@ class ProgressRepository {
   final ProfileDao _profile;
   final AttemptDao _attempt;
   final BadgeRepository _badge;
+
+  /// Dipanggil setiap kali ada aktivitas yang tercatat.
+  ///
+  /// Di Tahap 3 isinya mengantrekan profil untuk dikirim. Sengaja
+  /// berupa panggilan balik alih-alih ketergantungan langsung ke
+  /// repositori sinkron: kelas ini tidak boleh tahu apa pun tentang
+  /// jaringan, dan seluruh ujinya jalan tanpa memberikan apa-apa di
+  /// sini.
+  final Future<void> Function()? setelahAktivitas;
 
   /// Seluruh isi satu planet beserta progresnya — sekali baca untuk
   /// seluruh layar Jelajah.
@@ -155,6 +165,7 @@ class ProgressRepository {
 
     final profil = await _profile.ambil();
     if (!hitungStreak) {
+      await setelahAktivitas?.call();
       return StreakOutcome(
         streak: profil.streakCount,
         pelindungTerpakai: false,
@@ -182,6 +193,7 @@ class ProgressRepository {
             : profil.streakShieldLastUsed,
       ),
     );
+    await setelahAktivitas?.call();
     return hasil;
   }
 

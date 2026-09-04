@@ -4,9 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/repositories/practice_repository.dart';
 import '../../domain/models/enums.dart';
+import '../../domain/models/liga.dart';
 import '../../domain/models/quiz_result.dart';
+import '../../features/account/screens/akun_data_screen.dart';
+import '../../features/account/screens/data_dikirim_screen.dart';
+import '../../features/account/screens/nama_panggilan_screen.dart';
+import '../../features/account/screens/pulihkan_progres_screen.dart';
+import '../../features/account/screens/simpan_progres_screen.dart';
 import '../../features/home/screens/jelajah_screen.dart';
 import '../../features/home/screens/lepas_landas_screen.dart';
+import '../../features/leaderboard/screens/akhir_minggu_screen.dart';
 import '../../features/leaderboard/screens/peringkat_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../../features/onboarding/screens/pilih_planet_screen.dart';
@@ -52,6 +59,14 @@ abstract final class Rute {
   static const kilat = '/latihan/kilat';
   static const lencana = '/lencana';
   static const lepasLandas = '/lepas-landas/:gradeId';
+
+  // ---- Tahap 3
+  static const namaPanggilan = '/nama-panggilan';
+  static const akhirMinggu = '/akhir-minggu';
+  static const akunData = '/akun-data';
+  static const simpanProgres = '/simpan-progres';
+  static const pulihkanProgres = '/pulihkan-progres';
+  static const dataDikirim = '/data-yang-dikirim';
 
   static String kuisUntuk(String levelId) => '/kuis/$levelId';
 
@@ -187,6 +202,44 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: _navigatorKey,
         builder: (_, state) =>
             LepasLandasScreen(gradeId: state.pathParameters['gradeId']!),
+      ),
+
+      // ---- Tahap 3
+      //
+      // Empat dari lima layar di bawah cuma bisa dibuka lewat Gerbang
+      // Orang Tua, dan itu bukan sekadar kebiasaan: begitu sebuah layar
+      // bisa mengubah apa yang dikirim keluar dari HP anak, ia berhenti
+      // jadi layar anak.
+      GoRoute(
+        path: Rute.namaPanggilan,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const NamaPanggilanScreen(),
+      ),
+      GoRoute(
+        path: Rute.akhirMinggu,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, state) =>
+            AkhirMingguScreen(ringkasan: state.extra! as RingkasanMinggu),
+      ),
+      GoRoute(
+        path: Rute.akunData,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const AkunDataScreen(),
+      ),
+      GoRoute(
+        path: Rute.simpanProgres,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const SimpanProgresScreen(),
+      ),
+      GoRoute(
+        path: Rute.pulihkanProgres,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const PulihkanProgresScreen(),
+      ),
+      GoRoute(
+        path: Rute.dataDikirim,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const DataDikirimScreen(),
       ),
     ],
   );

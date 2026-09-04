@@ -73,6 +73,24 @@ class PengaturanScreen extends ConsumerWidget {
             _Kartu(
               children: [
                 ListTile(
+                  title: Text('Akun & data', style: AppTextStyles.title),
+                  subtitle: Text(
+                    'Papan peringkat, cadangan progres, dan daftar persis '
+                    'apa yang dikirim keluar.',
+                    style: AppTextStyles.caption,
+                  ),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.ink3,
+                  ),
+                  onTap: () => context.push(Rute.akunData),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            _Kartu(
+              children: [
+                ListTile(
                   title: Text('Tanpa iklan', style: AppTextStyles.title),
                   subtitle: Text(
                     'Bukan "iklan sopan" — memang tidak ada satu pun, dan '
@@ -90,9 +108,10 @@ class PengaturanScreen extends ConsumerWidget {
                   subtitle: Text(
                     AppConfig.offlineOnly
                         ? 'Seluruh materi ada di perangkat. Tidak ada data '
-                              'yang dikirim keluar di tahap ini.'
-                        : 'Sebagian fitur memakai jaringan. Materi belajar '
-                              'tetap ada di perangkat.',
+                              'yang dikirim keluar sama sekali.'
+                        : 'Papan peringkat memakai jaringan. Seluruh materi '
+                              'belajar tetap ada di perangkat dan jalan '
+                              'tanpa sinyal.',
                     style: AppTextStyles.caption,
                   ),
                   trailing: Icon(
@@ -125,7 +144,9 @@ class PengaturanScreen extends ConsumerWidget {
             const SizedBox(height: 26),
             Center(
               child: Text(
-                'Angkasa · Tahap 2 · luring penuh',
+                AppConfig.daringAktif
+                    ? 'Angkasa · Tahap 3 · luring dulu, daring belakangan'
+                    : 'Angkasa · Tahap 3 · luring penuh',
                 style: AppTextStyles.caption,
               ),
             ),

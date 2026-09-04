@@ -11,6 +11,12 @@ import 'data/providers.dart';
 /// Semuanya lokal, jadi ini cepat — dan hasilnya seluruh pohon widget
 /// boleh menganggap SQLite siap pakai. Tidak ada satu pun layar yang
 /// perlu menangani keadaan "basis data belum ada".
+///
+/// Firebase disalakan sesudahnya, dan **tidak pernah menghalangi**:
+/// panggilan `siapkan()` menelan galatnya sendiri, dan build luring —
+/// yaitu `flutter run` tanpa argumen apa pun — melewatinya dalam satu
+/// baris tanpa menyentuh jaringan. Kalau Firebase mati, yang hilang cuma
+/// papan peringkat.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -21,10 +27,12 @@ Future<void> main() async {
 
   final db = await AppDatabase().database;
 
+  final wadah = ProviderContainer(
+    overrides: [databaseProvider.overrideWithValue(db)],
+  );
+  await wadah.read(remoteGatewayProvider).siapkan();
+
   runApp(
-    ProviderScope(
-      overrides: [databaseProvider.overrideWithValue(db)],
-      child: const AngkasaApp(),
-    ),
+    UncontrolledProviderScope(container: wadah, child: const AngkasaApp()),
   );
 }

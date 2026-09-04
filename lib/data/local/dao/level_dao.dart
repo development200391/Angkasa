@@ -96,6 +96,16 @@ class LevelDao {
     return Sqflite.firstIntValue(r) ?? 0;
   }
 
+  /// Semua id pos yang ada di pemasangan ini.
+  ///
+  /// Dipakai memulihkan cadangan: cadangan bisa saja dibuat oleh versi
+  /// aplikasi yang punya pos lebih banyak, dan menulis progres untuk pos
+  /// yang belum ada di sini melanggar kunci asingnya.
+  Future<Set<String>> semuaIdPos() async {
+    final rows = await _db.query('levels', columns: ['id']);
+    return {for (final r in rows) r['id']! as String};
+  }
+
   Future<void> bukaGrade(String gradeId) => _db.update(
     'grades',
     {'is_unlocked': 1},

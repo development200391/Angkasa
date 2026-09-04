@@ -54,3 +54,18 @@ app.*.map.json
 
 # Konfigurasi lingkungan — jangan pernah masuk git.
 .env
+
+# Tahap 3 — setelan Firebase. Kuncinya bukan rahasia (ia ikut masuk ke
+# tiap APK), tapi berkas ini menunjuk ke proyek tertentu dan tidak sama
+# untuk tiap orang. Yang dikomit `env.contoh.json`.
+env.json
+env.emulator.json
+google-services.json
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Keluaran emulator Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

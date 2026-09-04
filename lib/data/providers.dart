@@ -1,22 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../core/constants/app_config.dart';
 import '../core/services/audio_service.dart';
+import '../core/services/connectivity_service.dart';
 import '../core/services/notification_service.dart';
+import '../domain/engine/aturan_nilai.dart';
 import '../domain/engine/streak_rules.dart';
 import '../domain/models/daily_activity.dart';
 import '../domain/models/level_view.dart';
 import '../domain/models/user_profile.dart';
 import 'local/dao/attempt_dao.dart';
 import 'local/dao/badge_dao.dart';
+import 'local/dao/league_dao.dart';
 import 'local/dao/level_dao.dart';
 import 'local/dao/profile_dao.dart';
 import 'local/dao/progress_dao.dart';
+import 'local/dao/sync_queue_dao.dart';
+import 'remote/firebase_gateway.dart';
+import 'remote/remote_gateway.dart';
+import 'repositories/account_repository.dart';
 import 'repositories/badge_repository.dart';
 import 'repositories/content_repository.dart';
+import 'repositories/leaderboard_repository.dart';
 import 'repositories/practice_repository.dart';
 import 'repositories/profile_repository.dart';
 import 'repositories/progress_repository.dart';
+import 'repositories/sync_repository.dart';
 
 /// Basis data yang sudah dibuka. Diisi lewat `overrideWithValue` di
 /// `main()`, jadi seluruh pohon widget boleh menganggapnya siap pakai
@@ -40,6 +50,12 @@ final attemptDaoProvider = Provider(
 final badgeDaoProvider = Provider(
   (ref) => BadgeDao(ref.watch(databaseProvider)),
 );
+final syncQueueDaoProvider = Provider(
+  (ref) => SyncQueueDao(ref.watch(databaseProvider)),
+);
+final leagueDaoProvider = Provider(
+  (ref) => LeagueDao(ref.watch(databaseProvider)),
+);
 
 final contentRepositoryProvider = Provider(
   (ref) => ContentRepository(ref.watch(levelDaoProvider)),
@@ -62,6 +78,10 @@ final progressRepositoryProvider = Provider(
     profileDao: ref.watch(profileDaoProvider),
     attemptDao: ref.watch(attemptDaoProvider),
     badgeRepository: ref.watch(badgeRepositoryProvider),
+    // Satu-satunya sambungan antara belajar dan jaringan, dan arahnya
+    // cuma satu: aktivitas memberi tahu antrean. Antrean tidak pernah
+    // bisa menahan, membatalkan, atau memperlambat penyimpanan pos.
+    setelahAktivitas: () => ref.read(syncRepositoryProvider).antreProfil(),
   ),
 );
 
@@ -231,3 +251,130 @@ final pengingatHarianProvider = FutureProvider<void>((ref) async {
     isi: kalimat.isi,
   );
 });
+
+// ---------------------------------------------------------- Tahap 3
+/// Pintu ke dunia luar.
+///
+/// Yang dipilih di sini menentukan seluruh sisa aplikasi. Bawaannya
+/// [GatewayLuring] — tanpa `--dart-define` apa pun, tidak ada satu baris
+/// kode Firebase yang pernah dijalankan, dan aplikasinya berperilaku
+/// persis seperti Tahap 2.
+final remoteGatewayProvider = Provider<RemoteGateway>((ref) {
+  if (!AppConfig.daringAktif) return const GatewayLuring();
+  return FirebaseGateway();
+});
+
+/// Keadaan sambungan. Dipakai spanduk "Tidak ada sinyal" di layar
+/// Jelajah dan syarat "hanya lewat Wi-Fi" di antrean.
+final connectivityProvider = Provider<ConnectivityService>((ref) {
+  final layanan = AppConfig.daringAktif
+      ? ConnectivityPlusService()
+      : KoneksiTetap(JenisKoneksi.tidakAda);
+  ref.onDispose(layanan.dispose);
+  return layanan;
+});
+
+final koneksiProvider = StreamProvider<JenisKoneksi>((ref) async* {
+  final layanan = ref.watch(connectivityProvider);
+  yield await layanan.sekarang();
+  yield* layanan.aliran;
+});
+
+/// Nilai dari Remote Config.
+///
+/// Selalu punya isi sejak detik pertama: keadaan awalnya
+/// [AturanNilai.bawaan], yang sama persis dengan konstanta Tahap 2.
+/// Kalau pengambilannya gagal atau lambat, tidak ada satu pun layar yang
+/// menunggu — yang berubah cuma angkanya, dan itu pun belakangan.
+class AturanNilaiNotifier extends Notifier<AturanNilai> {
+  @override
+  AturanNilai build() {
+    _muat();
+    return AturanNilai.bawaan;
+  }
+
+  Future<void> _muat() async {
+    final gateway = ref.read(remoteGatewayProvider);
+    if (!gateway.tersedia) return;
+    state = await gateway.aturanNilai();
+  }
+
+  Future<void> muatUlang() => _muat();
+}
+
+final aturanNilaiProvider = NotifierProvider<AturanNilaiNotifier, AturanNilai>(
+  AturanNilaiNotifier.new,
+);
+
+final syncRepositoryProvider = Provider<SyncRepository>((ref) {
+  final repo = SyncRepository(
+    antreanDao: ref.watch(syncQueueDaoProvider),
+    profileDao: ref.watch(profileDaoProvider),
+    progressDao: ref.watch(progressDaoProvider),
+    badgeDao: ref.watch(badgeDaoProvider),
+    leagueDao: ref.watch(leagueDaoProvider),
+    gateway: ref.watch(remoteGatewayProvider),
+    koneksi: ref.watch(connectivityProvider),
+    aturan: () => ref.read(aturanNilaiProvider),
+  );
+  ref.onDispose(repo.dispose);
+  return repo;
+});
+
+final leaderboardRepositoryProvider = Provider(
+  (ref) => LeaderboardRepository(
+    leagueDao: ref.watch(leagueDaoProvider),
+    profileDao: ref.watch(profileDaoProvider),
+    progressDao: ref.watch(progressDaoProvider),
+    gateway: ref.watch(remoteGatewayProvider),
+    aturan: () => ref.read(aturanNilaiProvider),
+  ),
+);
+
+final accountRepositoryProvider = Provider(
+  (ref) => AccountRepository(
+    profileDao: ref.watch(profileDaoProvider),
+    progressDao: ref.watch(progressDaoProvider),
+    levelDao: ref.watch(levelDaoProvider),
+    badgeDao: ref.watch(badgeDaoProvider),
+    antreanDao: ref.watch(syncQueueDaoProvider),
+    gateway: ref.watch(remoteGatewayProvider),
+    sinkron: ref.watch(syncRepositoryProvider),
+  ),
+);
+
+/// Berapa yang menunggu di antrean — angka di lencana "3 antre".
+final antreanProvider = StreamProvider<int>((ref) async* {
+  final repo = ref.watch(syncRepositoryProvider);
+  yield await repo.jumlahMenunggu();
+  yield* repo.perubahan;
+});
+
+/// Papan peringkat liga yang sedang berjalan.
+final papanLigaProvider = FutureProvider((ref) async {
+  // Ikut tiga hal yang benar-benar bisa mengubah isinya: profil (nama,
+  // avatar, setelan), antrean (skor yang baru terkirim), dan sambungan.
+  ref.watch(profileProvider);
+  ref.watch(antreanProvider);
+  ref.watch(koneksiProvider);
+  return ref.watch(leaderboardRepositoryProvider).papanSekarang();
+});
+
+/// Hasil minggu lalu yang belum pernah ditampilkan, kalau ada.
+final ringkasanMingguProvider = FutureProvider((ref) async {
+  ref.watch(profileProvider);
+  return ref.watch(leaderboardRepositoryProvider).ringkasanBelumDilihat();
+});
+
+/// Keadaan akun untuk layar Akun & data.
+final keadaanAkunProvider = FutureProvider((ref) async {
+  ref.watch(profileProvider);
+  ref.watch(antreanProvider);
+  return ref.watch(accountRepositoryProvider).keadaan();
+});
+
+/// Dua progres yang harus dipilih salah satu — `null` kalau memang tidak
+/// ada yang perlu dipilih, yang merupakan keadaan hampir semua orang.
+final pilihanPemulihanProvider = FutureProvider(
+  (ref) => ref.watch(accountRepositoryProvider).pilihanPemulihan(),
+);
