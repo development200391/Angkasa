@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'enums.dart';
+import 'gambar.dart';
 
 part 'question.freezed.dart';
 part 'question.g.dart';
@@ -41,6 +42,15 @@ abstract class Question with _$Question {
     @Default(VisualAid.tidakAda) VisualAid visualAid,
     String? explanation,
     String? imageAsset,
+
+    /// Gambar yang menyertai soal, untuk geometri dan statistik.
+    ///
+    /// Soal yang punya gambar **tetap harus bisa dijawab tanpanya** —
+    /// seluruh angka yang dibutuhkan ikut disebut di [prompt]. Gambar
+    /// di sini mempermudah, bukan menyimpan informasi yang tidak ada di
+    /// tempat lain; kalau ia satu-satunya sumber angkanya, anak dengan
+    /// pembaca layar kehilangan soalnya sama sekali.
+    @GambarConverter() Gambar? gambar,
     int? timeLimitSeconds,
   }) = _Question;
 

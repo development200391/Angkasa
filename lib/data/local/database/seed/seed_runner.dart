@@ -16,17 +16,59 @@ class SeedRunner {
 
   final Future<String> Function(String path) _baca;
 
-  /// Enam planet selalu ada sejak awal, walau yang berisi baru dua.
-  /// Anak kelas 4 harus bisa melihat planetnya di layar pilih planet,
-  /// bukan menemukan daftar yang berhenti di kelas 2.
-  static const planets = <({String id, String nama, int urutan, String ikon})>[
-    (id: 'grade-1', nama: 'Planet Mula', urutan: 1, ikon: 'mula'),
-    (id: 'grade-2', nama: 'Planet Puluh', urutan: 2, ikon: 'puluh'),
-    (id: 'grade-3', nama: 'Planet Kali', urutan: 3, ikon: 'kali'),
-    (id: 'grade-4', nama: 'Planet Pecah', urutan: 4, ikon: 'pecah'),
-    (id: 'grade-5', nama: 'Planet Ukur', urutan: 5, ikon: 'ukur'),
-    (id: 'grade-6', nama: 'Planet Ruang', urutan: 6, ikon: 'ruang'),
-  ];
+  /// Enam planet, seluruhnya berisi sejak Tahap 4.
+  ///
+  /// `berbayar` bukan sekadar penanda tampilan: ia yang menentukan
+  /// planet mana yang butuh hak beli, dan sengaja ditulis **di sini**
+  /// alih-alih di dalam berkas kontennya. Alasannya satu — daftar apa
+  /// yang dijual adalah keputusan produk, dan meletakkannya di dalam
+  /// JSON konten membuat siapa pun yang menambah planet baru diam-diam
+  /// ikut menentukan harganya.
+  static const planets =
+      <({String id, String nama, int urutan, String ikon, bool berbayar})>[
+        (
+          id: 'grade-1',
+          nama: 'Planet Mula',
+          urutan: 1,
+          ikon: 'mula',
+          berbayar: false,
+        ),
+        (
+          id: 'grade-2',
+          nama: 'Planet Puluh',
+          urutan: 2,
+          ikon: 'puluh',
+          berbayar: false,
+        ),
+        (
+          id: 'grade-3',
+          nama: 'Planet Kali',
+          urutan: 3,
+          ikon: 'kali',
+          berbayar: true,
+        ),
+        (
+          id: 'grade-4',
+          nama: 'Planet Pecah',
+          urutan: 4,
+          ikon: 'pecah',
+          berbayar: true,
+        ),
+        (
+          id: 'grade-5',
+          nama: 'Planet Ukur',
+          urutan: 5,
+          ikon: 'ukur',
+          berbayar: true,
+        ),
+        (
+          id: 'grade-6',
+          nama: 'Planet Ruang',
+          urutan: 6,
+          ikon: 'ruang',
+          berbayar: true,
+        ),
+      ];
 
   Future<void> jalankan(Database db) async {
     final batch = db.batch();
@@ -38,6 +80,7 @@ class SeedRunner {
         'order_index': planet.urutan,
         'icon': planet.ikon,
         'is_unlocked': 0,
+        'requires_purchase': planet.berbayar ? 1 : 0,
       }, conflictAlgorithm: ConflictAlgorithm.replace);
     }
 
@@ -101,7 +144,38 @@ class SeedRunner {
           'level_id': posId,
           'is_unlocked': (urutanZona == 1 && urutanPos == 1) ? 1 : 0,
         }, conflictAlgorithm: ConflictAlgorithm.ignore);
+
+        _isiSoalTertulis(batch, posId, pos['questions'] as List<dynamic>?);
       }
+    }
+  }
+
+  /// Soal yang ditulis tangan untuk satu pos.
+  ///
+  /// Sebuah pos boleh punya keduanya: soal tertulis **dan**
+  /// `difficultyConfig`. Yang tertulis dipakai lebih dulu, sisanya
+  /// dibangkitkan sampai jumlah soalnya penuh. Itu yang membuat pos
+  /// geometri tetap punya sepuluh soal walau yang digambar tangan baru
+  /// enam, tanpa mengulang soal yang sama dua kali dalam satu sesi.
+  void _isiSoalTertulis(Batch batch, String posId, List<dynamic>? soal) {
+    if (soal == null) return;
+
+    for (var i = 0; i < soal.length; i++) {
+      final q = soal[i] as Map<String, dynamic>;
+      final gambar = q['figure'];
+
+      batch.insert('static_questions', {
+        'id': q['id'],
+        'level_id': posId,
+        'order_index': i,
+        'format': q['format'],
+        'prompt': q['prompt'],
+        'image_asset': q['imageAsset'],
+        'options_json': jsonEncode(q['options']),
+        'answer': q['answer'],
+        'explanation': q['explanation'],
+        'figure_json': gambar == null ? null : jsonEncode(gambar),
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
     }
   }
 }
