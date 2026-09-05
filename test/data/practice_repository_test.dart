@@ -112,8 +112,20 @@ void main() {
   );
 
   test('planet tanpa pos terbuka tidak memaksa soal muncul', () async {
+    // Dulu uji ini memakai grade-3 karena planetnya memang kosong.
+    // Sejak Tahap 4 seluruh planet berisi, jadi keadaan yang diuji
+    // harus dibuat sengaja: planet yang punya pos tapi belum satu pun
+    // terbuka. Latihan Cepat mengambil dari materi yang **sudah
+    // dilewati**; menariknya dari pos yang belum dibuka berarti
+    // menyodorkan soal yang belum pernah diajarkan.
     final profil = await profileDao.ambil();
-    await profileDao.simpan(profil.copyWith(activeGradeId: 'grade-3'));
+    await profileDao.simpan(profil.copyWith(activeGradeId: 'grade-4'));
+    await db.update(
+      'level_progress',
+      {'is_unlocked': 0},
+      where: 'level_id LIKE ?',
+      whereArgs: ['l-4-%'],
+    );
     expect(await practice.latihanCepat(), isEmpty);
   });
 

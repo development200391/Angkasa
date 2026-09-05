@@ -32,5 +32,9 @@ abstract final class AppAssets {
   static const seedFiles = <String>[
     '$seedDir/planet_mula.json',
     '$seedDir/planet_puluh.json',
+    '$seedDir/planet_kali.json',
+    '$seedDir/planet_pecah.json',
+    '$seedDir/planet_ukur.json',
+    '$seedDir/planet_ruang.json',
   ];
 }

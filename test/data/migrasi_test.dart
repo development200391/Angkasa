@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:angkasa/data/local/database/app_database.dart';
+import 'package:angkasa/data/local/database/seed/seed_runner.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -165,12 +168,88 @@ void main() {
     await db.close();
   });
 
+  test('memperbarui aplikasi ikut membawa materi barunya', () async {
+    // Bug yang cuma ketahuan di HP: `onUpgrade` menaikkan skema tapi
+    // tidak pernah menyemai konten. Anak yang memperbarui aplikasinya
+    // mendapat tabel-tabel Tahap 4 dan **nol planet baru** — sementara
+    // pemasangan baru mendapat semuanya. Persis kebalikan dari siapa
+    // yang paling pantas dapat.
+    final seed = SeedRunner(
+      bacaAset: (path) async => File(path).readAsString(),
+    );
+
+    // Pemasangan lama: skema v3, konten dua planet, progres berjalan.
+    final db = await lama(3);
+    await db.delete('grades');
+    await db.delete('levels');
+    await db.delete('chapters');
+    await db.delete('level_progress');
+
+    await naikkan(db, 3, 4);
+    await seed.jalankan(db);
+
+    final pos =
+        (await db.rawQuery('SELECT COUNT(*) c FROM levels')).first['c'] as int;
+    expect(pos, 250, reason: 'materi Tahap 4 tidak ikut masuk');
+
+    final berbayar = await db.query(
+      'grades',
+      where: 'requires_purchase = 1',
+      orderBy: 'order_index',
+    );
+    expect(berbayar.map((g) => g['id']), [
+      'grade-3',
+      'grade-4',
+      'grade-5',
+      'grade-6',
+    ]);
+
+    await db.close();
+  });
+
+  test('menyemai ulang tidak menyentuh satu bintang pun', () async {
+    // Syarat yang membuat menyemai ulang di `onUpgrade` boleh dilakukan
+    // sama sekali. `levels` ditulis dengan `replace` karena isinya
+    // memang harus mengikuti berkas konten; `level_progress` ditulis
+    // dengan `ignore`, dan itulah yang menjaga progres anak.
+    final seed = SeedRunner(
+      bacaAset: (path) async => File(path).readAsString(),
+    );
+    final db = await lama(4);
+    await seed.jalankan(db);
+
+    await db.update(
+      'level_progress',
+      {'stars': 3, 'best_score': 10},
+      where: 'level_id = ?',
+      whereArgs: ['l-1-1-1'],
+    );
+
+    // Semai lagi, seolah aplikasinya diperbarui sekali lagi.
+    await seed.jalankan(db);
+
+    final progres = (await db.query(
+      'level_progress',
+      where: 'level_id = ?',
+      whereArgs: ['l-1-1-1'],
+    )).single;
+    expect(progres['stars'], 3);
+    expect(progres['best_score'], 10);
+
+    final profil = (await db.query('user_profile')).single;
+    expect(profil['nickname'], 'Rani');
+    expect(profil['total_xp'], 480);
+
+    await db.close();
+  });
+
   test('tiap versi skema punya migrasinya, tidak ada yang bolong', () async {
     for (var v = 1; v <= AppDatabase.versiSkema; v++) {
       expect(
         AppDatabase.migrasiUntuk(v),
         isNotEmpty,
-        reason: 'migrasi v$v kosong — naik versiSkema tanpa menulis migrasinya '
+        reason:
+            'migrasi v$v kosong — naik versiSkema tanpa menulis migrasinya '
             'membuat pemasangan lama berhenti di skema yang tidak lengkap',
       );
     }

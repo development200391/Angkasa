@@ -24,6 +24,37 @@ class _AngkasaAppState extends ConsumerState<AngkasaApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _pulihkanPembelian();
+  }
+
+  /// Menanyakan pembelian ke toko sekali tiap aplikasi dibuka.
+  ///
+  /// Orang tua yang ganti HP tidak seharusnya perlu tahu ada tombol
+  /// "Pulihkan pembelian" yang harus ditekan — di HP baru, planetnya
+  /// sudah terbuka sebelum ia sempat bertanya kenapa belum. Tombolnya
+  /// tetap ada untuk keadaan yang butuh dipaksa, bukan sebagai
+  /// satu-satunya jalan.
+  ///
+  /// Sengaja tidak ditunggu dan sengaja tidak pernah melempar: hasilnya
+  /// cuma bisa **menambah** hak, dan aplikasinya tidak boleh menunggu
+  /// toko untuk mulai jalan.
+  void _pulihkanPembelian() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final toko = ref.read(purchaseGatewayProvider);
+      if (!toko.tersedia) {
+        await toko.siapkan();
+        if (!toko.tersedia) return;
+      }
+      final sebelum = await ref.read(purchaseRepositoryProvider).sudahBeli();
+      final sesudah = await ref.read(purchaseRepositoryProvider).pulihkan();
+      if (mounted && sesudah && !sebelum) {
+        ref
+          ..invalidate(galaksiProvider)
+          ..invalidate(sudahBeliProvider)
+          ..invalidate(planetsProvider);
+      }
+    });
   }
 
   @override

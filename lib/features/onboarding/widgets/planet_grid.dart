@@ -16,12 +16,19 @@ class PlanetGrid extends StatelessWidget {
     required this.planets,
     required this.terpilih,
     required this.onPilih,
+    this.sudahBeli = false,
     super.key,
   });
 
   final List<Grade> planets;
   final String? terpilih;
   final ValueChanged<Grade> onPilih;
+
+  /// Planet berbayar tetap **bisa ditekan** walau belum dibeli — yang
+  /// terjadi sesudahnya membawa ke layar penjualannya, bukan diam.
+  /// Kartu yang tidak merespons sentuhan terbaca sebagai aplikasi
+  /// rusak, bukan sebagai "ini berbayar".
+  final bool sudahBeli;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +49,7 @@ class PlanetGrid extends StatelessWidget {
           grade: g,
           warna: AppColors.forGrade(g.orderIndex),
           terpilih: g.id == terpilih,
+          terkunci: g.requiresPurchase && !sudahBeli,
           onTap: () => onPilih(g),
         );
       },
@@ -54,12 +62,14 @@ class _Kartu extends StatelessWidget {
     required this.grade,
     required this.warna,
     required this.terpilih,
+    required this.terkunci,
     required this.onTap,
   });
 
   final Grade grade;
   final Color warna;
   final bool terpilih;
+  final bool terkunci;
   final VoidCallback onTap;
 
   @override
@@ -73,7 +83,9 @@ class _Kartu extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(15, 14, 15, 12),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: terpilih ? 0.06 : 0.045),
+            color: Colors.white.withValues(
+              alpha: terkunci ? 0.03 : (terpilih ? 0.06 : 0.045),
+            ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: terpilih ? AppColors.brandLight : Colors.transparent,
@@ -102,6 +114,13 @@ class _Kartu extends StatelessWidget {
                   if (!grade.isUnlocked) ...[
                     const SizedBox(width: 7),
                     const _PilSegera(),
+                  ] else if (terkunci) ...[
+                    const SizedBox(width: 7),
+                    const Icon(
+                      Icons.lock_outline_rounded,
+                      size: 15,
+                      color: AppColors.ink3OnSpace,
+                    ),
                   ],
                 ],
               ),

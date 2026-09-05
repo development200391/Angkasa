@@ -119,6 +119,7 @@ class LevelDao {
     orderIndex: r['order_index']! as int,
     icon: r['icon']! as String,
     isUnlocked: (r['is_unlocked'] as int? ?? 0) == 1,
+    requiresPurchase: (r['requires_purchase'] as int? ?? 0) == 1,
   );
 
   static Chapter _chapter(Map<String, Object?> r) => Chapter(

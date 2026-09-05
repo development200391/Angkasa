@@ -28,6 +28,36 @@ enum Operation {
 /// Sumbu S5 — bagian mana dari kalimat matematika yang ditanyakan.
 enum UnknownPosition { hasil, operanKiri, operanKanan, operator }
 
+/// Ranah bilangan yang dipakai sebuah pos.
+///
+/// **Bukan sumbu kesulitan ketujuh.** Enam sumbu menjawab "seberapa
+/// sulit"; yang ini menjawab "bilangan macam apa" — dan sebuah zona
+/// memakai satu ranah dari awal sampai akhir. Anak yang di pos 3 masih
+/// menjumlah bilangan bulat lalu di pos 4 tiba-tiba bertemu pecahan
+/// bukan sedang naik satu tingkat, ia sedang ganti pelajaran.
+///
+/// Yang membuatnya tetap masuk ke `sumbu`: kalau dua pos berurutan
+/// dalam satu zona berbeda ranah, aturan emas harus menganggapnya
+/// perubahan — dan menolaknya kalau ada sumbu lain yang ikut berubah.
+enum NumberDomain {
+  /// Bilangan bulat. Ini yang dipakai seluruh Tahap 1–3.
+  bulat,
+
+  /// Pecahan biasa. [DifficultyConfig.maxOperand] membatasi
+  /// **penyebutnya**, dan pembilang selalu diambil di bawah penyebut.
+  pecahan,
+
+  /// Desimal satu angka di belakang koma. Rentangnya dibaca dari
+  /// [DifficultyConfig.maxOperand] dibagi sepuluh — `maxOperand: 99`
+  /// berarti sampai `9,9`.
+  desimal,
+
+  /// Persen dari sebuah bilangan. Persentasenya diambil dari himpunan
+  /// yang ramah (10, 20, 25, 50, 75), bukan angka sembarang: soal
+  /// "37% dari 84" menguji kalkulator, bukan pemahaman.
+  persen,
+}
+
 /// Sumbu S2 — bentuk soal.
 ///
 /// Empat yang pertama dibangkitkan `QuestionGenerator` dari
@@ -103,6 +133,17 @@ enum MistakeKind {
   /// mengambil nilai terbesar waktu yang ditanya yang paling sering.
   ukuranPemusatanTertukar,
 
+  /// Penyebut ikut dijumlah: 3/8 + 2/8 dijawab 5/16.
+  ///
+  /// Kekeliruan pecahan yang paling sering, dan paling pantas punya
+  /// namanya sendiri — anak yang melakukannya justru sedang menerapkan
+  /// aturan penjumlahan dengan konsisten, cuma ke bagian yang salah.
+  penyebutIkutDihitung,
+
+  /// Hasilnya benar angkanya, salah tempat komanya: 0,7 + 0,4 dijawab
+  /// 11 atau 0,11. Termasuk lupa membagi seratus di soal persen.
+  komaSalahTempat,
+
   /// Hasil yang masuk akal tapi tidak punya nama khusus.
   lainnya;
 
@@ -117,6 +158,8 @@ enum MistakeKind {
     MistakeKind.kelilingBukanLuas => 'Keliling dan luas tertukar',
     MistakeKind.ukuranPemusatanTertukar =>
       'Modus, median, dan rata-rata tertukar',
+    MistakeKind.penyebutIkutDihitung => 'Penyebut ikut dihitung',
+    MistakeKind.komaSalahTempat => 'Koma salah tempat',
     MistakeKind.lainnya => 'Salah hitung',
   };
 
@@ -149,6 +192,12 @@ enum MistakeKind {
     MistakeKind.ukuranPemusatanTertukar =>
       'Diagramnya dibaca dengan benar, tapi modus, median, dan rata-rata '
           'masih tertukar.',
+    MistakeKind.penyebutIkutDihitung =>
+      'Pembilang dan penyebut sama-sama dijumlah. Yang dijumlah hanya '
+          'pembilangnya; penyebutnya tetap.',
+    MistakeKind.komaSalahTempat =>
+      'Angkanya sudah benar, letak komanya yang meleset — biasanya '
+          'kelipatan sepuluh atau seratus.',
     MistakeKind.lainnya => 'Tidak mengikuti satu pola tertentu.',
   };
 

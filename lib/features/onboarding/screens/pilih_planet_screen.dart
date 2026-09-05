@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/router/app_router.dart';
 import '../../../data/providers.dart';
 import '../../../shared/widgets/loading_view.dart';
 import '../../../shared/widgets/primary_button.dart';
@@ -31,6 +32,7 @@ class _PilihPlanetScreenState extends ConsumerState<PilihPlanetScreen> {
     final planets = ref.watch(planetsProvider);
     final aktif = ref.watch(profileProvider).value?.activeGradeId;
     final terpilih = _terpilih ?? aktif;
+    final sudahBeli = ref.watch(sudahBeliProvider).value ?? false;
 
     return Scaffold(
       backgroundColor: AppColors.space,
@@ -79,7 +81,18 @@ class _PilihPlanetScreenState extends ConsumerState<PilihPlanetScreen> {
                     PlanetGrid(
                       planets: daftar,
                       terpilih: terpilih,
-                      onPilih: (g) => setState(() => _terpilih = g.id),
+                      sudahBeli: sudahBeli,
+                      // Menekan planet berbayar membawa ke layar
+                      // penjualannya, bukan tidak melakukan apa-apa.
+                      // Kartu yang diam waktu disentuh terbaca sebagai
+                      // aplikasi rusak.
+                      onPilih: (g) {
+                        if (g.requiresPurchase && !sudahBeli) {
+                          context.push(Rute.galaksi);
+                          return;
+                        }
+                        setState(() => _terpilih = g.id);
+                      },
                     ),
                     const SizedBox(height: 26),
                     PrimaryButton(

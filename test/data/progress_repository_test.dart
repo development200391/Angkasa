@@ -81,12 +81,39 @@ void main() {
     answers: jawaban,
   );
 
-  test('seed mengisi dua planet berisi dan enam planet terdaftar', () async {
+  test('seed mengisi enam planet dan 250 pos', () async {
+    // Sampai Tahap 3 cuma dua planet yang berisi. Tahap 4 mengisi
+    // keempat sisanya — dan angka per planet di bawah adalah angka
+    // yang tertulis di kartu planet layar Galaksi serta di README.
     final planets = await levelDao.semuaGrade();
     expect(planets.length, 6);
-    expect(planets.where((g) => g.isUnlocked).length, 2);
-    expect(await levelDao.jumlahPos('grade-1'), 36);
-    expect(await levelDao.jumlahPos('grade-2'), 42);
+    expect(planets.every((g) => g.isUnlocked), isTrue);
+
+    const dijanjikan = {
+      'grade-1': 36,
+      'grade-2': 42,
+      'grade-3': 44,
+      'grade-4': 40,
+      'grade-5': 42,
+      'grade-6': 46,
+    };
+    var total = 0;
+    for (final e in dijanjikan.entries) {
+      final n = await levelDao.jumlahPos(e.key);
+      expect(n, e.value, reason: e.key);
+      total += n;
+    }
+    expect(total, 250);
+  });
+
+  test('empat planet baru menunggu dibayar, dua yang pertama tidak', () async {
+    // `isUnlocked` menjawab "sudah ada isinya"; `requiresPurchase`
+    // menjawab "perlu dibayar". Keduanya sengaja terpisah — kalau
+    // digabung, planet yang belum selesai ditulis dan planet yang belum
+    // dibeli jadi tidak bisa dibedakan di layar.
+    final planets = await levelDao.semuaGrade();
+    final berbayar = planets.where((g) => g.requiresPurchase).map((g) => g.id);
+    expect(berbayar, ['grade-3', 'grade-4', 'grade-5', 'grade-6']);
   });
 
   test('hanya pos pertama zona pertama yang terbuka di awal', () async {

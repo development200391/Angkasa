@@ -84,6 +84,14 @@ class _Isi extends ConsumerWidget {
                     'SOAL ${state.nomor} DARI ${state.total}',
                     style: AppTextStyles.overline,
                   ),
+                  // Pil jenis soal. Ada supaya anak yang tiba-tiba
+                  // bertemu gambar atau paragraf tahu ia memang sedang
+                  // mengerjakan jenis yang berbeda — bukan mengira
+                  // aplikasinya rusak.
+                  if (soal.format.pil != null) ...[
+                    const SizedBox(width: 9),
+                    _PilJenis(teks: soal.format.pil!, format: soal.format),
+                  ],
                   const Spacer(),
                   if (state.sisaDetik != null) _Waktu(detik: state.sisaDetik!),
                 ],
@@ -91,7 +99,13 @@ class _Isi extends ConsumerWidget {
             ),
             KartuSoal(soal: soal),
             const Spacer(),
-            if (soal.format == QuestionFormat.pilihanGanda)
+            // Bukan `format == pilihanGanda`. Soal cerita, geometri, dan
+            // statistik juga berpilihan — menggating tampilannya pada
+            // satu nama format membuat ketiganya muncul tanpa satu pun
+            // tombol jawaban, dan anak terjebak di soal yang tidak bisa
+            // ditinggalkan. Yang menentukan cara menjawab bukan nama
+            // formatnya, melainkan **ada atau tidaknya pilihan**.
+            if (soal.options.isNotEmpty)
               // Waktu sheet pembahasan naik, opsinya ikut naik. Jawaban
               // yang barusan ditekan harus tetap terlihat bersebelahan
               // dengan yang benar — di situlah anak membandingkannya.
@@ -237,6 +251,43 @@ class _Waktu extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Pil kecil di sebelah "SOAL n DARI m" untuk soal cerita, geometri,
+/// dan statistik.
+///
+/// Warnanya mengikuti planet tempat jenis soal itu pertama muncul, dan
+/// itu bukan dekorasi: anak yang sudah mengenali ungu sebagai Planet
+/// Pecah membaca pil ungu sebagai "yang seperti di Pecah".
+class _PilJenis extends StatelessWidget {
+  const _PilJenis({required this.teks, required this.format});
+
+  final String teks;
+  final QuestionFormat format;
+
+  @override
+  Widget build(BuildContext context) {
+    final warna = switch (format) {
+      QuestionFormat.geometri => AppColors.pecah,
+      QuestionFormat.statistik => AppColors.ruang,
+      _ => AppColors.brand,
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      decoration: BoxDecoration(
+        color: warna.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(99),
+      ),
+      child: Text(
+        teks,
+        style: AppTextStyles.caption.copyWith(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: warna,
+        ),
+      ),
     );
   }
 }

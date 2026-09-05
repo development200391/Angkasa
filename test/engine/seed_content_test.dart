@@ -30,21 +30,48 @@ void main() {
     pos['difficultyConfig'] as Map<String, dynamic>,
   );
 
-  test('MVP: 13 zona, 78 pos, dua planet', () {
-    expect(planet.length, 2);
+  test('enam planet, 42 zona, 250 pos', () {
+    expect(planet.length, 6);
     final zona = planet.values.expand(zonaDari).toList();
-    expect(zona.length, 13);
-    expect(zona.expand(posDari).length, 78);
+    expect(zona.length, 42);
+    expect(zona.expand(posDari).length, 250);
   });
 
-  test('tiap zona enam pos, yang terakhir Gerbang Planet', () {
+  test('tiap planet punya jumlah pos yang dijanjikan layar Galaksi', () {
+    // Angka-angka ini tertulis di kartu planet pada mockup layar 25 dan
+    // di README. Kalau isinya bergeser tanpa keduanya ikut berubah,
+    // yang dibaca orang tua sebelum membayar jadi salah.
+    const dijanjikan = {
+      'grade-1': 36,
+      'grade-2': 42,
+      'grade-3': 44,
+      'grade-4': 40,
+      'grade-5': 42,
+      'grade-6': 46,
+    };
+    for (final p in planet.values) {
+      final id = (p['grade'] as Map<String, dynamic>)['id'] as String;
+      expect(zonaDari(p).expand(posDari).length, dijanjikan[id], reason: id);
+    }
+  });
+
+  test('tiap zona 4–8 pos, yang terakhir Gerbang Planet', () {
+    // Tahap 1–2 memakai enam pos untuk seluruh zona. Tahap 4
+    // melonggarkannya karena materinya tidak lagi seragam: ranah persen
+    // cuma punya tiga sumbu yang benar-benar berpengaruh, dan memaksanya
+    // jadi enam pos berarti dua peralihan yang tidak mengubah apa pun
+    // buat anak. Yang tidak dilonggarkan: pos terakhir selalu gerbang.
     for (final p in planet.values) {
       for (final z in zonaDari(p)) {
         final pos = posDari(z);
-        expect(pos.length, 6, reason: z['title'] as String);
+        expect(
+          pos.length,
+          inInclusiveRange(4, 8),
+          reason: z['title'] as String,
+        );
         expect(pos.last['type'], 'boss', reason: z['title'] as String);
         expect(
-          pos.take(5).every((l) => l['type'] == 'practice'),
+          pos.take(pos.length - 1).every((l) => l['type'] == 'practice'),
           isTrue,
           reason: z['title'] as String,
         );
@@ -68,7 +95,7 @@ void main() {
   test('pos biasa: 10 soal dan 10 XP', () {
     for (final p in planet.values) {
       for (final z in zonaDari(p)) {
-        for (final pos in posDari(z).take(5)) {
+        for (final pos in posDari(z).where((l) => l['type'] != 'boss')) {
           expect(cfg(pos).questionCount, 10, reason: pos['id'] as String);
           expect(pos['xpReward'], 10, reason: pos['id'] as String);
         }
@@ -80,7 +107,10 @@ void main() {
       'sebelumnya', () {
     for (final p in planet.values) {
       for (final z in zonaDari(p)) {
-        final pos = posDari(z).take(5).toList();
+        // Seluruh pos latihan, bukan lima pertama: zona sekarang boleh
+        // lebih panjang, dan peralihan keenam sama pentingnya dengan
+        // yang pertama.
+        final pos = posDari(z).where((l) => l['type'] != 'boss').toList();
         for (var i = 1; i < pos.length; i++) {
           final beda = cfg(pos[i]).bedaSumbuDari(cfg(pos[i - 1]));
           expect(
@@ -95,14 +125,19 @@ void main() {
     }
   });
 
-  test('pos pertama tiap zona selalu pilihan ganda tanpa timer — pintu '
-      'masuk yang bisa dijawab siapa pun', () {
+  test('pos pertama tiap zona bisa dijawab tanpa mengetik dan tanpa '
+      'dikejar waktu — pintu masuk yang bisa dilewati siapa pun', () {
+    // Dulu aturannya "harus pilihanGanda". Tahap 4 menambah tiga bentuk
+    // soal yang juga berpilihan — cerita, geometri, statistik — dan
+    // menuntut `pilihanGanda` secara harfiah akan menolaknya tanpa
+    // alasan. Yang sebenarnya dijaga aturan ini dua hal: tidak ada
+    // ketikan, dan tidak ada timer.
     for (final p in planet.values) {
       for (final z in zonaDari(p)) {
         final c = cfg(posDari(z).first);
         expect(
           c.formats,
-          contains(QuestionFormat.pilihanGanda),
+          isNot(contains(QuestionFormat.isian)),
           reason: z['title'] as String,
         );
         expect(c.timeLimitSeconds, isNull, reason: z['title'] as String);
@@ -143,7 +178,13 @@ void main() {
                 1,
                 reason: '${pos['id']}: ${s.prompt}',
               );
-              expect(s.options.length, c.optionCount);
+              expect(
+                s.options.length,
+                c.optionCount,
+                reason:
+                    '${pos['id']}: ${s.prompt} → '
+                    '${s.options.map((o) => o.label).join(" | ")}',
+              );
             }
             // Papan angka cuma punya angka: soal isian tidak boleh
             // pernah meminta lambang operasi.

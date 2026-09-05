@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <sub><b>APLIKASI</b> · Tahap 1–3 selesai, jalan penuh tanpa jaringan</sub><br>
+  <sub><b>APLIKASI</b> · Tahap 1–4 selesai, jalan penuh tanpa jaringan</sub><br>
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white" alt="Flutter">
   <img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white" alt="Dart">
   <img src="https://img.shields.io/badge/Riverpod-3.x-1F6FEB" alt="Riverpod">
@@ -27,8 +27,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-tahap%203%20selesai-256F5A" alt="Status">
-  <img src="https://img.shields.io/badge/MVP-78%20pos%20%C2%B7%202%20planet-C07C12" alt="MVP">
+  <img src="https://img.shields.io/badge/status-tahap%204%20selesai-256F5A" alt="Status">
+  <img src="https://img.shields.io/badge/konten-250%20pos%20%C2%B7%206%20planet-C07C12" alt="Konten">
   <img src="https://img.shields.io/badge/license-MIT-535F77" alt="License">
 </p>
 
@@ -753,6 +753,7 @@ firebase emulators:start --only auth,firestore --project demo-angkasa
 firebase deploy --only firestore                  # aturan keamanan dan indeks
 firebase deploy --only remoteconfig               # ambang bintang dan XP
 python tool/periksa_aturan.py                    # uji aturan yang aktif di server
+python tool/bangun_konten.py                      # bangun ulang empat berkas konten Tahap 4
 ```
 
 ---
@@ -852,12 +853,33 @@ Semua yang di atas bersifat tambahan. Kalau Firebase mati, aplikasinya harus tet
 
 > **Dua bug lama yang baru ketahuan waktu Tahap 3 dijalankan di emulator.** Yang pertama serius: opsi pilihan ganda diurutkan menaik sejak Tahap 1, dan karena pengecoh yang paling sering terpakai adalah "meleset satu" ke dua arah, **jawaban benarnya selalu di tengah**. Sepuluh soal berturut-turut bisa dijawab 10/10 tanpa berhitung sama sekali. Posisinya sekarang diacak; nilai pengecohnya tetap tidak diacak, karena justru itu yang membuat `question_attempts` jadi data diagnosa. Yang kedua lebih kecil tapi sama membingungkannya: layar Peringkat menyebut "Tidak ada sinyal" untuk anak yang sinyalnya baik-baik saja tapi belum main minggu itu — menyalahkan jaringan untuk sesuatu yang bukan salahnya adalah cara tercepat membuat orang berhenti percaya pada pesan di layar.
 
-### Tahap 4 · Skala dan monetisasi — **belum mulai**
-- [ ] Planet Kali, Pecah, Ukur, dan Ruang (kelas 3–6)
-- [ ] Soal cerita, geometri, dan statistik dari konten statis
-- [ ] Dashboard orang tua: jenis kesalahan, bukan cuma nilai
-- [ ] `in_app_purchase` — buka empat planet sekali bayar
-- [ ] Rilis iOS
+### Tahap 4 · Skala dan monetisasi — **selesai, kecuali iOS**
+- [x] Planet Kali, Pecah, Ukur, dan Ruang (kelas 3–6) — **172 pos**, total 250
+- [x] Soal cerita, geometri, dan statistik
+- [x] Dashboard orang tua: jenis kesalahan, bukan cuma nilai
+- [x] `in_app_purchase` — buka empat planet sekali bayar
+- [ ] Rilis iOS — **dikeluarkan**, butuh Mac dan Apple Developer Program
+
+Fondasi yang ikut: skema v4 (`figure_json`, `order_index`, `requires_purchase`, tabel `entitlements`), [`Gambar`](lib/domain/models/gambar.dart), [`EntitlementDao`](lib/data/local/dao/entitlement_dao.dart), dan **uji migrasi** — sebelumnya tidak ada satu pun untuk versi skema mana pun.
+
+> **Gambar soal disimpan sebagai data, dan itu bukan penghematan ukuran APK.** `{"jenis":"persegiPanjang","panjang":8,"lebar":5}` bisa digambar Flutter jadi 40 petak yang **benar-benar bisa dihitung satu per satu** oleh anak yang lupa rumus luas — persis yang dijanjikan mockup layar 28. Sebuah PNG cuma bisa dilihat, dan soal geometri yang gambarnya cuma bisa dilihat berubah jadi tes hafalan rumus. Yang ikut: diagram batang mengikuti warna tema, dan angka di soal tidak akan pernah berbeda dari angka di gambarnya, karena memang cuma ada satu.
+
+> **Rencana awal menaruh cerita, geometri, dan statistik di `static_questions` — ditulis satu per satu. Yang mengubahnya keputusan lain.** [`Gambar`](lib/domain/models/gambar.dart) menyimpan gambar **sebagai data**, bukan berkas; begitu `8 × 5` cuma dua angka dan bukan sebuah PNG, soalnya bisa dibangkitkan seperti soal hitung mana pun. Kalau ditulis tangan, 40 pos Planet Pecah berarti sekitar 400 soal dipilih satu per satu, dan tiap pos berikutnya kembali semahal itu. Yang **tetap** ditulis tangan adalah polanya — harga yang wajar di kantin sekolah, satuan yang benar (*batang* pensil, *butir* permen), dan nama tiap kekeliruan. "Rani membeli 47 pensil seharga Rp 90" benar secara aritmetika dan tidak pernah terjadi.
+
+> **Enam generator, satu pintu.** Bilangan bulat, [pecahan](lib/domain/engine/pecahan_generator.dart), [desimal & persen](lib/domain/engine/desimal_generator.dart), [geometri](lib/domain/engine/geometri_generator.dart), [statistik](lib/domain/engine/statistik_generator.dart), dan [cerita](lib/domain/engine/cerita_generator.dart) — seluruhnya dialihkan dari dalam `QuestionGenerator`, jadi tidak satu pun layar berubah waktu ranah baru ditambahkan. Pecahan dan desimal dipilih lewat `domain`; cerita, geometri, dan statistik lewat `formats`, karena yang pertama soal **bilangan apa** dan yang kedua soal **bentuk soalnya**.
+
+> **Pengecoh yang bertabrakan dengan jawaban benar hilang diam-diam.** Persegi panjang 6 × 3 punya luas 18 **dan** keliling 18, jadi pengecoh "keliling dan luas tertukar" justru jadi jawaban yang benar dan soalnya turun jadi dua pilihan — anak yang tertukar tidak akan pernah tercatat tertukar. Hal yang sama terjadi di `50% dari 100` (jawabannya 50, "sisanya" juga 50) dan di soal bagi rata. Sekarang soal seperti itu dibuang dan dibangkitkan ulang. Ketiganya baru ketahuan karena diuji, bukan karena dikompilasi — dan yang paling berbahaya kegagalannya muncul di sekitar satu dari tiga jalanan, karena generatornya memakai `Random()` tanpa benih.
+
+> **Memperbarui aplikasi tidak membawa materi barunya.** `SeedRunner` cuma dipanggil di `onCreate`. Artinya anak yang **memperbarui** aplikasinya mendapat seluruh tabel Tahap 4 dan **nol planet baru**, sementara pemasangan baru mendapat semuanya — persis kebalikan dari siapa yang paling pantas dapat. Ketahuan dengan menarik basis datanya dari HP, bukan dari uji mana pun. Sekarang kontennya disemai ulang tiap `onUpgrade`, dan itu aman karena `level_progress` ditulis dengan `ignore`: bintang, XP, dan pos yang sudah terbuka tidak tersentuh.
+
+> **Uji migrasi baru ada sekarang, dan itu terlambat.** Migrasi v1→v2 dan v2→v3 dulu cuma dibuktikan dengan menjalankannya sekali di HP. Seluruh uji lain membangun basis data baru dari nol — dan basis data baru selalu benar — jadi tidak satu pun bisa menangkap migrasi yang menghapus progres anak di HP yang sudah dipakai berbulan-bulan. `test/data/migrasi_test.dart` menjalankan v1→v4 di atas data yang sudah berisi, dan memeriksa bahwa nama, XP, bintang, lencana, dan catatan kesalahan semuanya selamat.
+
+**Dua hal yang masih menggantung**, dan keduanya bukan soal kode:
+
+1. **`in_app_purchase` belum pernah benar-benar membeli apa pun.** Google Play Billing menuntut aplikasinya sudah ada di sebuah jalur rilis — internal testing sudah cukup — dengan produk `semua_planet` aktif dan penguji berlisensi. Seluruh alurnya sudah ditulis dan diuji lawan toko tiruan; yang belum pernah dijalankan cuma lembar pembayaran Play yang sungguhan. Artinya publish bukan penundaan Tahap 4, melainkan langkah berikutnya.
+2. **iOS butuh Mac dan Apple Developer Program.** Konfigurasinya bisa ditulis; menjalankannya tidak bisa, dan mengirim kode yang belum pernah dikompilasi sekali pun bukan pilihan. Layak jadi tahap sendiri.
+
+Aturan "tiap zona enam pos" dilonggarkan jadi 4–8. Desain layar 25 menetapkan 44 / 40 / 42 / 46 pos, dan tiga di antaranya bukan kelipatan enam — memaksa kurikulum mengikuti aritmetika tata letak adalah urutan yang terbalik. Yang tidak dilonggarkan: pos terakhir tiap zona selalu Gerbang Planet, dan aturan emas tetap berlaku atas seluruh pos latihan.
 
 <p align="center">
   <img src="docs/screenshots/00-semua-layar-tahap4.png" width="920" alt="Delapan layar Tahap 4">

@@ -42,6 +42,20 @@ class AppDatabase {
         for (var v = dari + 1; v <= ke; v++) {
           await _jalankan(db, migrasiUntuk(v));
         }
+
+        // **Dan kontennya ikut disemai ulang.** Tanpa baris ini, anak
+        // yang memperbarui aplikasi mendapat skema baru tanpa satu pun
+        // materi baru — Tahap 4 menambah empat planet, dan seluruhnya
+        // tidak akan pernah muncul di HP yang sudah dipakai. Cuma
+        // pemasangan baru yang melihatnya, dan itu justru kebalikan
+        // dari siapa yang paling pantas dapat.
+        //
+        // Aman diulang: `grades`, `chapters`, `levels`, dan
+        // `static_questions` ditulis dengan `replace` — isinya memang
+        // harus mengikuti berkas konten. `level_progress` dan
+        // `user_profile` ditulis dengan `ignore`, jadi bintang, XP, dan
+        // pos yang sudah terbuka **tidak tersentuh sama sekali**.
+        await (seedRunner ?? SeedRunner()).jalankan(db);
       },
     );
   }

@@ -182,5 +182,67 @@ class AttemptDao {
     return rows.first['jam'] as int?;
   }
 
+  // ------------------------------------------------ dashboard ortu
+  /// Berapa kali tiap jenis kesalahan terjadi **sejak** [sejak].
+  ///
+  /// Jendela waktunya penting: dashboard yang menghitung seluruh riwayat
+  /// akan terus menampilkan kesalahan yang sudah lama tidak diulang,
+  /// dan orang tua melatih anaknya untuk hal yang sudah lewat.
+  Future<Map<MistakeKind, int>> kesalahanSejak(DateTime sejak) async {
+    final rows = await _db.rawQuery(
+      '''
+      SELECT mistake_kind, COUNT(*) AS n
+      FROM question_attempts
+      WHERE is_correct = 0 AND mistake_kind IS NOT NULL
+        AND answered_at >= ?
+      GROUP BY mistake_kind
+      ORDER BY n DESC
+      ''',
+      [sejak.toIso8601String()],
+    );
+    return {
+      for (final r in rows)
+        MistakeKind.dariNama(r['mistake_kind'] as String?): r['n']! as int,
+    };
+  }
+
+  /// Berapa soal dikerjakan dan berapa yang benar sejak [sejak].
+  Future<({int total, int benar})> ketepatanSejak(DateTime sejak) async {
+    final r = (await _db.rawQuery(
+      'SELECT COUNT(*) AS total, SUM(is_correct) AS benar '
+      'FROM question_attempts WHERE answered_at >= ?',
+      [sejak.toIso8601String()],
+    )).first;
+    return (total: (r['total'] as int?) ?? 0, benar: (r['benar'] as int?) ?? 0);
+  }
+
+  /// Ketepatan per zona, buat baris "Penguasaan per zona".
+  ///
+  /// Sesi latihan bebas sengaja **tidak** ikut: `level_id` berawalan
+  /// `latihan:` tidak punya zona, dan memaksakannya masuk membuat zona
+  /// yang jarang dilatih terlihat lebih buruk daripada keadaannya.
+  Future<List<({String zonaId, String judul, int total, int benar})>>
+  ketepatanPerZona() async {
+    final rows = await _db.rawQuery('''
+      SELECT c.id AS zona, c.title AS judul,
+             COUNT(*) AS total, SUM(a.is_correct) AS benar
+      FROM question_attempts a
+      JOIN levels l   ON l.id = a.level_id
+      JOIN chapters c ON c.id = l.chapter_id
+      GROUP BY c.id
+      HAVING total >= 10
+      ORDER BY c.grade_id, c.order_index
+      ''');
+    return [
+      for (final r in rows)
+        (
+          zonaId: r['zona']! as String,
+          judul: r['judul']! as String,
+          total: (r['total'] as int?) ?? 0,
+          benar: (r['benar'] as int?) ?? 0,
+        ),
+    ];
+  }
+
   Future<void> hapusSemua() => _db.delete('question_attempts');
 }

@@ -12,20 +12,25 @@ import '../domain/models/level_view.dart';
 import '../domain/models/user_profile.dart';
 import 'local/dao/attempt_dao.dart';
 import 'local/dao/badge_dao.dart';
+import 'local/dao/entitlement_dao.dart';
 import 'local/dao/league_dao.dart';
 import 'local/dao/level_dao.dart';
 import 'local/dao/profile_dao.dart';
 import 'local/dao/progress_dao.dart';
 import 'local/dao/sync_queue_dao.dart';
 import 'remote/firebase_gateway.dart';
+import 'remote/play_gateway.dart';
+import 'remote/purchase_gateway.dart';
 import 'remote/remote_gateway.dart';
 import 'repositories/account_repository.dart';
 import 'repositories/badge_repository.dart';
 import 'repositories/content_repository.dart';
+import 'repositories/dashboard_repository.dart';
 import 'repositories/leaderboard_repository.dart';
 import 'repositories/practice_repository.dart';
 import 'repositories/profile_repository.dart';
 import 'repositories/progress_repository.dart';
+import 'repositories/purchase_repository.dart';
 import 'repositories/sync_repository.dart';
 
 /// Basis data yang sudah dibuka. Diisi lewat `overrideWithValue` di
@@ -378,3 +383,69 @@ final keadaanAkunProvider = FutureProvider((ref) async {
 final pilihanPemulihanProvider = FutureProvider(
   (ref) => ref.watch(accountRepositoryProvider).pilihanPemulihan(),
 );
+
+// =====================================================================
+// Tahap 4 · konten berbayar
+// =====================================================================
+
+final entitlementDaoProvider = Provider(
+  (ref) => EntitlementDao(ref.watch(databaseProvider)),
+);
+
+/// Pintu ke toko aplikasi.
+///
+/// Bentuknya sama persis dengan [remoteGatewayProvider], dan alasannya
+/// sama: build luring memakai implementasi yang benar-benar tidak
+/// menyentuh apa pun, dan seluruh berkas uji berjalan di atasnya.
+final purchaseGatewayProvider = Provider<PurchaseGateway>((ref) {
+  if (AppConfig.offlineOnly) return const GatewayBeliLuring();
+  final g = PlayGateway();
+  ref.onDispose(g.tutup);
+  return g;
+});
+
+final purchaseRepositoryProvider = Provider(
+  (ref) => PurchaseRepository(
+    hakDao: ref.watch(entitlementDaoProvider),
+    levelDao: ref.watch(levelDaoProvider),
+    gateway: ref.watch(purchaseGatewayProvider),
+  ),
+);
+
+/// Isi layar Galaksi: enam planet, mana yang terkunci, dan harganya.
+final galaksiProvider = FutureProvider(
+  (ref) => ref.watch(purchaseRepositoryProvider).galaksi(),
+);
+
+/// Sudah dibeli atau belum. Dibaca layar Pilih planet dan Akun & data.
+final sudahBeliProvider = FutureProvider(
+  (ref) => ref.watch(purchaseRepositoryProvider).sudahBeli(),
+);
+
+/// Rincian pembelian: kapan, dari mana, nomor pesanannya. Dibaca layar
+/// Pembelian berhasil dan Akun & data.
+final rincianBeliProvider = FutureProvider(
+  (ref) => ref.watch(purchaseRepositoryProvider).rincian(),
+);
+
+// =====================================================================
+// Tahap 4 · dashboard orang tua
+// =====================================================================
+
+final dashboardRepositoryProvider = Provider(
+  (ref) => DashboardRepository(
+    attemptDao: ref.watch(attemptDaoProvider),
+    progressDao: ref.watch(progressDaoProvider),
+    levelDao: ref.watch(levelDaoProvider),
+  ),
+);
+
+final ringkasanOrtuProvider = FutureProvider((ref) async {
+  final nama = ref.watch(profileProvider).value?.namaTampil ?? 'Anak';
+  return ref.watch(dashboardRepositoryProvider).ringkasan(nama: nama);
+});
+
+final jenisKesalahanProvider = FutureProvider((ref) async {
+  final nama = ref.watch(profileProvider).value?.namaTampil ?? 'Anak';
+  return ref.watch(dashboardRepositoryProvider).kesalahan(nama: nama);
+});

@@ -20,14 +20,14 @@ void main() {
 
   setUpAll(() {
     final isi = File('remoteconfig.template.json').readAsStringSync();
-    parameter = (jsonDecode(isi) as Map<String, dynamic>)['parameters']
-        as Map<String, dynamic>;
+    parameter =
+        (jsonDecode(isi) as Map<String, dynamic>)['parameters']
+            as Map<String, dynamic>;
   });
 
   Object nilaiTemplate(String kunci) {
     final p = parameter[kunci] as Map<String, dynamic>;
-    final teks =
-        (p['defaultValue'] as Map<String, dynamic>)['value'] as String;
+    final teks = (p['defaultValue'] as Map<String, dynamic>)['value'] as String;
     return switch (p['valueType']) {
       'BOOLEAN' => teks == 'true',
       'NUMBER' => num.parse(teks),

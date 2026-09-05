@@ -27,7 +27,19 @@ part 'difficulty_config.g.dart';
 abstract class DifficultyConfig with _$DifficultyConfig {
   const factory DifficultyConfig({
     @Default([Operation.tambah]) List<Operation> operations,
+
+    /// Bilangan macam apa yang dipakai pos ini.
+    ///
+    /// Bawaannya [NumberDomain.bulat], jadi seluruh konten Tahap 1–3
+    /// tidak perlu diubah satu baris pun — dan itu memang syaratnya:
+    /// menambah ranah tidak boleh menyentuh 78 pos yang sudah dimainkan
+    /// anak.
+    @Default(NumberDomain.bulat) NumberDomain domain,
     @Default(1) int minOperand,
+
+    /// Batas atas operan. Artinya ikut [domain]: penyebut untuk
+    /// pecahan, sepersepuluhnya untuk desimal, bilangan yang dipersenkan
+    /// untuk persen.
     @Default(10) int maxOperand,
 
     /// Batas atas hasil. `null` berarti hanya operan yang dibatasi.
@@ -50,6 +62,7 @@ abstract class DifficultyConfig with _$DifficultyConfig {
 
   /// Nilai tiap sumbu, dipakai untuk membandingkan dua pos berurutan.
   Map<String, Object?> get sumbu => {
+    'ranah': domain.name,
     'S1': '$minOperand-$maxOperand/$maxResult',
     'S2': '${formats.map((f) => f.name).join(",")}/$optionCount',
     'S3': visualAid.name,
@@ -75,4 +88,11 @@ abstract class DifficultyConfig with _$DifficultyConfig {
 
   /// Perkiraan lama sesi dalam menit, untuk sheet detail pos.
   int get perkiraanMenit => (questionCount * 17 / 60).ceil();
+
+  /// Batas atas desimal yang boleh dibangkitkan, mis. `9.9`.
+  double get maksDesimal => maxOperand / 10;
+
+  /// Batas bawahnya. Nol tidak pernah dipakai sebagai operan desimal —
+  /// `0,0 + 0,4` terbaca seperti salah cetak.
+  double get minDesimal => (minOperand < 1 ? 1 : minOperand) / 10;
 }

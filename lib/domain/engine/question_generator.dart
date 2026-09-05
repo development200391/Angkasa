@@ -2,8 +2,13 @@ import 'dart:math';
 
 import '../models/enums.dart';
 import '../models/question.dart';
+import 'cerita_generator.dart';
+import 'desimal_generator.dart';
 import 'difficulty_config.dart';
 import 'distractor_builder.dart';
+import 'geometri_generator.dart';
+import 'pecahan_generator.dart';
+import 'statistik_generator.dart';
 
 /// Membangkitkan soal hitung dari sebuah [DifficultyConfig].
 ///
@@ -13,14 +18,58 @@ import 'distractor_builder.dart';
 class QuestionGenerator {
   QuestionGenerator({Random? random, DistractorBuilder? distractors})
     : _random = random ?? Random(),
-      _distractors = distractors ?? DistractorBuilder(random: random);
+      _distractors = distractors ?? DistractorBuilder(random: random),
+      _pecahan = PecahanGenerator(random: random),
+      _desimal = DesimalGenerator(random: random),
+      _cerita = CeritaGenerator(random: random),
+      _geometri = GeometriGenerator(random: random),
+      _statistik = StatistikGenerator(random: random);
 
   final Random _random;
   final DistractorBuilder _distractors;
 
+  // Ranah selain bilangan bulat punya generatornya sendiri, dan
+  // dialihkan dari sini alih-alih dari tiap pemanggil. Yang dijaga:
+  // seluruh aplikasi tetap memanggil satu kelas untuk meminta soal, dan
+  // menambah ranah berikutnya tidak menyentuh satu pun layar.
+  final PecahanGenerator _pecahan;
+  final DesimalGenerator _desimal;
+
+  // Tiga yang ini dipilih lewat `formats` (sumbu S2), bukan lewat
+  // `domain`. Bedanya nyata: pecahan dan desimal soal **bilangan apa**
+  // yang dipakai, sementara cerita, geometri, dan statistik soal
+  // **bentuk soalnya** — dan bentuk soal memang sudah punya sumbunya
+  // sendiri sejak Tahap 1.
+  final CeritaGenerator _cerita;
+  final GeometriGenerator _geometri;
+  final StatistikGenerator _statistik;
+
   /// Satu set soal untuk satu sesi. Tidak ada dua soal yang sama dalam
   /// satu set selama variasinya masih cukup.
   List<Question> generate(DifficultyConfig config, {int? count}) {
+    // Bentuk soal diperiksa lebih dulu daripada ranah bilangan: pos
+    // soal cerita tentang pecahan tetap soal cerita, dan yang
+    // menentukan tampilannya bentuknya.
+    if (config.formats.contains(QuestionFormat.cerita)) {
+      return _cerita.generate(config, count: count);
+    }
+    if (config.formats.contains(QuestionFormat.geometri)) {
+      return _geometri.generate(config, count: count);
+    }
+    if (config.formats.contains(QuestionFormat.statistik)) {
+      return _statistik.generate(config, count: count);
+    }
+
+    switch (config.domain) {
+      case NumberDomain.pecahan:
+        return _pecahan.generate(config, count: count);
+      case NumberDomain.desimal:
+      case NumberDomain.persen:
+        return _desimal.generate(config, count: count);
+      case NumberDomain.bulat:
+        break;
+    }
+
     final target = count ?? config.questionCount;
     final hasil = <Question>[];
     final dipakai = <String>{};
@@ -87,7 +136,29 @@ class QuestionGenerator {
   }) {
     final m = RegExp(r'^(\?|\d+)([+−×÷?])(\?|\d+)=(\?|\d+)$')
         .firstMatch(signature.replaceAll(' ', ''));
-    if (m == null) return null;
+
+    // Tata bahasa tanda tangan tiap ranah sengaja tidak beririsan —
+    // garis miring, koma, dan persen tidak pernah muncul di tanda
+    // tangan bilangan bulat. Jadi urutan percobaan di bawah tidak
+    // pernah bisa salah pilih, dan catatan lama tetap terbaca setelah
+    // ranah baru ditambahkan.
+    if (m == null) {
+      return _pecahan.dariSignature(
+            signature,
+            format: format,
+            optionCount: optionCount,
+            timeLimitSeconds: timeLimitSeconds,
+          ) ??
+          _desimal.dariSignature(
+            signature,
+            format: format,
+            optionCount: optionCount,
+            timeLimitSeconds: timeLimitSeconds,
+          ) ??
+          _geometri.dariSignature(signature, optionCount: optionCount) ??
+          _statistik.dariSignature(signature, optionCount: optionCount) ??
+          _cerita.dariSignature(signature, optionCount: optionCount);
+    }
 
     final kiri = m.group(1)!;
     final tanda = m.group(2)!;
@@ -191,7 +262,34 @@ class QuestionGenerator {
     Operation.bagi => r == 0 ? -1 : l ~/ r,
   };
 
+  /// Satu soal. Ranah selain bilangan bulat dialihkan; kalau
+  /// generatornya memulangkan `null` — kombinasi yang tidak bisa
+  /// dibangkitkan — dicoba lagi sampai dapat, karena pemanggil di sini
+  /// menjanjikan sebuah soal, bukan mungkin sebuah soal.
   Question single(DifficultyConfig config) {
+    if (config.formats.any(
+      (f) =>
+          f == QuestionFormat.cerita ||
+          f == QuestionFormat.geometri ||
+          f == QuestionFormat.statistik,
+    )) {
+      final lain = generate(config, count: 1);
+      if (lain.isNotEmpty) return lain.first;
+    }
+
+    switch (config.domain) {
+      case NumberDomain.pecahan:
+      case NumberDomain.desimal:
+      case NumberDomain.persen:
+        final lain = generate(config, count: 1);
+        if (lain.isNotEmpty) return lain.first;
+        return _singleBulat(config.copyWith(domain: NumberDomain.bulat));
+      case NumberDomain.bulat:
+        return _singleBulat(config);
+    }
+  }
+
+  Question _singleBulat(DifficultyConfig config) {
     final operation =
         config.operations[_random.nextInt(config.operations.length)];
     final (left, right, result) = _operan(config, operation);

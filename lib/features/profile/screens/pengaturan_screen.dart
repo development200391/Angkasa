@@ -70,6 +70,44 @@ class PengaturanScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 14),
+            // Dua layar Tahap 4, dan keduanya memang milik orang tua:
+            // yang satu menunjukkan kebiasaan belajar anaknya, yang
+            // satu lagi memutuskan pembelian. Ditaruh di balik Gerbang
+            // Orang Tua bersama sisanya, bukan di tab anak.
+            _Kartu(
+              children: [
+                ListTile(
+                  title: Text('Kemajuan belajar', style: AppTextStyles.title),
+                  subtitle: Text(
+                    'Menit belajar, ketepatan, dan jenis kesalahan yang '
+                    'paling sering diulang.',
+                    style: AppTextStyles.caption,
+                  ),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.ink3,
+                  ),
+                  onTap: () => context.push(Rute.dashboardOrtu),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                const Divider(height: 1, indent: 16, endIndent: 16),
+                ListTile(
+                  title: Text('Galaksi', style: AppTextStyles.title),
+                  subtitle: Text(
+                    'Enam planet, dan apa isi masing-masing sebelum '
+                    'memutuskan membeli.',
+                    style: AppTextStyles.caption,
+                  ),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.ink3,
+                  ),
+                  onTap: () => context.push(Rute.galaksi),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
             _Kartu(
               children: [
                 ListTile(
@@ -145,7 +183,7 @@ class PengaturanScreen extends ConsumerWidget {
             Center(
               child: Text(
                 AppConfig.daringAktif
-                    ? 'Angkasa · Tahap 3 · luring dulu, daring belakangan'
+                    ? 'Angkasa · Tahap 4 · luring dulu, daring belakangan'
                     : 'Angkasa · Tahap 3 · luring penuh',
                 style: AppTextStyles.caption,
               ),

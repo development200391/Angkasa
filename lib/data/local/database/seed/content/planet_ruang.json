@@ -1,0 +1,1306 @@
+{
+  "grade": {
+    "id": "grade-6",
+    "name": "Planet Ruang",
+    "orderIndex": 6,
+    "icon": "ruang",
+    "color": "#4B5DB0"
+  },
+  "chapters": [
+    {
+      "id": "c-6-1",
+      "title": "Bilangan bulat negatif",
+      "icon": "bulat",
+      "color": "#4B5DB0",
+      "orderIndex": 1,
+      "levels": [
+        {
+          "id": "l-6-1-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 20,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "garisBilangan",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-1-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 50,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "garisBilangan",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-1-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 50,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-1-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 50,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "operanKanan",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-1-5",
+          "orderIndex": 5,
+          "title": "Pos 5",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 50,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "operanKanan",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-1-6",
+          "orderIndex": 6,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 50,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 25,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-2",
+      "title": "Operasi bilangan bulat",
+      "icon": "bulat",
+      "color": "#4B5DB0",
+      "orderIndex": 2,
+      "levels": [
+        {
+          "id": "l-6-2-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 50,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-2-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 99,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-2-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 99,
+            "maxResult": null,
+            "allowCarry": true,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-2-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 99,
+            "maxResult": null,
+            "allowCarry": true,
+            "allowNegativeResult": true,
+            "unknown": "operanKiri",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-2-5",
+          "orderIndex": 5,
+          "title": "Pos 5",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 99,
+            "maxResult": null,
+            "allowCarry": true,
+            "allowNegativeResult": true,
+            "unknown": "operanKiri",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-2-6",
+          "orderIndex": 6,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 99,
+            "maxResult": null,
+            "allowCarry": true,
+            "allowNegativeResult": true,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 25,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-3",
+      "title": "Kali dan bagi bilangan besar",
+      "icon": "kali",
+      "color": "#4B5DB0",
+      "orderIndex": 3,
+      "levels": [
+        {
+          "id": "l-6-3-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 12,
+            "maxResult": 144,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-3-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 15,
+            "maxResult": 225,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-3-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 15,
+            "maxResult": 225,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "operanKanan",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-3-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 15,
+            "maxResult": 225,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "operanKanan",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-3-5",
+          "orderIndex": 5,
+          "title": "Pos 5",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 15,
+            "maxResult": 225,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "operanKanan",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 25,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-3-6",
+          "orderIndex": 6,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 15,
+            "maxResult": 225,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 25,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-4",
+      "title": "Luas bangun datar",
+      "icon": "geometri",
+      "color": "#4B5DB0",
+      "orderIndex": 4,
+      "levels": [
+        {
+          "id": "l-6-4-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 5,
+            "maxOperand": 14,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "geometri"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-4-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 5,
+            "maxOperand": 18,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "geometri"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-4-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 5,
+            "maxOperand": 18,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "geometri"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-4-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 5,
+            "maxOperand": 18,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "geometri"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-4-5",
+          "orderIndex": 5,
+          "title": "Pos 5",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 5,
+            "maxOperand": 18,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "geometri"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 30,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-4-6",
+          "orderIndex": 6,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 5,
+            "maxOperand": 18,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "geometri"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 25,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-5",
+      "title": "Modus",
+      "icon": "statistik",
+      "color": "#4B5DB0",
+      "orderIndex": 5,
+      "levels": [
+        {
+          "id": "l-6-5-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 6,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-5-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-5-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-5-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 35,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-5-5",
+          "orderIndex": 5,
+          "title": "Pos 5",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 10,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 35,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-5-6",
+          "orderIndex": 6,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "tambah"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 35,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-6",
+      "title": "Median",
+      "icon": "statistik",
+      "color": "#4B5DB0",
+      "orderIndex": 6,
+      "levels": [
+        {
+          "id": "l-6-6-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 6,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-6-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-6-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-6-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 35,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-6-5",
+          "orderIndex": 5,
+          "title": "Pos 5",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 10,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 35,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-6-6",
+          "orderIndex": 6,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "kurang"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 35,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-7",
+      "title": "Rata-rata",
+      "icon": "statistik",
+      "color": "#4B5DB0",
+      "orderIndex": 7,
+      "levels": [
+        {
+          "id": "l-6-7-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 6,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-7-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-7-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-7-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 40,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-7-5",
+          "orderIndex": 5,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "kali"
+            ],
+            "domain": "bulat",
+            "minOperand": 1,
+            "maxOperand": 8,
+            "maxResult": null,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "statistik"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 40,
+            "questionCount": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-6-8",
+      "title": "Gerbang Galaksi",
+      "icon": "campur",
+      "color": "#4B5DB0",
+      "orderIndex": 8,
+      "levels": [
+        {
+          "id": "l-6-8-1",
+          "orderIndex": 1,
+          "title": "Pos 1",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang",
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 20,
+            "maxResult": 200,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-8-2",
+          "orderIndex": 2,
+          "title": "Pos 2",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang",
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 30,
+            "maxResult": 300,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 3,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-8-3",
+          "orderIndex": 3,
+          "title": "Pos 3",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang",
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 30,
+            "maxResult": 300,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": null,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-8-4",
+          "orderIndex": 4,
+          "title": "Pos 4",
+          "type": "practice",
+          "xpReward": 10,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang",
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 30,
+            "maxResult": 300,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 20,
+            "questionCount": 10
+          }
+        },
+        {
+          "id": "l-6-8-5",
+          "orderIndex": 5,
+          "title": "Gerbang Planet",
+          "type": "boss",
+          "xpReward": 30,
+          "difficultyConfig": {
+            "operations": [
+              "tambah",
+              "kurang",
+              "kali",
+              "bagi"
+            ],
+            "domain": "bulat",
+            "minOperand": 2,
+            "maxOperand": 30,
+            "maxResult": 300,
+            "allowCarry": false,
+            "allowNegativeResult": false,
+            "unknown": "hasil",
+            "formats": [
+              "pilihanGanda"
+            ],
+            "optionCount": 4,
+            "visualAid": "tidakAda",
+            "timeLimitSeconds": 20,
+            "questionCount": 15
+          }
+        }
+      ]
+    }
+  ]
+}

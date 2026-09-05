@@ -5,6 +5,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../domain/models/enums.dart';
 import '../../../domain/models/question.dart';
 import 'benda_row.dart';
+import 'gambar_soal.dart';
 import 'number_line.dart';
 
 /// Kartu soal: bantuan visual di atas atau di bawah, kalimat
@@ -44,15 +45,35 @@ class KartuSoal extends StatelessWidget {
             BendaRow(soal: soal),
             const SizedBox(height: 20),
           ],
+          // Gambar soal (geometri, statistik, cerita) di atas
+          // kalimatnya — sama seperti bantuan visual benda. Anak
+          // melihat dulu apa yang dibicarakan, baru membaca apa yang
+          // ditanyakan.
+          if (soal.gambar != null) ...[
+            GambarSoal(gambar: soal.gambar!, diAtasGelap: diAtasGelap),
+            const SizedBox(height: 18),
+          ],
           Text(
             soal.prompt,
-            textAlign: TextAlign.center,
+            // Soal cerita dibaca sebagai kalimat, jadi rata kiri. Rata
+            // tengah membuat tiap baris mulai di tempat berbeda, dan
+            // anak yang baru lancar membaca kehilangan barisnya.
+            textAlign: soal.format == QuestionFormat.cerita
+                ? TextAlign.start
+                : TextAlign.center,
             style: AppTextStyles.question.copyWith(
-              fontSize: ukuranTeks,
+              fontSize:
+                  ukuranTeks ??
+                  (soal.format == QuestionFormat.cerita ? 19 : null),
+              height: soal.format == QuestionFormat.cerita ? 1.5 : null,
+              fontWeight: soal.format == QuestionFormat.cerita
+                  ? FontWeight.w400
+                  : null,
               color: diAtasGelap ? AppColors.inkOnSpace : AppColors.ink,
             ),
           ),
-          if (soal.visualAid == VisualAid.garisBilangan) ...[
+          if (soal.visualAid == VisualAid.garisBilangan &&
+              soal.gambar == null) ...[
             const SizedBox(height: 18),
             NumberLine(soal: soal),
           ],

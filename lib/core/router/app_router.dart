@@ -10,6 +10,11 @@ import '../../features/account/screens/akun_data_screen.dart';
 import '../../features/account/screens/data_dikirim_screen.dart';
 import '../../features/account/screens/nama_panggilan_screen.dart';
 import '../../features/account/screens/pulihkan_progres_screen.dart';
+import '../../features/parent/screens/dashboard_screen.dart';
+import '../../features/parent/screens/jenis_kesalahan_screen.dart';
+import '../../features/store/screens/buka_planet_screen.dart';
+import '../../features/store/screens/galaksi_screen.dart';
+import '../../features/store/screens/pembelian_berhasil_screen.dart';
 import '../../features/account/screens/simpan_progres_screen.dart';
 import '../../features/home/screens/jelajah_screen.dart';
 import '../../features/home/screens/lepas_landas_screen.dart';
@@ -67,6 +72,13 @@ abstract final class Rute {
   static const simpanProgres = '/simpan-progres';
   static const pulihkanProgres = '/pulihkan-progres';
   static const dataDikirim = '/data-yang-dikirim';
+
+  // ---------------------------------------------------------- Tahap 4
+  static const galaksi = '/galaksi';
+  static const bukaPlanet = '/buka-planet';
+  static const pembelianBerhasil = '/pembelian-berhasil';
+  static const dashboardOrtu = '/dashboard';
+  static const jenisKesalahan = '/jenis-kesalahan';
 
   static String kuisUntuk(String levelId) => '/kuis/$levelId';
 
@@ -235,6 +247,38 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Rute.pulihkanProgres,
         parentNavigatorKey: _navigatorKey,
         builder: (_, _) => const PulihkanProgresScreen(),
+      ),
+
+      // ------------------------------------------------------ Tahap 4
+      GoRoute(
+        path: Rute.galaksi,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const GalaksiScreen(),
+      ),
+      // Layar penjualan dan layar berhasilnya sengaja **tidak** di
+      // balik Gerbang Orang Tua. Gerbangnya ada di jalan menuju
+      // Galaksi, dan memasang gerbang kedua di tengah alur pembayaran
+      // membuat orang tua yang sudah menekan "Beli" harus mengerjakan
+      // soal perkalian sebelum boleh membayar.
+      GoRoute(
+        path: Rute.bukaPlanet,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const BukaPlanetScreen(),
+      ),
+      GoRoute(
+        path: Rute.pembelianBerhasil,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const PembelianBerhasilScreen(),
+      ),
+      GoRoute(
+        path: Rute.dashboardOrtu,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: Rute.jenisKesalahan,
+        parentNavigatorKey: _navigatorKey,
+        builder: (_, _) => const JenisKesalahanScreen(),
       ),
       GoRoute(
         path: Rute.dataDikirim,
